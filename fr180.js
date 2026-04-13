@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
- * build_grepolis_mapdata_fr175.js
+ * build_grepolis_mapdata_fr180.js
  * -------------------------------
- * Génère mapData.js pour le monde fr175 (Grepolis) + temples statiques.
+ * Génère mapData.js pour le monde fr180 (Grepolis) + temples statiques.
  * mapData = {
  *   alliances: [ { id, name, towns:[{x,y,slot}] } ],
  *   players  : [ { id, name, alliance_id, towns:[{x,y,slot}] } ],
