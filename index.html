@@ -2,190 +2,428 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<title>Carte – fr180 (mers 22 → 77)</title>
+<title>Carte – fr180</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Rajdhani:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-/* ───────── Mise en page générale ───────── */
-body{margin:0;background:#111;color:#ccc;font-family:sans-serif;
-     display:flex;flex-direction:column;align-items:center}
-#topbar{margin-top:12px;display:flex;gap:24px;flex-wrap:wrap;align-items:center}
-.bar{display:flex;align-items:center;gap:6px}
-.groupBar{display:flex;align-items:center;gap:14px}
-select,button{padding:4px;font-size:14px}
-input[type=color]{border:none;width:22px;height:22px;padding:0}
+/* ══════════════════════════════════════════════
+   VARIABLES & RESET
+══════════════════════════════════════════════ */
+:root{
+  --bg:        #0a0d14;
+  --bg2:       #0f1420;
+  --bg3:       #151c2e;
+  --border:    rgba(100,140,255,0.15);
+  --border2:   rgba(100,140,255,0.30);
+  --gold:      #c9a84c;
+  --gold2:     #e8c96a;
+  --text:      #c8d4f0;
+  --text-dim:  #6a7a9a;
+  --ally:      #00d4ff;
+  --rouge:     #ff3d3d;
+  --accent:    #4a7cff;
+  --glow:      rgba(74,124,255,0.25);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Rajdhani',sans-serif;
+  font-size:15px;
+  min-height:100vh;
+  overflow-x:hidden;
+}
+body::before{
+  content:'';
+  position:fixed;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse at 20% 20%, rgba(74,124,255,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 80%, rgba(201,168,76,0.04) 0%, transparent 60%);
+  pointer-events:none;
+}
 
-/* masque le toggle Contest (classe ajoutée ci-dessous) */
+/* ══════════════════════════════════════════════
+   LAYOUT
+══════════════════════════════════════════════ */
+#app{
+  display:grid;
+  grid-template-columns:220px 1fr 220px;
+  grid-template-rows:auto 1fr;
+  min-height:100vh;
+  position:relative;z-index:1;
+}
+
+/* ══════════════════════════════════════════════
+   HEADER
+══════════════════════════════════════════════ */
+#header{
+  grid-column:1/-1;
+  padding:12px 20px;
+  background:linear-gradient(180deg, rgba(15,20,32,0.98) 0%, rgba(10,13,20,0.90) 100%);
+  border-bottom:1px solid var(--border2);
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  backdrop-filter:blur(8px);
+  position:sticky;top:0;z-index:100;
+}
+#header h1{
+  font-family:'Cinzel',serif;
+  font-size:17px;font-weight:700;
+  color:var(--gold2);
+  letter-spacing:3px;
+  white-space:nowrap;
+  text-shadow:0 0 20px rgba(201,168,76,0.4);
+  flex-shrink:0;
+}
+#header h1 span{color:var(--text-dim);font-size:12px;font-weight:400;letter-spacing:1px;margin-left:4px;}
+
+.ctrl-group{
+  display:flex;align-items:center;gap:6px;
+  padding:5px 10px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid var(--border);
+  border-radius:6px;
+}
+.ctrl-label{
+  font-size:10px;font-weight:600;letter-spacing:1px;
+  color:var(--text-dim);text-transform:uppercase;white-space:nowrap;
+}
+select{
+  background:var(--bg3);border:1px solid var(--border2);
+  color:var(--text);padding:3px 6px;border-radius:4px;
+  font-family:'Rajdhani',sans-serif;font-size:13px;
+  cursor:pointer;outline:none;max-width:150px;
+}
+select:focus{border-color:var(--accent);}
+button.add-btn{
+  background:linear-gradient(135deg,var(--accent),#2855cc);
+  border:none;color:#fff;
+  width:24px;height:24px;border-radius:4px;
+  font-size:15px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:transform .1s,box-shadow .1s;flex-shrink:0;
+}
+button.add-btn:hover{transform:scale(1.1);box-shadow:0 0 10px var(--glow);}
+
+.sep{width:1px;height:26px;background:var(--border2);flex-shrink:0;}
+
+/* Toggles */
+.toggle-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.toggle{
+  display:flex;align-items:center;gap:5px;
+  cursor:pointer;user-select:none;
+  padding:4px 8px;border-radius:4px;
+  transition:background .15s;font-size:13px;font-weight:500;
+}
+.toggle:hover{background:rgba(255,255,255,0.05);}
+.toggle input{display:none;}
+.toggle-dot{
+  width:13px;height:13px;border-radius:3px;
+  border:1.5px solid var(--border2);background:transparent;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;flex-shrink:0;
+}
+.toggle input:checked ~ .toggle-dot{background:var(--accent);border-color:var(--accent);}
+.toggle input:checked ~ .toggle-dot::after{content:'✓';color:#fff;font-size:8px;font-weight:700;}
+
+/* Slider */
+.slider-wrap{display:flex;align-items:center;gap:6px;font-size:13px;}
+input[type=range]{
+  -webkit-appearance:none;width:90px;height:3px;
+  background:var(--bg3);border-radius:2px;outline:none;border:1px solid var(--border);
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:13px;height:13px;border-radius:50%;
+  background:var(--accent);cursor:pointer;box-shadow:0 0 6px var(--glow);
+}
+#cityVal{min-width:18px;text-align:center;color:var(--gold);font-weight:600;}
 .hidden{display:none!important}
 
-/* ───────── Zone carte ───────── */
-#mapWrapper{position:relative;margin-top:12px}
-canvas{border:2px solid #444}
+/* ══════════════════════════════════════════════
+   PANNEAU GAUCHE
+══════════════════════════════════════════════ */
+#leftPanel{
+  grid-column:1;grid-row:2;
+  padding:14px 10px;
+  border-right:1px solid var(--border);
+  overflow-y:auto;max-height:calc(100vh - 58px);
+  background:rgba(10,13,20,0.5);
+}
+.panel-title{
+  font-family:'Cinzel',serif;font-size:10px;font-weight:600;
+  letter-spacing:2px;color:var(--text-dim);text-transform:uppercase;
+  padding:0 4px 8px;border-bottom:1px solid var(--border);margin-bottom:10px;
+}
+#legend{display:flex;flex-direction:column;gap:3px;}
+.leg-row{
+  display:flex;align-items:center;gap:5px;
+  padding:3px 5px;border-radius:4px;
+  transition:background .15s;font-size:12px;
+}
+.leg-row:hover{background:rgba(255,255,255,0.04);}
+.leg-row input[type=checkbox]{accent-color:var(--accent);cursor:pointer;flex-shrink:0;}
+input[type=color]{
+  border:none;background:none;width:16px;height:16px;
+  padding:0;cursor:pointer;border-radius:3px;flex-shrink:0;
+}
+.leg-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 
-/* ───────── Légende alliances/joueurs ───────── */
-#legend{position:fixed;top:60px;left:10px;
-        display:flex;flex-direction:column;gap:4px;font-size:14px;z-index:5}
-.row{display:flex;align-items:center;gap:4px}
-.row input[type=checkbox]{margin:0}
+/* ══════════════════════════════════════════════
+   CENTRE
+══════════════════════════════════════════════ */
+#center{
+  grid-column:2;grid-row:2;
+  display:flex;align-items:flex-start;justify-content:center;padding:18px;
+}
+#mapWrapper{
+  position:relative;
+  border:1px solid var(--border2);border-radius:4px;
+  box-shadow:0 0 40px rgba(74,124,255,0.07), 0 0 0 1px rgba(201,168,76,0.08);
+  overflow:hidden;
+}
+canvas{display:block;}
 
-/* ───────── Panneau temples ───────── */
-#templePanel{
-  position:fixed;top:88px;right:10px;width:200px;
-  display:flex;flex-direction:column;gap:8px;font-size:14px;z-index:5}
-#templeSearch{width:100%;padding:4px;background:#222;border:1px solid #555;
-              color:#eee;border-radius:4px}
-.tplRow{display:flex;align-items:center;gap:6px}
+/* ══════════════════════════════════════════════
+   PANNEAU DROIT
+══════════════════════════════════════════════ */
+#rightPanel{
+  grid-column:3;grid-row:2;
+  padding:14px 10px;
+  border-left:1px solid var(--border);
+  overflow-y:auto;max-height:calc(100vh - 58px);
+  background:rgba(10,13,20,0.5);
+}
+#templeSearch{
+  width:100%;padding:5px 8px;
+  background:var(--bg3);border:1px solid var(--border2);
+  color:var(--text);border-radius:4px;
+  font-family:'Rajdhani',sans-serif;font-size:13px;
+  outline:none;margin-bottom:10px;transition:border-color .15s;
+}
+#templeSearch:focus{border-color:var(--accent);}
+#templeSearch::placeholder{color:var(--text-dim);}
+#templeLegend{display:flex;flex-direction:column;gap:2px;}
+.tpl-type-row{
+  display:flex;align-items:center;gap:6px;
+  padding:3px 5px;border-radius:3px;font-size:12px;color:var(--text-dim);
+}
+.tpl-type-row:hover{background:rgba(255,255,255,0.03);color:var(--text);}
+.tpl-color-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;border:1px solid rgba(255,255,255,0.15);}
 
-/* ───────── Contrôle taille villes ───────── */
-#sizeControl{
-  position:fixed;right:10px;bottom:10px;z-index:6;
-  background:#222;padding:6px 8px;border:1px solid #555;border-radius:4px;
-  display:flex;align-items:center;gap:6px;font-size:14px}
-#citySize{width:140px}
-#cityVal{min-width:26px;text-align:right;font-variant-numeric:tabular-nums;color:#fff}
-
-/* ───────── Tooltip ───────── */
+/* ══════════════════════════════════════════════
+   TOOLTIP
+══════════════════════════════════════════════ */
 #tooltip{
-  position:fixed;pointer-events:none;z-index:999;
-  max-width:220px;padding:4px 6px;border-radius:4px;
-  background:#222;color:#eee;font-size:13px;
-  border:1px solid #555;box-shadow:0 0 4px #000;
-  display:none;white-space:pre-line}
+  position:fixed;pointer-events:none;z-index:9999;
+  padding:6px 10px;border-radius:5px;
+  background:rgba(10,13,20,0.96);border:1px solid var(--border2);
+  color:var(--text);font-size:13px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.6);
+  display:none;white-space:pre-line;
+  backdrop-filter:blur(4px);
+  font-family:'Rajdhani',sans-serif;line-height:1.5;
+  max-width:230px;
+}
+.tip-name{color:var(--gold2);font-weight:600;font-size:14px;}
+.tip-bonus{color:var(--text);font-size:12px;margin-top:2px;}
 
-/* ───────── Temples ───────── */
+/* ══════════════════════════════════════════════
+   TEMPLES
+══════════════════════════════════════════════ */
 .templeIcon{
   position:absolute;left:0;top:0;width:24px;height:24px;
-  transform:translate(-12px,-12px);       /* centrage standard */
-  pointer-events:auto;
+  transform:translate(-12px,-12px);pointer-events:auto;
 }
-.templeIcon.big{
-  width:48px;
-  height:48px;
-  transform:translate(-24px,-24px);       /* centrage grands temples */
+.templeIcon.big{width:48px;height:48px;transform:translate(-24px,-24px);}
+.templeIcon::before{
+  content:"";position:absolute;inset:0;border-radius:50%;
+  transform:translate(-2px,-1px) scale(1.35);opacity:.25;z-index:0;background:transparent;
 }
-.templeIcon::before{content:"";position:absolute;inset:0;border-radius:50%;
-  transform:translate(-2px,-1px) scale(1.25);opacity:.2;z-index:0;background:transparent}
 .templeIcon.secured::before{background:#00c853}
 .templeIcon.tocomplete::before{background:#ffeb3b}
 .templeIcon.contested::before{background:#ff1744}
 .templeIcon.none::before{display:none}
-
-/* cadre blanc – recherche */
 .templeIcon.match::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  border:2px solid #fff;
-  box-sizing:border-box;
-  transform:translate(-1px,0px); /* même offset que l’aura */
-  pointer-events:none;
-  z-index:2;          /* au-dessus du vert */
+  content:"";position:absolute;inset:0;border:2px solid #fff;
+  box-sizing:border-box;transform:translate(-1px,0px);pointer-events:none;z-index:2;
 }
-
-/* anneau vert – temple conquis */
-.templeIcon.owned{
-  border-radius:50%;
-  box-shadow:0 0 0 3px #00e676;   /* 3 px tout autour, diamètre 30 px */
+.templeIcon.owned{border-radius:50%;box-shadow:0 0 0 3px #00e676;}
+.templeIcon.owned .sprite{transform:translate(1px,1px);}
+.templeIcon.big .sprite{transform:scale(2);transform-origin:top left;}
+.templeIcon.owned.big .sprite{transform:translate(1px,1px) scale(2);}
+.sprite,.tplSprite{
+  width:24px;height:24px;
+  background:url(https://gpfr.innogamescdn.com/images/game/autogenerated/map/general/map_general_24f9f8c.png) no-repeat;
 }
-
-/* sprite */
-.templeIcon.owned .sprite{
-  transform:translate(1px,1px);   /* +2 →, +1 ↓ */
-}
-.templeIcon.big .sprite{
-  transform:scale(2);
-  transform-origin:top left;
-}
-.templeIcon.owned.big .sprite{
-  transform:translate(1px,1px) scale(2);
-}
-.sprite,.tplSprite{width:24px;height:24px;
-  background:url(https://gpfr.innogamescdn.com/images/game/autogenerated/map/general/map_general_24f9f8c.png) no-repeat}
 .sprite.small,.tplSprite.small{background-position:-108px -51px}
 .sprite.large,.tplSprite.large{background-position:-84px -51px}
 .sprite.olympus,.tplSprite.olympus{background-position:-60px -51px}
-
-/* filtres teinte */
-.red{filter:hue-rotate(-60deg)saturate(8) brightness(1.25) contrast(1.1)}
-.green{filter:hue-rotate(90deg)saturate(4)}
-.blue{filter:hue-rotate(200deg)saturate(4)}
+.red   {filter:hue-rotate(-60deg)saturate(8)brightness(1.25)contrast(1.1)}
+.green {filter:hue-rotate(90deg)saturate(4)}
+.blue  {filter:hue-rotate(200deg)saturate(4)}
 .yellow{filter:hue-rotate(-30deg)saturate(5)brightness(1.2)}
 .violet{filter:hue-rotate(260deg)saturate(4)}
-.black{filter:brightness(0) saturate(0)}
-.white{filter:brightness(3) saturate(0)}
+.black {filter:brightness(0)saturate(0)}
+.white {filter:brightness(3)saturate(0)}
+.orange{filter:hue-rotate(-20deg)saturate(6)brightness(1.1)}
+.cyan  {filter:hue-rotate(175deg)saturate(5)}
 </style>
 </head>
 <body>
+<div id="app">
 
-<!-- ───────── Barre de contrôle ───────── -->
-<div id="topbar">
-  <div class="bar">Joueur : <select id="playerSel"></select><button id="addPlayer">＋</button></div>
-  <div class="bar">Alliance : <select id="allySel"></select><button id="addAlly">＋</button></div>
+<!-- ══ HEADER ══ -->
+<div id="header">
+  <h1>GREPOLIS <span>· FR180</span></h1>
 
-  <div class="groupBar">
-    <label><input type="checkbox" id="chkMolky"> Molky</label>
-    <label><input type="checkbox" id="chkAllies"> Alliés</label>
-    <label><input type="checkbox" id="chkCafe"> Café clopes</label>
+  <div class="ctrl-group">
+    <span class="ctrl-label">Joueur</span>
+    <select id="playerSel"></select>
+    <button class="add-btn" id="addPlayer">＋</button>
+  </div>
 
-    <!-- Toggle « Contest » masqué temporairement -->
-    <label class="hidden"><input type="checkbox" id="chkContest"> Contest</label>
+  <div class="ctrl-group">
+    <span class="ctrl-label">Alliance</span>
+    <select id="allySel"></select>
+    <button class="add-btn" id="addAlly">＋</button>
+  </div>
 
-    <label><input type="checkbox" id="chkColor" checked> Colorer temples</label>
-    <label><input type="checkbox" id="chkFocus" checked> Nos temples</label>
+  <div class="sep"></div>
+
+  <div class="toggle-row">
+    <label class="toggle">
+      <input type="checkbox" id="chkAllies">
+      <div class="toggle-dot"></div>
+      <span style="color:#00d4ff">⚔ Alliés</span>
+    </label>
+    <label class="toggle">
+      <input type="checkbox" id="chkRouge">
+      <div class="toggle-dot"></div>
+      <span style="color:#ff3d3d">● Rouge</span>
+    </label>
+    <label class="toggle hidden">
+      <input type="checkbox" id="chkContest">
+      <div class="toggle-dot"></div>
+      Contest
+    </label>
+    <label class="toggle">
+      <input type="checkbox" id="chkColor" checked>
+      <div class="toggle-dot"></div>
+      Temples colorés
+    </label>
+    <label class="toggle">
+      <input type="checkbox" id="chkFocus" checked>
+      <div class="toggle-dot"></div>
+      Nos temples
+    </label>
+  </div>
+
+  <div class="sep"></div>
+
+  <div class="slider-wrap">
+    <span style="color:var(--text-dim);font-size:12px;">Villes</span>
+    <input type="range" id="citySize" min="0" max="100" value="0">
+    <span id="cityVal">2</span>
   </div>
 </div>
 
-<div id="legend"></div>
+<!-- ══ GAUCHE ══ -->
+<div id="leftPanel">
+  <div class="panel-title">Légende</div>
+  <div id="legend"></div>
+</div>
 
-<!-- Panneau temples -->
-<div id="templePanel">
-  <input id="templeSearch" placeholder="Rechercher nom, type ou bonus…">
+<!-- ══ CENTRE ══ -->
+<div id="center">
+  <div id="mapWrapper">
+    <canvas id="map" width="800" height="800"></canvas>
+  </div>
+</div>
+
+<!-- ══ DROITE ══ -->
+<div id="rightPanel">
+  <div class="panel-title">Temples</div>
+  <input id="templeSearch" placeholder="Nom, type, bonus…">
   <div id="templeLegend"></div>
 </div>
 
-<!-- Carte + tooltip -->
-<div id="mapWrapper"><canvas id="map" width="800" height="800"></canvas></div>
 <div id="tooltip"></div>
-
-<!-- Slider taille villes -->
-<div id="sizeControl">
-  Taille villes :
-  <input type="range" id="citySize" min="0" max="100" value="0">
-  <span id="cityVal">2</span>
 </div>
 
 <script src="mapData.js"></script>
 <script>
-/* ─── Constantes et données ─── */
+/* ── Constantes ── */
 const VIEW=6,CELL=100,SIZE=800,SCALE=SIZE/(VIEW*CELL);
 const BX=2,BY=2,X_MIN=BX*CELL,Y_MIN=BY*CELL,X_MAX=X_MIN+VIEW*CELL,Y_MAX=Y_MIN+VIEW*CELL;
-const GROUPS={molky:{ids:[186,368],color:'#ff0000'},
-              allies:{ids:[335,19,239,595,594],color:'#00CCFF'},
-              cafe:{ids:[3,350],color:'#ff8c00'}};
-const COLOR_BY_TYPE={'OFF T':'yellow','OFF NAV':'red','PROD T':'green','PROD NAV':'blue',
-                     '3% OFF':'violet','Portail':'white','DEF':'black'};
-const palette=['#00ffff','#ff7f00','#00ff00','#ff00ff','#ffff00','#00bfff',
-               '#ff1493','#7fff00','#ff4500','#20b2aa'];
+
+/* ── Groupes fr180 ── */
+const GROUPS={
+  allies:{
+    // Fan2Tooker(11), Fan2Dibé(60), Fan2Bzezbeth(630), Fan2Liv(665), Fan2Heisen(683)
+    ids:[11,60,630,665,683],
+    color:'#00d4ff',label:'Alliés'
+  },
+  rouge:{
+    // Pikachu Team(670), Pingouins Retraités(2), Dura Lex Sed Lex(111),
+    // Dracaufeu Team(325), Manchots retraités(125), Lex sed Lex Dura(328), Ronflex Team(624)
+    ids:[670,2,111,325,125,328,624],
+    color:'#ff3d3d',label:'Rouge'
+  }
+};
+
+/* ── Couleurs types temples ── */
+const TYPE_COLORS={
+  'OFF T':   {css:'yellow',hex:'#f5c842'},
+  'OFF NAV': {css:'red',   hex:'#ff5555'},
+  'PROD T':  {css:'green', hex:'#44cc66'},
+  'PROD NAV':{css:'blue',  hex:'#4488ff'},
+  'Portail': {css:'white', hex:'#dddddd'},
+  'DEF':     {css:'black', hex:'#888888'},
+};
+const TYPE_LABELS={
+  'OFF T':'Offensif Terrestre','OFF NAV':'Offensif Naval',
+  'PROD T':'Production / Coût','PROD NAV':'Naval production',
+  'Portail':'Portail Olympus','DEF':'Défense',
+};
+
+/* Mapping types bruts Excel → catégories */
+const TYPE_MAP={
+  '10% chass':'OFF T','10% cava':'OFF T','10% chars':'OFF T','10% cerberes':'OFF T',
+  '10% frondeurs':'OFF T','6% centaures':'OFF T','8% hop':'OFF T','8% spartes':'OFF T',
+  '8% blanche':'OFF T','8% cont':'OFF T','8% arme de jet':'OFF T','5% mythiques':'OFF T',
+  '8% griffons':'OFF T','8% Erinyes':'OFF T','6% non-um':'OFF T','8% bibi':'OFF T',
+  '10% sacrifice':'OFF T','3% force hero':'OFF T',
+  'OFF NAV':'OFF NAV','8% bf':'OFF NAV','8% trieres':'OFF NAV','8% sirenes':'OFF NAV',
+  '8% meduses':'OFF NAV','5% nav':'OFF NAV',
+  '10% ressources':'PROD T','20% ressources':'PROD T','PROD T':'PROD T',
+  '10% festi':'PROD T','120 Mariage':'PROD T','6% cout ter':'PROD T',
+  '4.5% duree ter':'PROD T','15% adm':'PROD T','15% hop':'PROD T',
+  '2% all':'PROD T','3% all':'PROD T',
+  '10% cout nav':'PROD T','6% cout nav':'PROD T','4.5% duree nav':'PROD T',
+  'Portail':'Portail',
+};
+
+const palette=['#00ffff','#ff9900','#00ff88','#ff44ff','#ffee00','#00bfff',
+               '#ff6688','#88ff00','#ff6600','#20e5cc'];
 let palIdx=0,cityRadius=2,minR=2,maxR=8;
 const visA={},colA={},visP={},colP={};
 
-/* DOM refs */
+/* ── DOM ── */
 const mapWrapper=document.getElementById('mapWrapper');
 const canvas=document.getElementById('map'),ctx=canvas.getContext('2d');
-const playerSel=document.getElementById('playerSel'),addPlayer=document.getElementById('addPlayer');
-const allySel=document.getElementById('allySel'),addAlly=document.getElementById('addAlly');
+const playerSel=document.getElementById('playerSel');
+const allySel=document.getElementById('allySel');
 const legend=document.getElementById('legend');
 const templeLegend=document.getElementById('templeLegend');
 const searchInput=document.getElementById('templeSearch');
 const tooltip=document.getElementById('tooltip');
-const chkMolky=document.getElementById('chkMolky');
 const chkAllies=document.getElementById('chkAllies');
-const chkCafe=document.getElementById('chkCafe');
+const chkRouge=document.getElementById('chkRouge');
 const chkContest=document.getElementById('chkContest');
 const chkColor=document.getElementById('chkColor');
 const chkFocus=document.getElementById('chkFocus');
 const citySize=document.getElementById('citySize');
 const cityVal=document.getElementById('cityVal');
 
-/* Slider taille villes */
+/* ── Slider ── */
 citySize.oninput=()=>{
   const pct=citySize.value/100;
   cityRadius=minR+(maxR-minR)*pct;
@@ -194,85 +432,92 @@ citySize.oninput=()=>{
 };
 cityVal.textContent=minR;
 
-/* Listes déroulantes */
+/* ── Listes ── */
 mapData.players.slice().sort((a,b)=>a.name.localeCompare(b.name,'fr'))
   .forEach(p=>playerSel.add(new Option(p.name,p.id)));
 mapData.alliances.slice().sort((a,b)=>a.name.localeCompare(b.name,'fr'))
   .forEach(a=>allySel.add(new Option(a.name,a.id)));
 
-/* Légende types temples */
-Object.entries(COLOR_BY_TYPE).forEach(([type,col])=>{
+/* ── Légende types temples ── */
+Object.entries(TYPE_COLORS).forEach(([cat,{css,hex}])=>{
   const row=document.createElement('div');
-  row.className='tplRow';
-  row.innerHTML=`<div class="tplSprite small ${col}"></div><span>${type}</span>`;
+  row.className='tpl-type-row';
+  row.innerHTML=`<div class="tpl-color-dot" style="background:${hex}"></div>
+                 <div class="tplSprite small ${css}"></div>
+                 <span>${TYPE_LABELS[cat]||cat}</span>`;
   templeLegend.append(row);
 });
 
-/* Légende alliances/joueurs */
+/* ── Légende dynamique ── */
 function addRow(id,label,color,vis,col){
   if(vis[id])return;
   vis[id]=true;col[id]=color;
-  const row=document.createElement('div');row.className='row';row.dataset.aid=id;
+  const row=document.createElement('div');row.className='leg-row';row.dataset.aid=id;
   row.innerHTML=`<input type="checkbox" checked>
                  <input type="color" value="${color}">
-                 ${label}`;
+                 <span class="leg-name" title="${label}">${label}</span>`;
   const [cb,cp]=row.querySelectorAll('input');
   cb.onchange=()=>{vis[id]=cb.checked;draw();};
   cp.oninput =()=>{col[id]=cp.value;draw();};
   legend.append(row);
 }
 function removeRow(id,vis){
-  const row=legend.querySelector(`.row[data-aid="${id}"]`);
+  const row=legend.querySelector(`.leg-row[data-aid="${id}"]`);
   if(row)legend.removeChild(row);
   delete vis[id];
 }
 
-/* Boutons + */
-addPlayer.onclick=()=>{
+/* ── Boutons + ── */
+document.getElementById('addPlayer').onclick=()=>{
   const p=mapData.players.find(x=>x.id==playerSel.value);
-  if(p) addRow(p.id,p.name,palette[palIdx++%palette.length],visP,colP),draw();
+  if(p){addRow(p.id,p.name,palette[palIdx++%palette.length],visP,colP);draw();}
 };
-addAlly.onclick=()=>{
+document.getElementById('addAlly').onclick=()=>{
   const a=mapData.alliances.find(x=>x.id==allySel.value);
-  if(a) addRow(a.id,a.name,palette[palIdx++%palette.length],visA,colA),draw();
+  if(a){addRow(a.id,a.name,palette[palIdx++%palette.length],visA,colA);draw();}
 };
 
-/* Groupes fixes */
+/* ── Groupes ── */
 function toggleGroup(box,g){
   g.ids.forEach(id=>{
-    box.checked ? addRow(id,mapData.alliances.find(a=>a.id==id)?.name||`Alliance ${id}`,
-                         g.color,visA,colA)
-                : removeRow(id,visA);
+    if(box.checked){
+      const name=mapData.alliances.find(a=>a.id==id)?.name||`Alliance ${id}`;
+      addRow(id,name,g.color,visA,colA);
+    }else{
+      removeRow(id,visA);
+    }
   });
   draw();
 }
-chkMolky.onchange  =()=>toggleGroup(chkMolky ,GROUPS.molky );
-chkAllies.onchange =()=>toggleGroup(chkAllies,GROUPS.allies);
-chkCafe.onchange   =()=>toggleGroup(chkCafe  ,GROUPS.cafe  );
+chkAllies.onchange=()=>toggleGroup(chkAllies,GROUPS.allies);
+chkRouge.onchange =()=>toggleGroup(chkRouge, GROUPS.rouge);
 [chkContest,chkColor,chkFocus].forEach(el=>el.onchange=draw);
 
-/* Recherche */
+/* ── Recherche ── */
 searchInput.addEventListener('input',applyHighlight);
 function applyHighlight(){
   const term=searchInput.value.trim().toLowerCase();
   document.querySelectorAll('.templeIcon').forEach(el=>{
-    const hit = term && ( el.dataset.name.includes(term) ||
-                          el.dataset.tmpltype.includes(term) ||
-                          el.dataset.bonus.includes(term) );
+    const hit=term&&(el.dataset.name.includes(term)||
+                     el.dataset.tmpltype.includes(term)||
+                     el.dataset.bonus.includes(term));
     el.classList.toggle('match',hit);
   });
 }
 
-/* Tooltip */
-function showTip(txt,x,y){
-  tooltip.textContent=txt;
-  tooltip.style.left=`${x+12}px`;
-  tooltip.style.top =`${y+12}px`;
+/* ── Tooltip ── */
+function showTip(t,x,y){
+  const cat=TYPE_MAP[t.type]||'';
+  const col=TYPE_COLORS[cat];
+  const dot=col?`<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${col.hex};margin-right:5px;vertical-align:middle;"></span>`:'';
+  tooltip.innerHTML=`<div class="tip-name">${t.name||''}</div><div class="tip-bonus">${dot}${t.bonus||''}</div>`;
+  tooltip.style.left=`${x+14}px`;
+  tooltip.style.top =`${y+14}px`;
   tooltip.style.display='block';
 }
 const hideTip=()=>tooltip.style.display='none';
 
-/* Offsets points */
+/* ── Points villes ── */
 const OFF=[[0,0],[1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,1],[1,-1],[-1,-1],
            [2,0],[-2,0],[0,2],[0,-2],[2,1],[2,-1],[-2,1],[-2,-1],[1,2],[-1,2],[1,-2]];
 const toPx=(c,o)=>(c-o)*SCALE;
@@ -280,108 +525,96 @@ function dot(t){
   const d=OFF[t.slot%20]||[0,0];
   const x=toPx(t.x+d[0],X_MIN),y=toPx(t.y+d[1],Y_MIN);
   ctx.beginPath();ctx.arc(x,y,cityRadius,0,Math.PI*2);ctx.fill();
-  ctx.lineWidth=.5;ctx.strokeStyle='#000';ctx.stroke();
+  ctx.lineWidth=.4;ctx.strokeStyle='rgba(0,0,0,0.5)';ctx.stroke();
 }
 
-/* Temples */
+/* ── Temples ── */
 function drawTemples(){
   mapWrapper.querySelectorAll('.templeIcon').forEach(e=>e.remove());
   const showContest=chkContest.checked;
   const showColor  =chkColor.checked;
   const onlyFocus  =chkFocus.checked;
 
-  mapData.temples.forEach(t=>{
-    if(t.x<X_MIN||t.x>=X_MAX||t.y<Y_MIN||t.y>=Y_MAX) return;
+  (mapData.temples||[]).forEach(t=>{
+    if(t.x<X_MIN||t.x>=X_MAX||t.y<Y_MIN||t.y>=Y_MAX)return;
     const size=String(t.size||'small').toLowerCase();
-    const isFocus = t.focus===true || String(t.focus).toLowerCase()==='true';
-    if(onlyFocus && !isFocus && size!=='big') return;
+    const isFocus=t.focus===true||String(t.focus).toLowerCase()==='true';
+    if(onlyFocus&&!isFocus&&size!=='big')return;
 
     const status=(showContest&&t.contest&&t.contest!=='none')?t.contest:'none';
-    const spriteSize = size==='big'
-      ? 'small'
-      : (size==='small' || size==='large' || size==='olympus' ? size : 'small');
+    const spriteSize=size==='big'?'small':(size==='small'||size==='large'||size==='olympus'?size:'small');
 
     const box=document.createElement('div');
     box.className=`templeIcon ${status}`.trim();
-    if(size==='big') box.classList.add('big');
+    if(size==='big')box.classList.add('big');
     box.style.left=`${toPx(t.x,X_MIN)}px`;
     box.style.top =`${toPx(t.y,Y_MIN)}px`;
     box.dataset.name    =(t.name||'').toLowerCase();
     box.dataset.tmpltype=(t.type||'').toLowerCase();
     box.dataset.bonus   =(t.bonus||'').toLowerCase();
 
-    box.onmouseenter=e=>showTip(`${t.name}\n${t.bonus}`,e.clientX,e.clientY);
-    box.onmousemove =e=>{tooltip.style.left=`${e.clientX+12}px`;
-                          tooltip.style.top =`${e.clientY+12}px`;};
+    box.onmouseenter=e=>showTip(t,e.clientX,e.clientY);
+    box.onmousemove =e=>{tooltip.style.left=`${e.clientX+14}px`;tooltip.style.top=`${e.clientY+14}px`;};
     box.onmouseleave=hideTip;
-
-    /* anneau vert si temple conquis et case « Nos temples » cochée */
-    /*const isConq = t.conquest === true || String(t.conquest).toLowerCase() === 'true';
-    if (chkFocus.checked && isConq){
-      box.classList.add('owned');
-    }*/
 
     const sp=document.createElement('div');
     sp.className=`sprite ${spriteSize}`;
-    const c=COLOR_BY_TYPE[t.type];
-    if(showColor&&c) sp.classList.add(c);
+    if(showColor){
+      const cat=TYPE_MAP[t.type];
+      const col=cat?TYPE_COLORS[cat]:null;
+      if(col)sp.classList.add(col.css);
+    }
     box.append(sp);
     mapWrapper.append(box);
   });
   applyHighlight();
 }
 
-/* Fond mer */
+/* ── Fond mer ── */
 const water=new Image();
 water.src='assets/water_base.png';
-water.onload=draw;
-water.onerror=draw;
+water.onload=draw;water.onerror=draw;
 
-/* Rendu principal */
+/* ── Rendu ── */
 function draw(){
-  ctx.fillStyle=water.complete&&water.naturalWidth?
-    ctx.createPattern(water,'repeat'):'#0a4c82';
+  ctx.fillStyle=water.complete&&water.naturalWidth?ctx.createPattern(water,'repeat'):'#0a4c82';
   ctx.fillRect(0,0,SIZE,SIZE);
 
-  /* Villes alliances */
   mapData.alliances.forEach(a=>{
     if(!visA[a.id])return;
     ctx.fillStyle=colA[a.id];
-    a.towns.forEach(t=>{
-      if(t.x>=X_MIN&&t.x<X_MAX&&t.y>=Y_MIN&&t.y<Y_MAX) dot(t);
-    });
+    a.towns.forEach(t=>{if(t.x>=X_MIN&&t.x<X_MAX&&t.y>=Y_MIN&&t.y<Y_MAX)dot(t);});
   });
-
-  /* Villes joueurs */
   mapData.players.forEach(p=>{
     if(!visP[p.id])return;
     ctx.fillStyle=colP[p.id];
-    p.towns.forEach(t=>{
-      if(t.x>=X_MIN&&t.x<X_MAX&&t.y>=Y_MIN&&t.y<Y_MAX) dot(t);
-    });
+    p.towns.forEach(t=>{if(t.x>=X_MIN&&t.x<X_MAX&&t.y>=Y_MIN&&t.y<Y_MAX)dot(t);});
   });
 
-  /* Grille mers + numéros */
-  ctx.strokeStyle='rgba(255,255,255,0.2)';ctx.lineWidth=1;
+  /* Grille */
+  ctx.strokeStyle='rgba(255,255,255,0.10)';ctx.lineWidth=1;
   for(let i=1;i<VIEW;i++){
     const p=i*CELL*SCALE;
     ctx.beginPath();ctx.moveTo(p,0);ctx.lineTo(p,SIZE);ctx.stroke();
     ctx.beginPath();ctx.moveTo(0,p);ctx.lineTo(SIZE,p);ctx.stroke();
   }
-  ctx.fillStyle='rgba(255,255,255,0.25)';
-  ctx.font='14px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+  /* Numéros mers */
+  ctx.fillStyle='rgba(255,255,255,0.15)';
+  ctx.font='bold 12px Rajdhani,sans-serif';
+  ctx.textAlign='center';ctx.textBaseline='middle';
   for(let r=0;r<VIEW;r++)
     for(let c=0;c<VIEW;c++)
       ctx.fillText(`${BX+c}${BY+r}`,(c*CELL+50)*SCALE,(r*CELL+50)*SCALE);
 
-  /* Cercle 60 % */
-  ctx.strokeStyle='rgba(0,0,0,0.7)';ctx.lineWidth=2;
+  /* Cercle 60% en or pointillé */
+  ctx.strokeStyle='rgba(201,168,76,0.35)';ctx.lineWidth=1.5;
+  ctx.setLineDash([5,4]);
   ctx.beginPath();ctx.arc(SIZE/2,SIZE/2,SIZE*0.31,0,Math.PI*2);ctx.stroke();
+  ctx.setLineDash([]);
 
   drawTemples();
 }
 
-/* Premier rendu */
 draw();
 </script>
 </body>
