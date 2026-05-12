@@ -1799,6 +1799,102 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: true
+  },
+  {
+    id: 151,
+    x: 402,
+    y: 340,
+    name: 'ZEUS',
+    type: 'GT ZEUS',
+    bonus: 'GT ZEUS',
+    size: 'big',
+    owner: 0,
+    contest: 'none',
+    focus: false
+  },
+  {
+    id: 152,
+    x: 676,
+    y: 543,
+    name: 'HERA',
+    type: 'GT HERA',
+    bonus: 'GT HERA',
+    size: 'big',
+    owner: 0,
+    contest: 'none',
+    focus: false
+  },
+  {
+    id: 153,
+    x: 543,
+    y: 321,
+    name: 'ATHENA',
+    type: 'GT ATHENA',
+    bonus: 'GT ATHENA',
+    size: 'big',
+    owner: 0,
+    contest: 'none',
+    focus: false
+  },
+  {
+    id: 154,
+    x: 596,
+    y: 658,
+    name: 'HADES',
+    type: 'GT HADES',
+    bonus: 'GT HADES',
+    size: 'big',
+    owner: 0,
+    contest: 'none',
+    focus: false
+  },
+  {
+    id: 155,
+    x: 453,
+    y: 680,
+    name: 'ARTEMIS',
+    type: 'GT ARTEMIS',
+    bonus: 'GT ARTEMIS',
+    size: 'big',
+    owner: 0,
+    contest: 'none',
+    focus: false
+  },
+  {
+    id: 156,
+    x: 657,
+    y: 403,
+    name: 'POSEIDON',
+    type: 'GT POSEIDON',
+    bonus: 'GT POSEIDON',
+    size: 'big',
+    owner: 0,
+    contest: 'none',
+    focus: false
+  },
+  {
+    id: 157,
+    x: 340,
+    y: 597,
+    name: 'ARES',
+    type: 'GT ARES',
+    bonus: 'GT ARES',
+    size: 'big',
+    owner: 0,
+    contest: 'none',
+    focus: false
+  },
+  {
+    id: 158,
+    x: 318,
+    y: 452,
+    name: 'ARTEMIS',
+    type: 'GT ARTEMIS',
+    bonus: 'GT ARTEMIS',
+    size: 'big',
+    owner: 0,
+    contest: 'none',
+    focus: false
   }
 ];
 
