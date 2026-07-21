@@ -17,7 +17,7 @@ const zlib  = require('node:zlib');
 const rl    = require('node:readline');
 const path  = require('node:path');
 
-const WORLD = 'fr180';
+const WORLD = 'fr184';
 const BASE  = `http://${WORLD}.grepolis.com/data`;
 const FILES = {
   players   : 'players.txt.gz',

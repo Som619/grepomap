@@ -20,7 +20,7 @@ const path  = require('node:path');
 /* ---- temples définis manuellement ---- */
 const { staticTemples } = require('./temples_static.js');   // créez / complétez ce fichier
 
-const WORLD = 'fr180';
+const WORLD = 'fr184';
 const BASE  = `http://${WORLD}.grepolis.com/data`;
 const FILES = {
   players   : 'players.txt.gz',
