@@ -44,8 +44,18 @@ function toJsLiteral(v, indent = 0) {
   rowsJoue.forEach(r => {
     if (r.ID === '') return;
     joueParId.set(+r.ID, {
+<<<<<<< HEAD
       typeCourt : String(r['Effet réduit'] || '').trim(), // libellé court : '2% def all', '8% bf', … (utilisé par le site pour la couleur/recherche)
       category  : String(r.Owner || '').trim(),           // catégorie brute : Def / Off terr / Off nav / Cag / Portail / Prod
+=======
+<<<<<<< Updated upstream
+      type      : String(r.Owner || '').trim(),           // catégorie : Def / Off terr / Off nav / Cag / Portail / Prod
+      typeCourt : String(r['Effet réduit'] || '').trim(), // libellé court : '2% def all', '15% archer', …
+=======
+      typeCourt : String(r['Effet réduit'] || '').trim(), // libellé court : '2% def all', '8% bf', … (utilisé par le site pour la couleur/recherche)
+      category  : String(r.Owner || '').trim(),           // catégorie brute : Def / Off terr / Off nav / Cag / Portail / Prod
+>>>>>>> Stashed changes
+>>>>>>> b3af60f97dad4162a9d6dd9441b0626cc12951d9
     });
   });
 
@@ -59,9 +69,21 @@ function toJsLiteral(v, indent = 0) {
         x         : +r.X,                  // X
         y         : +r.Y,                  // Y
         name      : r.Nom,                 // Nom
+<<<<<<< HEAD
         bonus     : r.Effet,               // Effet (description complète)
         type      : joue ? joue.typeCourt : '', // libellé court ('2% def all', …) — utilisé par le site (TYPE_MAP) pour la couleur et la recherche
         category  : joue ? joue.category  : '', // catégorie brute (Def/Off terr/Off nav/Cag/Portail/Prod), vide si non ciblé
+=======
+<<<<<<< Updated upstream
+        bonus     : r.Effet,                // Effet (description complète)
+        type      : joue ? joue.type      : '', // catégorie (Def/Off terr/Off nav/Cag/Portail/Prod), vide si non ciblé
+        typeCourt : joue ? joue.typeCourt : '', // libellé court, vide si non ciblé
+=======
+        bonus     : r.Effet,               // Effet (description complète)
+        type      : joue ? joue.typeCourt : '', // libellé court ('2% def all', …) — utilisé par le site (TYPE_MAP) pour la couleur et la recherche
+        category  : joue ? joue.category  : '', // catégorie brute (Def/Off terr/Off nav/Cag/Portail/Prod), vide si non ciblé
+>>>>>>> Stashed changes
+>>>>>>> b3af60f97dad4162a9d6dd9441b0626cc12951d9
         size      : 'small',
         owner     : 0,
         contest   : 'none',
