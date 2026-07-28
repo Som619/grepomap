@@ -374,7 +374,7 @@ const TYPE_COLORS={
   'PROD T':  {css:'green', hex:'#44cc66'},
   'PROD NAV':{css:'blue',  hex:'#4488ff'},
   'Portail': {css:'white', hex:'#dddddd'},
-  'DEF':     {css:'black', hex:'#888888'},
+  'DEF':     {css:'blue',  hex:'#4488ff'},
 };
 const TYPE_LABELS={
   'OFF T':'Offensif Terrestre','OFF NAV':'Offensif Naval',
@@ -395,7 +395,18 @@ const CATEGORY_COLORS={
   'prod':     TYPE_COLORS['PROD T'],
   'portail':  TYPE_COLORS['Portail'],
 };
+/* Couleurs spécifiques à certains libellés courts (t.type), prioritaires sur la couleur
+   générique de la catégorie — pour distinguer ces temples au sein d'"Offensif Terrestre" */
+const SPECIAL_TYPE_COLORS={
+  '10% chass'      : {css:'black', hex:'#888888'}, // concentration chasseresse + arme de jet
+  '8% arme de jet' : {css:'black', hex:'#888888'},
+};
+const SPECIAL_TYPE_LABELS={
+  '10% chass'      : 'Chasseresse / Arme de jet',
+  '8% arme de jet' : 'Chasseresse / Arme de jet',
+};
 function colorForTemple(t){
+  if (SPECIAL_TYPE_COLORS[t.type]) return SPECIAL_TYPE_COLORS[t.type];
   const cat = String(t.category||'').trim().toLowerCase();
   if (CATEGORY_COLORS[cat]) return CATEGORY_COLORS[cat];
   return TYPE_COLORS[TYPE_MAP[t.type]] || null; // repli sur l'ancien système par libellé
@@ -462,6 +473,18 @@ Object.entries(CATEGORY_COLORS).forEach(([cat,{css,hex}])=>{
   row.innerHTML=`<div class="tpl-color-dot" style="background:${hex}"></div>
                  <div class="tplSprite small ${css}"></div>
                  <span>${CATEGORY_LABELS[cat]||cat}</span>`;
+  templeLegend.append(row);
+});
+const seenSpecialLabels=new Set();
+Object.entries(SPECIAL_TYPE_COLORS).forEach(([type,{css,hex}])=>{
+  const label=SPECIAL_TYPE_LABELS[type]||type;
+  if(seenSpecialLabels.has(label))return;
+  seenSpecialLabels.add(label);
+  const row=document.createElement('div');
+  row.className='tpl-type-row';
+  row.innerHTML=`<div class="tpl-color-dot" style="background:${hex}"></div>
+                 <div class="tplSprite small ${css}"></div>
+                 <span>${label}</span>`;
   templeLegend.append(row);
 });
 
