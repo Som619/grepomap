@@ -1,4 +1,6 @@
 // build_temples.js
+// Source des données : newtemple.xlsx (liste complète des temples du monde)
+//                     + newtemplejoue.xlsx (temples ciblés/joués par l'alliance)
 const fs   = require('fs');
 const XLSX = require('xlsx');
 
@@ -27,35 +29,59 @@ function toJsLiteral(v, indent = 0) {
 /* ---------------------------------------------------------------------- */
 
 (() => {
-  /* ---- 1) lecture du classeur Excel ---------------------------------- */
-  const wb    = XLSX.readFile('temples.xlsx');
-  const sheet = wb.Sheets['Feuil1'];
-  const rows  = XLSX.utils.sheet_to_json(sheet, { defval: '' }); // déjà avec entêtes
+  /* ---- 1) lecture de la liste complète des temples -------------------- */
+  const wbAll    = XLSX.readFile('newtemple.xlsx');
+  const sheetAll = wbAll.Sheets['Listing PT'];
+  const rowsAll  = XLSX.utils.sheet_to_json(sheetAll, { defval: '' });
 
-  /* ---- 2) conversion → objets “temple” ------------------------------- */
-  const temples = rows.map(r => ({
-    id     : +r.ID,                   // A
-    x      : +r.X,                    // B
-    y      : +r.Y,                    // C
-    name   : r.Nom,                   // D
-    type   : (r.Type || '').trim(),   // G
-    bonus  : r.Effet,                 // F
-    size    : 'small',
-    owner   : 0,
-    contest : 'none',
-    focus   : String(r.Focus).toLowerCase() === 'true' // K
-  }));
+  /* ---- 2) lecture des temples ciblés / joués par l'alliance ------------ */
+  const wbJoue    = XLSX.readFile('newtemplejoue.xlsx');
+  const sheetJoue = wbJoue.Sheets['PT joués'];
+  const rowsJoue  = XLSX.utils.sheet_to_json(sheetJoue, { defval: '' });
 
-  /* ---- 3) tri (facultatif) ------------------------------------------- */
+  // index des temples joués par ID, pour fusion rapide
+  const joueParId = new Map();
+  rowsJoue.forEach(r => {
+    if (r.ID === '') return;
+    joueParId.set(+r.ID, {
+      typeCourt : String(r['Effet réduit'] || '').trim(), // libellé court : '2% def all', '8% bf', … (utilisé par le site pour la couleur/recherche)
+      category  : String(r.Owner || '').trim(),           // catégorie brute : Def / Off terr / Off nav / Cag / Portail / Prod
+    });
+  });
+
+  /* ---- 3) fusion → objets "temple" ------------------------------------ */
+  const temples = rowsAll
+    .filter(r => r.ID !== '')
+    .map(r => {
+      const joue = joueParId.get(+r.ID);
+      return {
+        id        : +r.ID,                 // ID
+        x         : +r.X,                  // X
+        y         : +r.Y,                  // Y
+        name      : r.Nom,                 // Nom
+        bonus     : r.Effet,               // Effet (description complète)
+        type      : joue ? joue.typeCourt : '', // libellé court ('2% def all', …) — utilisé par le site (TYPE_MAP) pour la couleur et la recherche
+        category  : joue ? joue.category  : '', // catégorie brute (Def/Off terr/Off nav/Cag/Portail/Prod), vide si non ciblé
+        size      : 'small',
+        owner     : 0,
+        contest   : 'none',
+        focus     : !!joue,                // true si présent dans newtemplejoue.xlsx
+      };
+    });
+
+  /* ---- 4) tri (facultatif) ------------------------------------------- */
   temples.sort((a, b) => a.id - b.id);
 
-  /* ---- 4) écriture du fichier JS ------------------------------------- */
+  const nbJoues = temples.filter(t => t.focus).length;
+
+  /* ---- 5) écriture du fichier JS ------------------------------------- */
   fs.writeFileSync(
     'temples_static.js',
     '// généré automatiquement par build_temples.js\n' +
+    '// source : newtemple.xlsx (liste complète) + newtemplejoue.xlsx (temples ciblés)\n' +
     'const staticTemples = ' + toJsLiteral(temples, 0) + ';\n\n' +
     'module.exports = { staticTemples };'
   );
 
-  console.log(`✅ temples_static.js généré (${temples.length} entrées).`);
+  console.log(`✅ temples_static.js généré (${temples.length} temples au total, dont ${nbJoues} marqués/ciblés).`);
 })();
