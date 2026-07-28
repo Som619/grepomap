@@ -8,7 +8,11 @@ const staticTemples = [
     name: 'Philippopolis',
     bonus: 'Augmente la production de bois, de pierre et d\'argent de 10%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -21,7 +25,11 @@ const staticTemples = [
     name: 'Juktas',
     bonus: 'Augmente la puissance offensive de Sirenes de 8%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -34,7 +42,11 @@ const staticTemples = [
     name: 'Argos',
     bonus: 'Portail vers Olympus',
     type: 'Portail',
+<<<<<<< Updated upstream
     typeCourt: 'Portail',
+=======
+    category: 'Portail',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -47,7 +59,11 @@ const staticTemples = [
     name: 'Menelaion',
     bonus: 'Reduire tous les couts de recrutement d\'unites navales de 6%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -60,7 +76,11 @@ const staticTemples = [
     name: 'Modon',
     bonus: 'Force heroique augmente l\'attaque de toutes les unites de 3%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -73,7 +93,11 @@ const staticTemples = [
     name: 'Asine',
     bonus: 'Augmente la valeur defensive des Cerberes de 10%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -85,8 +109,13 @@ const staticTemples = [
     y: 455,
     name: 'Lampsaque',
     bonus: 'Augmente la valeur offensive de toutes les unites terrestres non mythiques de 6%',
+<<<<<<< Updated upstream
     type: 'Off terr',
     typeCourt: '6% non-um',
+=======
+    type: '6% non-um',
+    category: 'Off terr',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -99,7 +128,11 @@ const staticTemples = [
     name: 'Kos',
     bonus: 'Augmente la valeur offensive de toutes les unites de 3%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -111,8 +144,13 @@ const staticTemples = [
     y: 483,
     name: 'Cnidus',
     bonus: 'Augmente la valeur defensive des Biremes de 8%',
+<<<<<<< Updated upstream
     type: 'Cag',
     typeCourt: '8% bibi',
+=======
+    type: '8% bibi',
+    category: 'Cag',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -125,7 +163,11 @@ const staticTemples = [
     name: 'Amnisos',
     bonus: 'Portail vers Olympus',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -138,7 +180,11 @@ const staticTemples = [
     name: 'Bouthroton',
     bonus: 'Reduire tous les couts de recrutement d\'unites navales de 6%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -151,7 +197,11 @@ const staticTemples = [
     name: 'Rhypes',
     bonus: 'Portail vers Olympus',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -164,7 +214,11 @@ const staticTemples = [
     name: 'Hierapetra',
     bonus: 'Augmente la valeur defensive des Archers de 15%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -176,8 +230,13 @@ const staticTemples = [
     y: 570,
     name: 'Laus',
     bonus: 'Augmente la valeur defensive des Archers de 15%',
+<<<<<<< Updated upstream
     type: 'Def',
     typeCourt: '15% archer',
+=======
+    type: '15% archer',
+    category: 'Def',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -190,7 +249,11 @@ const staticTemples = [
     name: 'Massalia',
     bonus: 'Augmente les valeurs offensive et defensive de Chars de 10%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -203,7 +266,11 @@ const staticTemples = [
     name: 'Scione',
     bonus: 'Augmente toutes les valeurs offensives des armes Blanche de 8%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -216,7 +283,11 @@ const staticTemples = [
     name: 'Philippi',
     bonus: 'Augmente la production de bois, de pierre et d\'argent de 20%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -229,7 +300,11 @@ const staticTemples = [
     name: 'Areopoli',
     bonus: 'Augmente les valeurs offensive et defensive de Chars de 10%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -242,7 +317,11 @@ const staticTemples = [
     name: 'Thyria',
     bonus: 'Reduire tous les couts de recrutement d\'unites navales de 6%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -255,7 +334,11 @@ const staticTemples = [
     name: 'Orestias',
     bonus: 'Portail vers Olympus',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -268,7 +351,11 @@ const staticTemples = [
     name: 'Opus',
     bonus: 'Augmente la valeur offensive de toutes les unites de 3%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -281,7 +368,11 @@ const staticTemples = [
     name: 'Karyes',
     bonus: 'Portail vers Olympus',
     type: 'Portail',
+<<<<<<< Updated upstream
     typeCourt: 'Portail',
+=======
+    category: 'Portail',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -294,7 +385,11 @@ const staticTemples = [
     name: 'Nysa',
     bonus: 'Portail vers Olympus',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -307,7 +402,11 @@ const staticTemples = [
     name: 'Cythera',
     bonus: 'Portail vers Olympus',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -319,8 +418,13 @@ const staticTemples = [
     y: 599,
     name: 'Assus',
     bonus: 'Augmente la puissance offensive de Cavaliers de 10%',
+<<<<<<< Updated upstream
     type: 'Off terr',
     typeCourt: '10% cava',
+=======
+    type: '10% cava',
+    category: 'Off terr',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -333,7 +437,11 @@ const staticTemples = [
     name: 'Aspendos',
     bonus: 'Retour des Enfers rend 15% d\'unites en plus',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -345,8 +453,13 @@ const staticTemples = [
     y: 598,
     name: 'Ephyra',
     bonus: 'Augmente la valeur offensive de toutes les unites terrestres non mythiques de 8%',
+<<<<<<< Updated upstream
     type: 'Off terr',
     typeCourt: '8% non-um',
+=======
+    type: '8% non-um',
+    category: 'Off terr',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -359,7 +472,11 @@ const staticTemples = [
     name: 'Chamaizi',
     bonus: 'Augmente la valeur defensive de toutes les unites de 2%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -372,7 +489,11 @@ const staticTemples = [
     name: 'Marathon',
     bonus: 'Portail vers Olympus',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -385,7 +506,11 @@ const staticTemples = [
     name: 'Hemeroskopeion',
     bonus: 'Portail vers Olympus',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -397,8 +522,13 @@ const staticTemples = [
     y: 609,
     name: 'Masis',
     bonus: 'Augmente la valeur offensive de toutes les unites terrestres non mythiques de 6%',
+<<<<<<< Updated upstream
     type: 'Off terr',
     typeCourt: '6% non-um',
+=======
+    type: '6% non-um',
+    category: 'Off terr',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -410,8 +540,13 @@ const staticTemples = [
     y: 494,
     name: 'Helorus',
     bonus: 'Augmente la valeur defensive des Biremes de 8%',
+<<<<<<< Updated upstream
     type: 'Cag',
     typeCourt: '8% bibi',
+=======
+    type: '8% bibi',
+    category: 'Cag',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -423,8 +558,13 @@ const staticTemples = [
     y: 515,
     name: 'Anthedon',
     bonus: 'Augmente la valeur offensive de toutes les unites navales de 5%',
+<<<<<<< Updated upstream
     type: 'Off nav',
     typeCourt: '5% nav',
+=======
+    type: '5% nav',
+    category: 'Off nav',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -437,7 +577,11 @@ const staticTemples = [
     name: 'Agde',
     bonus: 'Augmente l\'effet de l\'appel de la mer de 15%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -449,8 +593,13 @@ const staticTemples = [
     y: 459,
     name: 'Methumna',
     bonus: 'Augmente le bonus de concentration de la chasseresse de 10% supplementaires',
+<<<<<<< Updated upstream
     type: 'Off nav',
     typeCourt: '10% chass',
+=======
+    type: '10% chass',
+    category: 'Off nav',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -463,7 +612,11 @@ const staticTemples = [
     name: 'Colosse',
     bonus: 'Reduit tous les couts de recrutement d\'unites terrestres de 6%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -476,7 +629,11 @@ const staticTemples = [
     name: 'Knossos',
     bonus: 'Augmente les valeurs offensive et defensive de Centaures de 6%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -489,7 +646,11 @@ const staticTemples = [
     name: 'Larissa',
     bonus: 'Avec le Festival Caritatif, le cout de la Marche Triomphale est encore reduit de 10%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -502,7 +663,11 @@ const staticTemples = [
     name: 'Nicopolis',
     bonus: 'Augmente la valeur offensive de toutes les unites de 3%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -515,7 +680,11 @@ const staticTemples = [
     name: 'Apollonie',
     bonus: 'Augmente la production de bois, de pierre et d\'argent de 10%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -528,7 +697,11 @@ const staticTemples = [
     name: 'Percote',
     bonus: 'Augmente les valeurs offensive et defensive de Centaures de 6%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -541,7 +714,11 @@ const staticTemples = [
     name: 'Mallia',
     bonus: 'Reduit toutes les durees de recrutement d\'unites terrestres de 4.5%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -553,8 +730,13 @@ const staticTemples = [
     y: 642,
     name: 'Lato',
     bonus: 'Augmente la valeur offensive de toutes les unites terrestres non mythiques de 8%',
+<<<<<<< Updated upstream
     type: 'Off terr',
     typeCourt: '8% non-um',
+=======
+    type: '8% non-um',
+    category: 'Off terr',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -566,8 +748,13 @@ const staticTemples = [
     y: 631,
     name: 'Pseira',
     bonus: 'Reduit tous les couts de recrutement d\'unites terrestres de 10%',
+<<<<<<< Updated upstream
     type: 'Prod',
     typeCourt: '10% cout ter',
+=======
+    type: '10% cout ter',
+    category: 'Prod',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -580,7 +767,11 @@ const staticTemples = [
     name: 'Thassos',
     bonus: 'Reduire tous les couts de recrutement d\'unites navales de 6%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -593,7 +784,11 @@ const staticTemples = [
     name: 'Scyllaeum',
     bonus: 'Augmente les valeurs offensive et defensive de Chars de 10%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -605,8 +800,13 @@ const staticTemples = [
     y: 582,
     name: 'Siteia',
     bonus: 'Augmente la puissance offensive de Griffons de 8%',
+<<<<<<< Updated upstream
     type: 'Off terr',
     typeCourt: '8% griffons',
+=======
+    type: '8% griffons',
+    category: 'Off terr',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -619,7 +819,11 @@ const staticTemples = [
     name: 'Dicaearchia',
     bonus: 'Augmente la valeur offensive de toutes les unites de 3%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -632,7 +836,11 @@ const staticTemples = [
     name: 'Lilaea',
     bonus: 'Portail vers Olympus',
     type: 'Portail',
+<<<<<<< Updated upstream
     typeCourt: 'Portail',
+=======
+    category: 'Portail',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -645,7 +853,11 @@ const staticTemples = [
     name: 'Nicaea',
     bonus: 'Portail vers Olympus',
     type: 'Portail',
+<<<<<<< Updated upstream
     typeCourt: 'Portail',
+=======
+    category: 'Portail',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -658,7 +870,11 @@ const staticTemples = [
     name: 'Khrisafa',
     bonus: 'Augmente la production de bois, de pierre et d\'argent de 10%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -671,7 +887,11 @@ const staticTemples = [
     name: 'Lissus',
     bonus: 'Reduit toutes les durees de recrutement d\'unites terrestres de 4.5%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -683,8 +903,13 @@ const staticTemples = [
     y: 339,
     name: 'Parium',
     bonus: 'Augmente la puissance offensive de Bateaux-feux de 8%',
+<<<<<<< Updated upstream
     type: 'Off nav',
     typeCourt: '8% bf',
+=======
+    type: '8% bf',
+    category: 'Off nav',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -697,7 +922,11 @@ const staticTemples = [
     name: 'Dodone',
     bonus: 'Augmente la production de bois, de pierre et d\'argent de 10%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -710,7 +939,11 @@ const staticTemples = [
     name: 'Aenus',
     bonus: 'Augmente la puissance offensive de Frondeurs de 10%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -723,7 +956,11 @@ const staticTemples = [
     name: 'Amphipolis',
     bonus: 'Reduit tous les couts de recrutement d\'unites terrestres de 6%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -735,8 +972,13 @@ const staticTemples = [
     y: 345,
     name: 'Akrillai',
     bonus: 'Augmente la puissance offensive de Griffons de 8%',
+<<<<<<< Updated upstream
     type: 'Off terr',
     typeCourt: '8% griffons',
+=======
+    type: '8% griffons',
+    category: 'Off terr',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -748,8 +990,13 @@ const staticTemples = [
     y: 431,
     name: 'Olympie',
     bonus: 'Augmente la puissance offensive de Griffons de 8%',
+<<<<<<< Updated upstream
     type: 'Off terr',
     typeCourt: '8% griffons',
+=======
+    type: '8% griffons',
+    category: 'Off terr',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -762,7 +1009,11 @@ const staticTemples = [
     name: 'Nichoria',
     bonus: 'Avec le Festival Caritatif, le cout de la Marche Triomphale est encore reduit de 10%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -774,8 +1025,13 @@ const staticTemples = [
     y: 543,
     name: 'Didyma',
     bonus: 'Augmente la valeur defensive de toutes les unites de 2%',
+<<<<<<< Updated upstream
     type: 'Def',
     typeCourt: '2% def all',
+=======
+    type: '2% def all',
+    category: 'Def',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -788,7 +1044,11 @@ const staticTemples = [
     name: 'Phaselis',
     bonus: 'La generation de fureur avec le sacrifice d\'Ares est augmentee de 15%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -800,8 +1060,13 @@ const staticTemples = [
     y: 512,
     name: 'Pharsale',
     bonus: 'Augmente la valeur defensive de toutes les unites de 2%',
+<<<<<<< Updated upstream
     type: 'Def',
     typeCourt: '2% def all',
+=======
+    type: '2% def all',
+    category: 'Def',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -814,7 +1079,11 @@ const staticTemples = [
     name: 'Mouriatadha',
     bonus: 'Reduire tous les couts de recrutement bireme de 10%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -827,7 +1096,11 @@ const staticTemples = [
     name: 'Therma',
     bonus: 'Portail vers Olympus',
     type: 'Portail',
+<<<<<<< Updated upstream
     typeCourt: 'Portail',
+=======
+    category: 'Portail',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -840,7 +1113,11 @@ const staticTemples = [
     name: 'Myonia',
     bonus: 'Augmente la production de bois, de pierre et d\'argent de 10%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -852,8 +1129,13 @@ const staticTemples = [
     y: 678,
     name: 'Gournia',
     bonus: 'Augmente la valeur defensive de toutes les unites de 2%',
+<<<<<<< Updated upstream
     type: 'Def',
     typeCourt: '2% def all',
+=======
+    type: '2% def all',
+    category: 'Def',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -865,8 +1147,13 @@ const staticTemples = [
     y: 544,
     name: 'Adramyttium',
     bonus: 'Reduire tous les couts de recrutement d\'unites navales de 6%',
+<<<<<<< Updated upstream
     type: 'Prod',
     typeCourt: '6% cout nav',
+=======
+    type: '6% cout nav',
+    category: 'Prod',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -879,7 +1166,11 @@ const staticTemples = [
     name: 'Itanos',
     bonus: 'Portail vers Olympus',
     type: 'Portail',
+<<<<<<< Updated upstream
     typeCourt: 'Portail',
+=======
+    category: 'Portail',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -891,8 +1182,13 @@ const staticTemples = [
     y: 315,
     name: 'Mycenes',
     bonus: 'Augmente toutes les valeurs offensives des armes Contondant de 8%',
+<<<<<<< Updated upstream
     type: 'Off terr',
     typeCourt: '8% cont',
+=======
+    type: '8% cont',
+    category: 'Off terr',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -904,8 +1200,13 @@ const staticTemples = [
     y: 486,
     name: 'Rizinia',
     bonus: 'Augmente la puissance offensive de Bateaux-feux de 8%',
+<<<<<<< Updated upstream
     type: 'Off nav',
     typeCourt: '8% bf',
+=======
+    type: '8% bf',
+    category: 'Off nav',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -918,7 +1219,11 @@ const staticTemples = [
     name: 'Gela',
     bonus: 'Reduire toutes les durees de recrutement d\'unites navales de 4.5%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -930,8 +1235,13 @@ const staticTemples = [
     y: 696,
     name: 'Olous',
     bonus: 'Reduire tous les couts de recrutement d\'unites navales de 6%',
+<<<<<<< Updated upstream
     type: 'Prod',
     typeCourt: '6% cout nav',
+=======
+    type: '6% cout nav',
+    category: 'Prod',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -944,7 +1254,11 @@ const staticTemples = [
     name: 'Mulai',
     bonus: 'Augmente la production de bois, de pierre et d\'argent de 10%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -956,8 +1270,13 @@ const staticTemples = [
     y: 365,
     name: 'Iasos',
     bonus: 'Augmente la valeur defensive des Combattants a l\'epee de 15%',
+<<<<<<< Updated upstream
     type: 'Def',
     typeCourt: '15% CE',
+=======
+    type: '15% CE',
+    category: 'Def',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -970,7 +1289,11 @@ const staticTemples = [
     name: 'Kamares',
     bonus: 'La generation de fureur avec le sacrifice d\'Ares est augmentee de 15%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -982,8 +1305,13 @@ const staticTemples = [
     y: 564,
     name: 'Tragurion',
     bonus: 'Augmente le bonus de concentration de la chasseresse de 10% supplementaires',
+<<<<<<< Updated upstream
     type: 'Off nav',
     typeCourt: '10% chass',
+=======
+    type: '10% chass',
+    category: 'Off nav',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -996,7 +1324,11 @@ const staticTemples = [
     name: 'Helike',
     bonus: 'Augmente la production de bois, de pierre et d\'argent de 10%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1008,8 +1340,13 @@ const staticTemples = [
     y: 449,
     name: 'Kallithea',
     bonus: 'Augmente la valeur defensive de toutes les unites de 2%',
+<<<<<<< Updated upstream
     type: 'Def',
     typeCourt: '2% def all',
+=======
+    type: '2% def all',
+    category: 'Def',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1021,8 +1358,13 @@ const staticTemples = [
     y: 682,
     name: 'Artemita',
     bonus: 'Reduire tous les couts de recrutement d\'unites navales de 6%',
+<<<<<<< Updated upstream
     type: 'Prod',
     typeCourt: '6% cout nav',
+=======
+    type: '6% cout nav',
+    category: 'Prod',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1035,7 +1377,11 @@ const staticTemples = [
     name: 'Nagidos',
     bonus: 'Augmente la puissance offensive de Erinyes de 8%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1048,7 +1394,11 @@ const staticTemples = [
     name: 'Alinda',
     bonus: 'Augmente la production de bois, de pierre et d\'argent de 10%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1060,8 +1410,13 @@ const staticTemples = [
     y: 684,
     name: 'Thebai',
     bonus: 'Augmente toutes les valeurs offensives des armes De jet de 8%',
+<<<<<<< Updated upstream
     type: '',
     typeCourt: '8% arme de jet',
+=======
+    type: '8% arme de jet',
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1074,7 +1429,11 @@ const staticTemples = [
     name: 'Doriskos',
     bonus: 'Augmente la puissance offensive de Trieres de 8%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1086,8 +1445,13 @@ const staticTemples = [
     y: 307,
     name: 'Actium',
     bonus: 'Augmente la valeur defensive des Combattants a l\'epee de 15%',
+<<<<<<< Updated upstream
     type: 'Def',
     typeCourt: '15% CE',
+=======
+    type: '15% CE',
+    category: 'Def',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1100,7 +1464,11 @@ const staticTemples = [
     name: 'Sklavokampos',
     bonus: 'Portail vers Olympus',
     type: 'Portail',
+<<<<<<< Updated upstream
     typeCourt: 'Portail',
+=======
+    category: 'Portail',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1112,8 +1480,13 @@ const staticTemples = [
     y: 338,
     name: 'Pteleum',
     bonus: 'Augmente la valeur defensive des Combattants a l\'epee de 15%',
+<<<<<<< Updated upstream
     type: 'Def',
     typeCourt: '15% CE',
+=======
+    type: '15% CE',
+    category: 'Def',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1126,7 +1499,11 @@ const staticTemples = [
     name: 'Alalia',
     bonus: 'Augmente la valeur offensive de toutes les unites de 3%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1139,7 +1516,11 @@ const staticTemples = [
     name: 'Kannia',
     bonus: 'Portail vers Olympus',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1152,7 +1533,11 @@ const staticTemples = [
     name: 'Chalcis',
     bonus: 'Augmente la production de bois, de pierre et d\'argent de 10%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1164,8 +1549,13 @@ const staticTemples = [
     y: 396,
     name: 'Ialysos',
     bonus: 'Portail vers Olympus',
+<<<<<<< Updated upstream
     type: 'Cag',
     typeCourt: 'Portail',
+=======
+    type: 'Portail',
+    category: 'Cag',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1177,8 +1567,13 @@ const staticTemples = [
     y: 614,
     name: 'Myndus',
     bonus: 'Augmente la valeur defensive des Hoplites de 15%',
+<<<<<<< Updated upstream
     type: 'Def',
     typeCourt: '15% hop',
+=======
+    type: '15% hop',
+    category: 'Def',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1191,7 +1586,11 @@ const staticTemples = [
     name: 'Trezene',
     bonus: 'Portail vers Olympus',
     type: 'Portail',
+<<<<<<< Updated upstream
     typeCourt: 'Portail',
+=======
+    category: 'Portail',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1204,7 +1603,11 @@ const staticTemples = [
     name: 'Cebrene',
     bonus: 'Augmente la production de bois, de pierre et d\'argent de 10%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1216,8 +1619,13 @@ const staticTemples = [
     y: 642,
     name: 'Kasmenai',
     bonus: 'Augmente la valeur offensive de toutes les unites de 3%',
+<<<<<<< Updated upstream
     type: 'Off nav',
     typeCourt: '3% off all',
+=======
+    type: '3% off all',
+    category: 'Off nav',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1230,7 +1638,11 @@ const staticTemples = [
     name: 'Oricos',
     bonus: 'Augmente la production de bois, de pierre et d\'argent de 10%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1243,7 +1655,11 @@ const staticTemples = [
     name: 'Amphicaea',
     bonus: 'Avec le Festival Caritatif, le cout de la Marche Triomphale est encore reduit de 10%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1255,8 +1671,13 @@ const staticTemples = [
     y: 327,
     name: 'Cynossema',
     bonus: 'Augmente la puissance offensive de Cavaliers de 10%',
+<<<<<<< Updated upstream
     type: 'Off terr',
     typeCourt: '10% cava',
+=======
+    type: '10% cava',
+    category: 'Off terr',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1269,7 +1690,11 @@ const staticTemples = [
     name: 'Lamia',
     bonus: 'Augmente les valeurs offensive et defensive de Centaures de 6%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1281,8 +1706,13 @@ const staticTemples = [
     y: 707,
     name: 'Lessa',
     bonus: 'Reduit tous les couts de recrutement d\'unites terrestres de 6%',
+<<<<<<< Updated upstream
     type: 'Prod',
     typeCourt: '6% cout ter',
+=======
+    type: '6% cout ter',
+    category: 'Prod',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1294,8 +1724,13 @@ const staticTemples = [
     y: 680,
     name: 'Amyclees',
     bonus: 'Augmente la valeur defensive des Archers de 15%',
+<<<<<<< Updated upstream
     type: 'Def',
     typeCourt: '15% archer',
+=======
+    type: '15% archer',
+    category: 'Def',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1308,7 +1743,11 @@ const staticTemples = [
     name: 'Kallipolis',
     bonus: 'Avec le Festival Caritatif, le cout de la Marche Triomphale est encore reduit de 10%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1321,7 +1760,11 @@ const staticTemples = [
     name: 'Taras',
     bonus: 'Reduit toutes les durees de recrutement d\'unites terrestres de 4.5%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1334,7 +1777,11 @@ const staticTemples = [
     name: 'Myre',
     bonus: 'Augmente la production de bois, de pierre et d\'argent de 10%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1347,7 +1794,11 @@ const staticTemples = [
     name: 'Akroinon',
     bonus: 'Augmente les valeurs offensive et defensive de Hydres de 6%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1360,7 +1811,11 @@ const staticTemples = [
     name: 'Troie',
     bonus: 'Portail vers Olympus',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1372,8 +1827,13 @@ const staticTemples = [
     y: 252,
     name: 'Morgantina',
     bonus: 'Augmente la puissance offensive de Griffons de 8%',
+<<<<<<< Updated upstream
     type: 'Off terr',
     typeCourt: '8% griffons',
+=======
+    type: '8% griffons',
+    category: 'Off terr',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1386,7 +1846,11 @@ const staticTemples = [
     name: 'Pavlopetri',
     bonus: 'Augmente la valeur offensive de toutes les unites de 3%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1398,8 +1862,13 @@ const staticTemples = [
     y: 572,
     name: 'Bassae',
     bonus: 'Augmente la valeur defensive des Archers de 15%',
+<<<<<<< Updated upstream
     type: 'Def',
     typeCourt: '15% archer',
+=======
+    type: '15% archer',
+    category: 'Def',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1411,8 +1880,13 @@ const staticTemples = [
     y: 576,
     name: 'Amaseia',
     bonus: 'Augmente la puissance offensive de Bateaux-feux de 8%',
+<<<<<<< Updated upstream
     type: 'Off nav',
     typeCourt: '8% bf',
+=======
+    type: '8% bf',
+    category: 'Off nav',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1425,7 +1899,11 @@ const staticTemples = [
     name: 'Heraklion',
     bonus: 'Reduit tous les couts de recrutement d\'unites terrestres de 6%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1438,7 +1916,11 @@ const staticTemples = [
     name: 'Kerkinitida',
     bonus: 'Portail vers Olympus',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1450,8 +1932,13 @@ const staticTemples = [
     y: 393,
     name: 'Copae',
     bonus: 'Portail vers Olympus',
+<<<<<<< Updated upstream
     type: 'Cag',
     typeCourt: 'Portail',
+=======
+    type: 'Portail',
+    category: 'Cag',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1464,7 +1951,11 @@ const staticTemples = [
     name: 'Gorgippia',
     bonus: 'Reduit toutes les durees de recrutement d\'unites terrestres de 4.5%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1476,8 +1967,13 @@ const staticTemples = [
     y: 284,
     name: 'Heraclea',
     bonus: 'Reduit tous les couts de recrutement d\'unites terrestres de 10%',
+<<<<<<< Updated upstream
     type: 'Prod',
     typeCourt: '10% cout ter',
+=======
+    type: '10% cout ter',
+    category: 'Prod',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1489,8 +1985,13 @@ const staticTemples = [
     y: 285,
     name: 'Maenace',
     bonus: 'Augmente la puissance offensive de Cavaliers de 10%',
+<<<<<<< Updated upstream
     type: 'Off terr',
     typeCourt: '10% cava',
+=======
+    type: '10% cava',
+    category: 'Off terr',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1503,7 +2004,11 @@ const staticTemples = [
     name: 'Pharae',
     bonus: 'Reduit toutes les durees de recrutement d\'unites terrestres de 4.5%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1516,7 +2021,11 @@ const staticTemples = [
     name: 'Arginuses',
     bonus: 'Portail vers Olympus',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1529,7 +2038,11 @@ const staticTemples = [
     name: 'Selinus',
     bonus: 'Augmente la production de bois, de pierre et d\'argent de 10%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1542,7 +2055,11 @@ const staticTemples = [
     name: 'Decelie',
     bonus: 'Augmente toutes les valeurs offensives des armes Blanche de 8%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1555,7 +2072,11 @@ const staticTemples = [
     name: 'Pella',
     bonus: 'Augmente toutes les valeurs offensives des armes Blanche de 8%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1568,7 +2089,11 @@ const staticTemples = [
     name: 'Kydonia',
     bonus: 'Reduit toutes les durees de recrutement d\'unites terrestres de 4.5%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1581,7 +2106,11 @@ const staticTemples = [
     name: 'Chytri',
     bonus: 'Reduit tous les couts de recrutement d\'unites terrestres de 6%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1593,8 +2122,13 @@ const staticTemples = [
     y: 276,
     name: 'Akragas',
     bonus: 'Augmente la valeur defensive des Archers de 15%',
+<<<<<<< Updated upstream
     type: 'Def',
     typeCourt: '15% archer',
+=======
+    type: '15% archer',
+    category: 'Def',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1607,7 +2141,11 @@ const staticTemples = [
     name: 'Dioscurias',
     bonus: 'Augmente la puissance offensive de Manticores de 8%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1620,7 +2158,11 @@ const staticTemples = [
     name: 'Olbia',
     bonus: 'Augmente toutes les valeurs offensives des armes Blanche de 8%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1633,7 +2175,11 @@ const staticTemples = [
     name: 'Eubea',
     bonus: 'Reduit toutes les durees de recrutement d\'unites terrestres de 4.5%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1646,7 +2192,11 @@ const staticTemples = [
     name: 'Mukenai',
     bonus: 'Augmente la valeur defensive des Archers de 15%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1658,8 +2208,13 @@ const staticTemples = [
     y: 656,
     name: 'Abydos',
     bonus: 'Reduit tous les couts de recrutement d\'unites terrestres de 10%',
+<<<<<<< Updated upstream
     type: 'Prod',
     typeCourt: '10% cout ter',
+=======
+    type: '10% cout ter',
+    category: 'Prod',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1672,7 +2227,11 @@ const staticTemples = [
     name: 'Epidamnos',
     bonus: 'Augmente la production de bois, de pierre et d\'argent de 10%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1685,7 +2244,11 @@ const staticTemples = [
     name: 'Camiros',
     bonus: 'Portail vers Olympus',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1698,7 +2261,11 @@ const staticTemples = [
     name: 'Pitane',
     bonus: 'Portail vers Olympus',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1711,7 +2278,11 @@ const staticTemples = [
     name: 'Emporion',
     bonus: 'Augmente la valeur offensive de toutes les unites de 3%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1724,7 +2295,11 @@ const staticTemples = [
     name: 'Antioche',
     bonus: 'Mariage donne 120 ressources en plus',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1737,7 +2312,11 @@ const staticTemples = [
     name: 'Antipatrea',
     bonus: 'Mariage donne 120 ressources en plus',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1750,7 +2329,11 @@ const staticTemples = [
     name: 'Tenedos',
     bonus: 'Portail vers Olympus',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1763,7 +2346,11 @@ const staticTemples = [
     name: 'Pydna',
     bonus: 'Augmente la valeur offensive de toutes les unites de 3%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1776,7 +2363,11 @@ const staticTemples = [
     name: 'Callipolis',
     bonus: 'Augmente la puissance offensive de Manticores de 8%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1788,8 +2379,13 @@ const staticTemples = [
     y: 327,
     name: 'Parthenopolis',
     bonus: 'Augmente la valeur offensive de toutes les unites navales de 5%',
+<<<<<<< Updated upstream
     type: 'Off nav',
     typeCourt: '5% nav',
+=======
+    type: '5% nav',
+    category: 'Off nav',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1802,7 +2398,11 @@ const staticTemples = [
     name: 'Amphigeneia',
     bonus: 'Portail vers Olympus',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1815,7 +2415,11 @@ const staticTemples = [
     name: 'Thebes',
     bonus: 'Augmente toutes les valeurs offensives des armes Blanche de 8%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1828,7 +2432,11 @@ const staticTemples = [
     name: 'Stratos',
     bonus: 'Portail vers Olympus',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1841,7 +2449,11 @@ const staticTemples = [
     name: 'Teos',
     bonus: 'Portail vers Olympus',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1854,7 +2466,11 @@ const staticTemples = [
     name: 'Same',
     bonus: 'Portail vers Olympus',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1866,8 +2482,13 @@ const staticTemples = [
     y: 712,
     name: 'Aegae',
     bonus: 'Augmente le bonus de concentration de la chasseresse de 10% supplementaires',
+<<<<<<< Updated upstream
     type: 'Off nav',
     typeCourt: '10% chass',
+=======
+    type: '10% chass',
+    category: 'Off nav',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1880,7 +2501,11 @@ const staticTemples = [
     name: 'Delion',
     bonus: 'Augmente la production de bois, de pierre et d\'argent de 10%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1893,7 +2518,11 @@ const staticTemples = [
     name: 'Gortyn',
     bonus: 'Augmente la valeur defensive de toutes les unites de 2%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1906,7 +2535,11 @@ const staticTemples = [
     name: 'Naxos',
     bonus: 'Portail vers Olympus',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1919,7 +2552,11 @@ const staticTemples = [
     name: 'Kelenderis',
     bonus: 'Force heroique augmente l\'attaque de toutes les unites de 3%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1932,7 +2569,11 @@ const staticTemples = [
     name: 'Delos',
     bonus: 'Portail vers Olympus',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
@@ -1945,7 +2586,11 @@ const staticTemples = [
     name: 'Pharos',
     bonus: 'Reduire tous les couts de recrutement d\'unites navales de 6%',
     type: '',
+<<<<<<< Updated upstream
     typeCourt: '',
+=======
+    category: '',
+>>>>>>> Stashed changes
     size: 'small',
     owner: 0,
     contest: 'none',
