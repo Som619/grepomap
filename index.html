@@ -2,11 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<<<<<<< Updated upstream
-<title>Carte – fr180</title>
-=======
 <title>Carte – fr184</title>
->>>>>>> Stashed changes
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Rajdhani:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 /* ══════════════════════════════════════════════
@@ -276,11 +272,7 @@ canvas{display:block;}
 
 <!-- ══ HEADER ══ -->
 <div id="header">
-<<<<<<< Updated upstream
-  <h1>GREPOLIS <span>· FR180</span></h1>
-=======
   <h1>GREPOLIS <span>· FR184</span></h1>
->>>>>>> Stashed changes
 
   <div class="ctrl-group">
     <span class="ctrl-label">Joueur</span>
@@ -362,19 +354,6 @@ canvas{display:block;}
 const VIEW=6,CELL=100,SIZE=800,SCALE=SIZE/(VIEW*CELL);
 const BX=2,BY=2,X_MIN=BX*CELL,Y_MIN=BY*CELL,X_MAX=X_MIN+VIEW*CELL,Y_MAX=Y_MIN+VIEW*CELL;
 
-<<<<<<< Updated upstream
-/* ── Groupes fr180 ── */
-const GROUPS={
-  allies:{
-    // Fan2Tooker(11), Fan2Dibé(60), Fan2Bzezbeth(630), Fan2Liv(665), Fan2Heisen(683)
-    ids:[11,60,630,665,683],
-    color:'#00d4ff',label:'Alliés'
-  },
-  rouge:{
-    // Pikachu Team(670), Pingouins Retraités(2), Dura Lex Sed Lex(111),
-    // Dracaufeu Team(325), Manchots retraités(125), Lex sed Lex Dura(328), Ronflex Team(624),Pingouins Solitaires(418),
-    ids:[670,2,111,325,125,328,624,418],
-=======
 /* ── Groupes (basés sur le champ "front" de mapData, calculé par nom d'alliance
       côté build — évite les ID fixes qui se périment à chaque changement de serveur) ── */
 const GROUPS={
@@ -384,7 +363,6 @@ const GROUPS={
   },
   rouge:{
     ids: mapData.alliances.filter(a=>a.front==='ennemi').map(a=>a.id),
->>>>>>> Stashed changes
     color:'#ff3d3d',label:'Rouge'
   }
 };
@@ -403,10 +381,6 @@ const TYPE_LABELS={
   'PROD T':'Production / Coût','PROD NAV':'Naval production',
   'Portail':'Portail Olympus','DEF':'Défense',
 };
-<<<<<<< Updated upstream
-
-/* Mapping types bruts Excel → catégories */
-=======
 const CATEGORY_LABELS={
   'def':'Défense','off terr':'Offensif Terrestre','off nav':'Offensif Naval',
   'prod':'Production / Coût','portail':'Portail Olympus',
@@ -428,7 +402,6 @@ function colorForTemple(t){
 }
 
 /* Mapping types bruts Excel → catégories (repli, conservé pour compatibilité) */
->>>>>>> Stashed changes
 const TYPE_MAP={
   '10% chass':'OFF T','10% cava':'OFF T','10% chars':'OFF T','10% cerberes':'OFF T',
   '10% frondeurs':'OFF T','6% centaures':'OFF T','8% hop':'OFF T','8% spartes':'OFF T',
@@ -483,20 +456,12 @@ mapData.alliances.slice().sort((a,b)=>a.name.localeCompare(b.name,'fr'))
   .forEach(a=>allySel.add(new Option(a.name,a.id)));
 
 /* ── Légende types temples ── */
-<<<<<<< Updated upstream
-Object.entries(TYPE_COLORS).forEach(([cat,{css,hex}])=>{
-=======
 Object.entries(CATEGORY_COLORS).forEach(([cat,{css,hex}])=>{
->>>>>>> Stashed changes
   const row=document.createElement('div');
   row.className='tpl-type-row';
   row.innerHTML=`<div class="tpl-color-dot" style="background:${hex}"></div>
                  <div class="tplSprite small ${css}"></div>
-<<<<<<< Updated upstream
-                 <span>${TYPE_LABELS[cat]||cat}</span>`;
-=======
                  <span>${CATEGORY_LABELS[cat]||cat}</span>`;
->>>>>>> Stashed changes
   templeLegend.append(row);
 });
 
@@ -559,12 +524,7 @@ function applyHighlight(){
 
 /* ── Tooltip ── */
 function showTip(t,x,y){
-<<<<<<< Updated upstream
-  const cat=TYPE_MAP[t.type]||'';
-  const col=TYPE_COLORS[cat];
-=======
   const col=colorForTemple(t);
->>>>>>> Stashed changes
   const dot=col?`<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${col.hex};margin-right:5px;vertical-align:middle;"></span>`:'';
   tooltip.innerHTML=`<div class="tip-name">${t.name||''}</div><div class="tip-bonus">${dot}${t.bonus||''}</div>`;
   tooltip.style.left=`${x+14}px`;
@@ -616,12 +576,7 @@ function drawTemples(){
     const sp=document.createElement('div');
     sp.className=`sprite ${spriteSize}`;
     if(showColor){
-<<<<<<< Updated upstream
-      const cat=TYPE_MAP[t.type];
-      const col=cat?TYPE_COLORS[cat]:null;
-=======
       const col=colorForTemple(t);
->>>>>>> Stashed changes
       if(col)sp.classList.add(col.css);
     }
     box.append(sp);
