@@ -309,17 +309,11 @@ canvas{display:block;}
       <div class="toggle-dot"></div>
       Temples colorés
     </label>
-    <label class="toggle hidden" id="chkFocusRow">
-      <input type="checkbox" id="chkFocus">
+    <label class="toggle" id="chkFocusRow">
+      <input type="checkbox" id="chkFocus" checked>
       <div class="toggle-dot"></div>
       Nos temples
     </label>
-    <button id="unlockFocus" type="button"
-            title="Afficher « Nos temples » (protégé par mot de passe)"
-            style="background:transparent;border:1px solid #444;color:#ccc;
-                   border-radius:6px;padding:3px 8px;cursor:pointer;font-size:13px;">
-      🔒
-    </button>
   </div>
 
   <div class="sep"></div>
@@ -454,33 +448,6 @@ const chkRouge=document.getElementById('chkRouge');
 const chkContest=document.getElementById('chkContest');
 const chkColor=document.getElementById('chkColor');
 const chkFocus=document.getElementById('chkFocus');
-
-/* ── Verrou "Nos temples" : la case est masquée tant que le bon mot de passe
-      n'a pas été saisi. On ne stocke que l'empreinte SHA-256, jamais le mot
-      de passe en clair, pour qu'il ne soit pas lisible directement dans le
-      code source. (Rappel : ceci reste une page statique, pas une vraie
-      sécurité — ça évite les manipulations accidentelles, pas un accès
-      motivé.) */
-const FOCUS_PASSWORD_HASH = '0fc106b32bc42deeef574c74f193d1d5acf943c2e69549bdd5fa372f248ed16d';
-async function sha256Hex(str){
-  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-  return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
-}
-const chkFocusRow = document.getElementById('chkFocusRow');
-const unlockFocus = document.getElementById('unlockFocus');
-unlockFocus.onclick = async () => {
-  const pwd = prompt('Mot de passe :');
-  if (pwd === null) return; // annulé
-  let hash;
-  try { hash = await sha256Hex(pwd); }
-  catch { alert("Cette page n'a pas accès au chiffrement du navigateur (contexte non sécurisé)."); return; }
-  if (hash === FOCUS_PASSWORD_HASH) {
-    chkFocusRow.classList.remove('hidden');
-    unlockFocus.remove();
-  } else {
-    alert('Mot de passe incorrect.');
-  }
-};
 const citySize=document.getElementById('citySize');
 const cityVal=document.getElementById('cityVal');
 
