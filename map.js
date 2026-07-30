@@ -40,8 +40,8 @@ const ALLIANCE_FRONTS = {
   ],
   allie: [
     'huit-neuf',
-    '. - UNSC - ',
-    'Bo Zinnc Supremacy',
+    '- UNSC -',
+    'Bo Zinnc Supremacyx',
     'Finir comme Carlos',
     'Sacré DD',
   ],
