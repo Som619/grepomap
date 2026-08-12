@@ -2,12 +2,15 @@
 /**
  * build_grepolis_mapdata.js
  * -------------------------
- * Génère mapData.js pour le monde fr180.
+ * Génère mapData.js pour le monde fr184.
  * Contenu exporté :
  *   const mapData = {
- *     alliances: [ { id, name, towns:[{x,y},…] }, … ],
- *     players  : [ { id, name, alliance_id, towns:[{x,y},…] }, … ]
+ *     alliances: [ { id, name, front, towns:[{x,y},…] }, … ],
+ *     players  : [ { id, name, alliance_id, towns:[{x,y},…] }, … ],
+ *     temples  : [ { id, x, y, name, bonus, type, ... }, … ]
  *   };
+ *
+ * front vaut 'ennemi', 'allie' ou 'neutre' selon la liste ci-dessous.
  */
 
 const http  = require('node:http');
@@ -17,7 +20,7 @@ const zlib  = require('node:zlib');
 const rl    = require('node:readline');
 const path  = require('node:path');
 
-const WORLD = 'fr180';
+const WORLD = 'fr184';
 const BASE  = `http://${WORLD}.grepolis.com/data`;
 const FILES = {
   players   : 'players.txt.gz',
@@ -25,6 +28,42 @@ const FILES = {
   towns     : 'towns.txt.gz',
 };
 const { staticTemples } = require('./temples_static.js');
+
+/* ───────────────────────── fronts d'alliances ───────────────────────── */
+const ALLIANCE_FRONTS = {
+  ennemi: [
+    'Le Harem de Tippi',
+    'antr4x fan club',
+    'Fer De Lance',
+    'BTVF',
+    'BTBF',
+  ],
+  allie: [
+    'huit-neuf',
+    '- UNSC -',
+    'Bo Zinnc Supremacyx',
+    'Finir comme Carlos',
+    'Sacré DD',
+  ],
+};
+
+// normalise un nom d'alliance (accents, casse, espaces) pour une comparaison fiable
+function canon(s) {
+  return String(s)
+    .normalize('NFD')
+    .replace(/\p{M}/gu, '')
+    .trim()
+    .toLowerCase();
+}
+
+const frontByName = new Map();
+ALLIANCE_FRONTS.ennemi.forEach(n => frontByName.set(canon(n), 'ennemi'));
+ALLIANCE_FRONTS.allie.forEach(n => frontByName.set(canon(n), 'allie'));
+
+function frontOf(name) {
+  return frontByName.get(canon(name)) || 'neutre';
+}
+/* ───────────────────────────────────────────────────────────────────── */
 
 /* ───────────────────────── helpers ───────────────────────── */
 const clean = s => s.replace(/\+/g, ' ');
@@ -58,7 +97,10 @@ function loadCsv (file, parser) {
 
 /* ───────────────────────── parsers ───────────────────────── */
 const parsePlayers   = ([id, name, aid])        => ({ id:+id, name:clean(name), alliance_id:+aid, towns:[] });
-const parseAlliances = ([id, name])             => ({ id:+id, name:clean(name), towns:[] });
+const parseAlliances = ([id, name])             => {
+  const cleanName = clean(name);
+  return { id:+id, name:cleanName, front: frontOf(cleanName), towns:[] };
+};
 const parseTowns     = ([, pid, , x, y])        => ({ player_id:+pid, x:+x, y:+y });
 
 /* ───────────────────────── main ───────────────────────── */
@@ -79,7 +121,8 @@ const parseTowns     = ([, pid, , x, y])        => ({ player_id:+pid, x:+x, y:+y
 
     const aid = p.alliance_id;
     if (!alliancesById[aid]) {
-      alliancesById[aid] = { id: aid, name: `Alliance ${aid}`, towns: [] };
+      const name = `Alliance ${aid}`;
+      alliancesById[aid] = { id: aid, name, front: frontOf(name), towns: [] };
     }
     alliancesById[aid].towns.push({ x, y });
   }
@@ -87,7 +130,7 @@ const parseTowns     = ([, pid, , x, y])        => ({ player_id:+pid, x:+x, y:+y
   const mapData = {
     alliances: Object.values(alliancesById),
     players  : players,
-    temples   : staticTemples
+    temples  : staticTemples
   };
 
   fs.writeFileSync(
@@ -95,5 +138,7 @@ const parseTowns     = ([, pid, , x, y])        => ({ player_id:+pid, x:+x, y:+y
     `// généré le ${new Date().toISOString()}\nconst mapData = ${JSON.stringify(mapData, null, 2)};`
   );
 
-  console.log(`✅ mapData.js écrit : ${mapData.alliances.length} alliances, ${mapData.players.length} joueurs.`);
+  const nbEnnemis = mapData.alliances.filter(a => a.front === 'ennemi').length;
+  const nbAllies  = mapData.alliances.filter(a => a.front === 'allie').length;
+  console.log(`✅ mapData.js écrit : ${mapData.alliances.length} alliances (${nbEnnemis} ennemies, ${nbAllies} alliées), ${mapData.players.length} joueurs.`);
 })().catch(err => { console.error(err); process.exit(1); });
