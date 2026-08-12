@@ -181,11 +181,33 @@ input[type=color]{
 }
 #mapWrapper{
   position:relative;
+  width:min(800px,100%);aspect-ratio:1/1;
   border:1px solid var(--border2);border-radius:6px;
   box-shadow:0 0 50px rgba(74,124,255,0.10), 0 0 0 1px rgba(201,168,76,0.10), inset 0 0 60px rgba(0,0,0,0.25);
   overflow:hidden;
+  touch-action:none;
+  cursor:grab;
 }
-canvas{display:block;}
+#mapWrapper.dragging{cursor:grabbing;}
+#zoomLayer{
+  position:absolute;top:0;left:0;
+  width:800px;height:800px;
+  transform-origin:0 0;
+  will-change:transform;
+}
+canvas{display:block;width:800px;height:800px;}
+#zoomControls{
+  position:absolute;right:8px;bottom:8px;z-index:10;
+  display:flex;flex-direction:column;gap:4px;
+}
+#zoomControls button{
+  width:28px;height:28px;border-radius:5px;
+  background:rgba(15,20,32,0.85);border:1px solid var(--border2);
+  color:var(--text);font-size:15px;line-height:1;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  backdrop-filter:blur(4px);transition:background .15s,border-color .15s;
+}
+#zoomControls button:hover{background:rgba(74,124,255,0.25);border-color:var(--accent);}
 #mapLoading{
   position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
   background:var(--bg2);color:var(--text-dim);font-size:14px;letter-spacing:1px;
@@ -266,6 +288,7 @@ canvas{display:block;}
   position:absolute;left:0;top:0;width:24px;height:24px;
   transform:translate(-12px,-12px);pointer-events:auto;
   animation:templeFadeIn .25s ease-out;
+  z-index:1;
 }
 @keyframes templeFadeIn{from{opacity:0;transform:translate(-12px,-12px) scale(.6);}to{opacity:1;transform:translate(-12px,-12px) scale(1);}}
 .templeIcon.big{width:48px;height:48px;transform:translate(-24px,-24px);animation:none;}
@@ -281,7 +304,7 @@ canvas{display:block;}
   content:"";position:absolute;inset:0;border:2px solid #fff;
   box-sizing:border-box;transform:translate(-1px,0px);pointer-events:none;z-index:2;
 }
-.templeIcon.owned{border-radius:50%;box-shadow:0 0 0 3px #00e676;}
+.templeIcon.owned{border-radius:50%;box-shadow:0 0 0 3px #00e676;z-index:0;}
 .templeIcon.owned .sprite{transform:translate(1px,1px);}
 .templeIcon.secondaryTarget{border-radius:50%;box-shadow:0 0 0 3px #ffd600;}
 .templeIcon.secondaryTarget .sprite{transform:translate(1px,1px);}
@@ -307,7 +330,26 @@ canvas{display:block;}
 /* Sous-catégories "Offensif Terrestre" regroupées */
 .ot-group1{filter:hue-rotate(10deg) saturate(6)brightness(1.1)}   /* Cavaliers / Contondant / Griffons */
 .ot-group2{filter:hue-rotate(150deg)saturate(6)brightness(1.1)}   /* Manticores / Armes Blanche / Chars */
-.ot-autres{filter:saturate(0.25)brightness(1.5)}                  /* reste (Erinyes, Frondeurs, Centaures, Hydres, non mythiques, Force héroïque, générique) */
+.ot-autres{filter:hue-rotate(320deg)saturate(6)brightness(1.05)}   /* reste (Erinyes, Frondeurs, Centaures, Hydres, non mythiques, Force héroïque, générique) */
+/* ══════════════════════════════════════════════
+   RESPONSIVE — placé en fin de feuille de style pour
+   primer correctement sur les règles de mise en page ci-dessus
+══════════════════════════════════════════════ */
+@media (max-width:900px){
+  #app{grid-template-columns:1fr;grid-template-rows:auto auto auto auto;}
+  #header{grid-column:1;order:1;}
+  #center{grid-column:1;grid-row:auto;order:2;padding:12px;}
+  #leftPanel{grid-column:1;grid-row:auto;order:3;max-height:260px;border-right:none;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
+  #rightPanel{grid-column:1;grid-row:auto;order:4;max-height:320px;border-left:none;border-top:1px solid var(--border);}
+  #header h1{font-size:15px;}
+  .ctrl-group{padding:4px 7px;}
+}
+@media (max-width:520px){
+  #header{padding:8px 10px;gap:10px;}
+  .sep{display:none;}
+  .toggle{font-size:12px;padding:3px 6px;}
+  .ctrl-label{display:none;}
+}
 </style>
 </head>
 <body>
@@ -357,6 +399,11 @@ canvas{display:block;}
       <div class="toggle-dot"></div>
       Nos temples
     </label>
+    <label class="toggle" id="chkHighlightRow" title="Entoure nos cibles principales d'un anneau vert, même quand tous les temples sont affichés">
+      <input type="checkbox" id="chkHighlight" checked>
+      <div class="toggle-dot"></div>
+      Surligner nos temples
+    </label>
     <label class="toggle" id="chkSecondaryRow" title="Entoure nos cibles secondaires (« Poubelle ») d'un anneau jaune">
       <input type="checkbox" id="chkSecondary" checked>
       <div class="toggle-dot"></div>
@@ -382,8 +429,15 @@ canvas{display:block;}
 <!-- ══ CENTRE ══ -->
 <div id="center">
   <div id="mapWrapper">
-    <canvas id="map" width="800" height="800"></canvas>
+    <div id="zoomLayer">
+      <canvas id="map" width="800" height="800"></canvas>
+    </div>
     <div id="mapLoading">Chargement de la carte…</div>
+    <div id="zoomControls">
+      <button id="zoomIn" type="button" title="Zoomer">＋</button>
+      <button id="zoomOut" type="button" title="Dézoomer">－</button>
+      <button id="zoomReset" type="button" title="Réinitialiser le zoom">⟲</button>
+    </div>
   </div>
 </div>
 
@@ -456,7 +510,7 @@ const CATEGORY_COLORS={
   'special':    {css:'violet', hex:'#b388ff'},
   'ot_group1':  {css:'ot-group1',  hex:'#e2a836'}, // Cavaliers / Contondant / Griffons
   'ot_group2':  {css:'ot-group2',  hex:'#36e2e2'}, // Manticores / Armes Blanche / Chars
-  'off_autres': {css:'ot-autres',  hex:'#9e9e9e'}, // reste de l'Offensif Terrestre
+  'off_autres': {css:'ot-autres',  hex:'#e91e8c'}, // reste de l'Offensif Terrestre
 };
 /* Couleurs spécifiques à certains libellés courts (t.type), prioritaires sur la couleur
    générique de la catégorie — pour distinguer ces temples au sein d'"Offensif Terrestre" */
@@ -497,6 +551,7 @@ const visA={},colA={},visP={},colP={};
 
 /* ── DOM ── */
 const mapWrapper=document.getElementById('mapWrapper');
+const zoomLayer=document.getElementById('zoomLayer');
 const canvas=document.getElementById('map'),ctx=canvas.getContext('2d');
 const playerSel=document.getElementById('playerSel');
 const allySel=document.getElementById('allySel');
@@ -509,6 +564,7 @@ const chkRouge=document.getElementById('chkRouge');
 const chkContest=document.getElementById('chkContest');
 const chkColor=document.getElementById('chkColor');
 const chkFocus=document.getElementById('chkFocus');
+const chkHighlight=document.getElementById('chkHighlight');
 const chkSecondary=document.getElementById('chkSecondary');
 const citySize=document.getElementById('citySize');
 const cityVal=document.getElementById('cityVal');
@@ -597,7 +653,7 @@ function toggleGroup(box,g){
 }
 chkAllies.onchange=()=>toggleGroup(chkAllies,GROUPS.allies);
 chkRouge.onchange =()=>toggleGroup(chkRouge, GROUPS.rouge);
-[chkContest,chkColor,chkFocus,chkSecondary].forEach(el=>el.onchange=draw);
+[chkContest,chkColor,chkFocus,chkHighlight,chkSecondary].forEach(el=>el.onchange=draw);
 
 /* ── Recherche ── */
 const clearSearchBtn=document.getElementById('clearSearch');
@@ -685,7 +741,7 @@ function dot(t){
 
 /* ── Temples ── */
 function drawTemples(){
-  mapWrapper.querySelectorAll('.templeIcon').forEach(e=>e.remove());
+  zoomLayer.querySelectorAll('.templeIcon').forEach(e=>e.remove());
   const showContest=chkContest.checked;
   const showColor  =chkColor.checked;
   const onlyOurs=chkFocus.checked;                // filtre : n'affiche que les temples de newtemplejoue.xlsx (principaux + secondaires)
@@ -706,7 +762,7 @@ function drawTemples(){
     const box=document.createElement('div');
     box.className=`templeIcon ${status}`.trim();
     if(size==='big')box.classList.add('big');
-    if(onlyOurs&&isFocus&&!isSecondary)box.classList.add('owned');
+    if(chkHighlight.checked&&isFocus&&!isSecondary)box.classList.add('owned');
     if(highlightSecondary&&isSecondary)box.classList.add('secondaryTarget');
     box.style.left=`${toPx(t.x,X_MIN)}px`;
     box.style.top =`${toPx(t.y,Y_MIN)}px`;
@@ -722,7 +778,7 @@ function drawTemples(){
     sp.className=`sprite ${spriteSize}`;
     if(showColor&&col)sp.classList.add(col.css);
     box.append(sp);
-    mapWrapper.append(box);
+    zoomLayer.append(box);
   });
   applyHighlight();
 }
@@ -810,6 +866,109 @@ function draw(){
 
   drawTemples();
 }
+
+/* ══════════════════════════════════════════════
+   ZOOM / PAN / RESPONSIVE
+══════════════════════════════════════════════ */
+let userZoom=1,panX=0,panY=0,fitScale=1;
+const ZOOM_MIN=1,ZOOM_MAX=3.5,ZOOM_STEP=0.35;
+
+function totalScale(){return fitScale*userZoom;}
+function applyTransform(){
+  zoomLayer.style.transform=`translate(${panX}px,${panY}px) scale(${totalScale()})`;
+}
+function clampPan(){
+  const s=totalScale();
+  const contentW=800*s,contentH=800*s;
+  const viewW=mapWrapper.clientWidth,viewH=mapWrapper.clientHeight;
+  if(contentW<=viewW){panX=(viewW-contentW)/2;}
+  else{panX=Math.min(0,Math.max(viewW-contentW,panX));}
+  if(contentH<=viewH){panY=(viewH-contentH)/2;}
+  else{panY=Math.min(0,Math.max(viewH-contentH,panY));}
+}
+function recomputeFitScale(){
+  if(!mapWrapper.clientWidth)return;
+  fitScale=mapWrapper.clientWidth/800;
+  clampPan();
+  applyTransform();
+}
+function setZoom(newZoom,screenX,screenY){
+  newZoom=Math.min(ZOOM_MAX,Math.max(ZOOM_MIN,newZoom));
+  const rect=mapWrapper.getBoundingClientRect();
+  const cx=screenX!==undefined?screenX-rect.left:mapWrapper.clientWidth/2;
+  const cy=screenY!==undefined?screenY-rect.top :mapWrapper.clientHeight/2;
+  const s0=totalScale();
+  const lx=(cx-panX)/s0,ly=(cy-panY)/s0;
+  const s1=fitScale*newZoom;
+  panX=cx-s1*lx;panY=cy-s1*ly;
+  userZoom=newZoom;
+  clampPan();
+  applyTransform();
+}
+window.addEventListener('resize',recomputeFitScale);
+
+/* Molette : zoom centré sur le curseur */
+mapWrapper.addEventListener('wheel',e=>{
+  e.preventDefault();
+  setZoom(userZoom+(e.deltaY<0?ZOOM_STEP:-ZOOM_STEP),e.clientX,e.clientY);
+},{passive:false});
+
+/* Glisser-déposer (souris) */
+let dragging=false,lastX=0,lastY=0;
+mapWrapper.addEventListener('mousedown',e=>{
+  dragging=true;lastX=e.clientX;lastY=e.clientY;
+  mapWrapper.classList.add('dragging');
+});
+window.addEventListener('mousemove',e=>{
+  if(!dragging)return;
+  panX+=e.clientX-lastX;panY+=e.clientY-lastY;
+  lastX=e.clientX;lastY=e.clientY;
+  clampPan();applyTransform();
+});
+window.addEventListener('mouseup',()=>{dragging=false;mapWrapper.classList.remove('dragging');});
+
+/* Tactile : glisser à un doigt, pincer pour zoomer */
+let touchMode=null,lastTouchDist=0,lastTouchMid=null;
+function touchDist(t0,t1){return Math.hypot(t1.clientX-t0.clientX,t1.clientY-t0.clientY);}
+function touchMid(t0,t1){return {x:(t0.clientX+t1.clientX)/2,y:(t0.clientY+t1.clientY)/2};}
+mapWrapper.addEventListener('touchstart',e=>{
+  if(e.touches.length===1){
+    touchMode='pan';lastX=e.touches[0].clientX;lastY=e.touches[0].clientY;
+  }else if(e.touches.length===2){
+    touchMode='pinch';
+    lastTouchDist=touchDist(e.touches[0],e.touches[1]);
+    lastTouchMid=touchMid(e.touches[0],e.touches[1]);
+  }
+},{passive:true});
+mapWrapper.addEventListener('touchmove',e=>{
+  if(touchMode==='pan'&&e.touches.length===1){
+    e.preventDefault();
+    const t=e.touches[0];
+    panX+=t.clientX-lastX;panY+=t.clientY-lastY;
+    lastX=t.clientX;lastY=t.clientY;
+    clampPan();applyTransform();
+  }else if(touchMode==='pinch'&&e.touches.length===2){
+    e.preventDefault();
+    const dist=touchDist(e.touches[0],e.touches[1]);
+    const mid=touchMid(e.touches[0],e.touches[1]);
+    const ratio=dist/(lastTouchDist||dist);
+    setZoom(userZoom*ratio,mid.x,mid.y);
+    lastTouchDist=dist;lastTouchMid=mid;
+  }
+},{passive:false});
+mapWrapper.addEventListener('touchend',()=>{touchMode=null;});
+
+/* Boutons de zoom */
+document.getElementById('zoomIn').onclick=()=>setZoom(userZoom+ZOOM_STEP);
+document.getElementById('zoomOut').onclick=()=>setZoom(userZoom-ZOOM_STEP);
+document.getElementById('zoomReset').onclick=()=>{userZoom=1;clampPan();applyTransform();};
+
+/* Double-clic : zoom rapide sur le point cliqué */
+mapWrapper.addEventListener('dblclick',e=>{
+  setZoom(userZoom>=ZOOM_MAX-0.01?1:userZoom+ZOOM_STEP*2,e.clientX,e.clientY);
+});
+
+recomputeFitScale();
 
 draw();
 </script>
