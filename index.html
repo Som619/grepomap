@@ -181,8 +181,8 @@ input[type=color]{
 }
 #mapWrapper{
   position:relative;
-  border:1px solid var(--border2);border-radius:4px;
-  box-shadow:0 0 40px rgba(74,124,255,0.07), 0 0 0 1px rgba(201,168,76,0.08);
+  border:1px solid var(--border2);border-radius:6px;
+  box-shadow:0 0 50px rgba(74,124,255,0.10), 0 0 0 1px rgba(201,168,76,0.10), inset 0 0 60px rgba(0,0,0,0.25);
   overflow:hidden;
 }
 canvas{display:block;}
@@ -352,7 +352,7 @@ canvas{display:block;}
       <div class="toggle-dot"></div>
       Temples colorés
     </label>
-    <label class="toggle" id="chkFocusRow" title="Entoure nos temples ciblés d'un anneau vert (n'affecte plus l'affichage des autres)">
+    <label class="toggle" id="chkFocusRow" title="N'affiche que les temples de newtemplejoue.xlsx (cibles principales et secondaires)">
       <input type="checkbox" id="chkFocus" checked>
       <div class="toggle-dot"></div>
       Nos temples
@@ -675,8 +675,12 @@ const toPx=(c,o)=>(c-o)*SCALE;
 function dot(t){
   const d=OFF[t.slot%20]||[0,0];
   const x=toPx(t.x+d[0],X_MIN),y=toPx(t.y+d[1],Y_MIN);
+  const col=ctx.fillStyle;
+  ctx.save();
+  ctx.shadowColor=col;ctx.shadowBlur=Math.max(3,cityRadius*1.4);
   ctx.beginPath();ctx.arc(x,y,cityRadius,0,Math.PI*2);ctx.fill();
-  ctx.lineWidth=.4;ctx.strokeStyle='rgba(0,0,0,0.5)';ctx.stroke();
+  ctx.restore();
+  ctx.lineWidth=.6;ctx.strokeStyle='rgba(0,0,0,0.55)';ctx.stroke();
 }
 
 /* ── Temples ── */
@@ -684,15 +688,16 @@ function drawTemples(){
   mapWrapper.querySelectorAll('.templeIcon').forEach(e=>e.remove());
   const showContest=chkContest.checked;
   const showColor  =chkColor.checked;
-  const highlightFocus=chkFocus.checked;         // anneau vert : cibles principales
+  const onlyOurs=chkFocus.checked;                // filtre : n'affiche que les temples de newtemplejoue.xlsx (principaux + secondaires)
   const highlightSecondary=chkSecondary.checked;  // anneau jaune : cibles secondaires ("Poubelle")
 
   (mapData.temples||[]).forEach(t=>{
     if(t.x<X_MIN||t.x>=X_MAX||t.y<Y_MIN||t.y>=Y_MAX)return;
+    const isFocus=t.focus===true||String(t.focus).toLowerCase()==='true';
+    if(onlyOurs&&!isFocus)return;
     const col=colorForTemple(t);
     if(activeCategoryFilters.size&&(!col||!activeCategoryFilters.has(col.css)))return;
     const size=String(t.size||'small').toLowerCase();
-    const isFocus=t.focus===true||String(t.focus).toLowerCase()==='true';
     const isSecondary=t.secondary===true||String(t.secondary).toLowerCase()==='true';
 
     const status=(showContest&&t.contest&&t.contest!=='none')?t.contest:'none';
@@ -701,7 +706,7 @@ function drawTemples(){
     const box=document.createElement('div');
     box.className=`templeIcon ${status}`.trim();
     if(size==='big')box.classList.add('big');
-    if(highlightFocus&&isFocus&&!isSecondary)box.classList.add('owned');
+    if(onlyOurs&&isFocus&&!isSecondary)box.classList.add('owned');
     if(highlightSecondary&&isSecondary)box.classList.add('secondaryTarget');
     box.style.left=`${toPx(t.x,X_MIN)}px`;
     box.style.top =`${toPx(t.y,Y_MIN)}px`;
@@ -738,9 +743,38 @@ water.src='assets/water_base.png';
 water.onload=firstDraw;water.onerror=firstDraw;
 
 /* ── Rendu ── */
-function draw(){
-  ctx.fillStyle=water.complete&&water.naturalWidth?ctx.createPattern(water,'repeat'):'#0a4c82';
+function drawOcean(){
+  const g=ctx.createRadialGradient(SIZE*0.5,SIZE*0.38,SIZE*0.08,SIZE*0.5,SIZE*0.5,SIZE*0.78);
+  g.addColorStop(0,'#164569');
+  g.addColorStop(0.55,'#0c2c48');
+  g.addColorStop(1,'#061627');
+  ctx.fillStyle=g;
   ctx.fillRect(0,0,SIZE,SIZE);
+
+  // légères vaguelettes diagonales pour donner de la texture sans image externe
+  ctx.save();
+  ctx.globalAlpha=0.05;
+  ctx.strokeStyle='#bcd6ff';
+  ctx.lineWidth=1;
+  for(let i=-SIZE;i<SIZE*2;i+=28){
+    ctx.beginPath();ctx.moveTo(i,0);ctx.lineTo(i+SIZE,SIZE);ctx.stroke();
+  }
+  ctx.restore();
+
+  // vignette pour donner de la profondeur
+  const vg=ctx.createRadialGradient(SIZE/2,SIZE/2,SIZE*0.32,SIZE/2,SIZE/2,SIZE*0.74);
+  vg.addColorStop(0,'rgba(0,0,0,0)');
+  vg.addColorStop(1,'rgba(0,0,0,0.38)');
+  ctx.fillStyle=vg;
+  ctx.fillRect(0,0,SIZE,SIZE);
+}
+function draw(){
+  if(water.complete&&water.naturalWidth){
+    ctx.fillStyle=ctx.createPattern(water,'repeat');
+    ctx.fillRect(0,0,SIZE,SIZE);
+  }else{
+    drawOcean();
+  }
 
   mapData.alliances.forEach(a=>{
     if(!visA[a.id])return;
@@ -754,14 +788,14 @@ function draw(){
   });
 
   /* Grille */
-  ctx.strokeStyle='rgba(255,255,255,0.10)';ctx.lineWidth=1;
+  ctx.strokeStyle='rgba(190,215,255,0.12)';ctx.lineWidth=1;
   for(let i=1;i<VIEW;i++){
     const p=i*CELL*SCALE;
     ctx.beginPath();ctx.moveTo(p,0);ctx.lineTo(p,SIZE);ctx.stroke();
     ctx.beginPath();ctx.moveTo(0,p);ctx.lineTo(SIZE,p);ctx.stroke();
   }
   /* Numéros mers */
-  ctx.fillStyle='rgba(255,255,255,0.15)';
+  ctx.fillStyle='rgba(220,232,255,0.22)';
   ctx.font='bold 12px Rajdhani,sans-serif';
   ctx.textAlign='center';ctx.textBaseline='middle';
   for(let r=0;r<VIEW;r++)
