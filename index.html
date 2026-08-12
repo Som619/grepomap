@@ -384,6 +384,11 @@ canvas{display:block;width:800px;height:800px;}
       <div class="toggle-dot"></div>
       <span style="color:#ff3d3d">● Rouge</span>
     </label>
+    <label class="toggle">
+      <input type="checkbox" id="chkRose">
+      <div class="toggle-dot"></div>
+      <span style="color:#ff4fd8">● Rose</span>
+    </label>
     <label class="toggle hidden">
       <input type="checkbox" id="chkContest">
       <div class="toggle-dot"></div>
@@ -472,6 +477,10 @@ const GROUPS={
   rouge:{
     ids: mapData.alliances.filter(a=>a.front==='ennemi').map(a=>a.id),
     color:'#ff3d3d',label:'Rouge'
+  },
+  rose:{
+    ids: mapData.alliances.filter(a=>a.front==='ennemi_rose').map(a=>a.id),
+    color:'#ff4fd8',label:'Rose'
   }
 };
 
@@ -561,6 +570,7 @@ const searchInput=document.getElementById('templeSearch');
 const tooltip=document.getElementById('tooltip');
 const chkAllies=document.getElementById('chkAllies');
 const chkRouge=document.getElementById('chkRouge');
+const chkRose=document.getElementById('chkRose');
 const chkContest=document.getElementById('chkContest');
 const chkColor=document.getElementById('chkColor');
 const chkFocus=document.getElementById('chkFocus');
@@ -653,6 +663,7 @@ function toggleGroup(box,g){
 }
 chkAllies.onchange=()=>toggleGroup(chkAllies,GROUPS.allies);
 chkRouge.onchange =()=>toggleGroup(chkRouge, GROUPS.rouge);
+chkRose.onchange  =()=>toggleGroup(chkRose,  GROUPS.rose);
 [chkContest,chkColor,chkFocus,chkHighlight,chkSecondary].forEach(el=>el.onchange=draw);
 
 /* ── Recherche ── */

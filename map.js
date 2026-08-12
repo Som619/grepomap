@@ -34,7 +34,10 @@ const ALLIANCE_FRONTS = {
   ennemi: [
     'Le Harem de Tippi',
     'antr4x fan club',
-    'Fer De Lance',
+    'Fer De Lance', // pas mentionnée dans la réorganisation demandée — conservée ici par défaut
+    'cartruche',
+  ],
+  ennemi_rose: [
     'BTVF',
     'BTBF',
   ],
@@ -58,6 +61,7 @@ function canon(s) {
 
 const frontByName = new Map();
 ALLIANCE_FRONTS.ennemi.forEach(n => frontByName.set(canon(n), 'ennemi'));
+ALLIANCE_FRONTS.ennemi_rose.forEach(n => frontByName.set(canon(n), 'ennemi_rose'));
 ALLIANCE_FRONTS.allie.forEach(n => frontByName.set(canon(n), 'allie'));
 
 function frontOf(name) {
@@ -139,6 +143,7 @@ const parseTowns     = ([, pid, , x, y])        => ({ player_id:+pid, x:+x, y:+y
   );
 
   const nbEnnemis = mapData.alliances.filter(a => a.front === 'ennemi').length;
+  const nbRose    = mapData.alliances.filter(a => a.front === 'ennemi_rose').length;
   const nbAllies  = mapData.alliances.filter(a => a.front === 'allie').length;
-  console.log(`✅ mapData.js écrit : ${mapData.alliances.length} alliances (${nbEnnemis} ennemies, ${nbAllies} alliées), ${mapData.players.length} joueurs.`);
+  console.log(`✅ mapData.js écrit : ${mapData.alliances.length} alliances (${nbEnnemis} rouges, ${nbRose} roses, ${nbAllies} alliées), ${mapData.players.length} joueurs.`);
 })().catch(err => { console.error(err); process.exit(1); });
