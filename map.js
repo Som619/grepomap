@@ -30,43 +30,9 @@ const FILES = {
 const { staticTemples } = require('./temples_static.js');
 
 /* ───────────────────────── fronts d'alliances ───────────────────────── */
-const ALLIANCE_FRONTS = {
-  ennemi: [
-    'Le Harem de Tippi',
-    'antr4x fan club',
-    'Fer De Lance', // pas mentionnée dans la réorganisation demandée — conservée ici par défaut
-    'cartruche',
-  ],
-  ennemi_rose: [
-    'BTVF',
-    'BTBF',
-  ],
-  allie: [
-    'huit-neuf',
-    '- UNSC -',
-    'Bo Zinnc Supremacyx',
-    'Finir comme Carlos',
-    'Sacré DD',
-  ],
-};
-
-// normalise un nom d'alliance (accents, casse, espaces) pour une comparaison fiable
-function canon(s) {
-  return String(s)
-    .normalize('NFD')
-    .replace(/\p{M}/gu, '')
-    .trim()
-    .toLowerCase();
-}
-
-const frontByName = new Map();
-ALLIANCE_FRONTS.ennemi.forEach(n => frontByName.set(canon(n), 'ennemi'));
-ALLIANCE_FRONTS.ennemi_rose.forEach(n => frontByName.set(canon(n), 'ennemi_rose'));
-ALLIANCE_FRONTS.allie.forEach(n => frontByName.set(canon(n), 'allie'));
-
-function frontOf(name) {
-  return frontByName.get(canon(name)) || 'neutre';
-}
+/* Appariement par ID (et non par nom) : un renommage d'alliance n'a aucun
+   impact. Voir fronts_common.js pour la configuration. */
+const { frontOf } = require('./fronts_common.js');
 /* ───────────────────────────────────────────────────────────────────── */
 
 /* ───────────────────────── helpers ───────────────────────── */
@@ -101,10 +67,7 @@ function loadCsv (file, parser) {
 
 /* ───────────────────────── parsers ───────────────────────── */
 const parsePlayers   = ([id, name, aid])        => ({ id:+id, name:clean(name), alliance_id:+aid, towns:[] });
-const parseAlliances = ([id, name])             => {
-  const cleanName = clean(name);
-  return { id:+id, name:cleanName, front: frontOf(cleanName), towns:[] };
-};
+const parseAlliances = ([id, name])             => ({ id:+id, name:clean(name), front: frontOf(+id), towns:[] });
 const parseTowns     = ([, pid, , x, y])        => ({ player_id:+pid, x:+x, y:+y });
 
 /* ───────────────────────── main ───────────────────────── */
@@ -125,8 +88,7 @@ const parseTowns     = ([, pid, , x, y])        => ({ player_id:+pid, x:+x, y:+y
 
     const aid = p.alliance_id;
     if (!alliancesById[aid]) {
-      const name = `Alliance ${aid}`;
-      alliancesById[aid] = { id: aid, name, front: frontOf(name), towns: [] };
+      alliancesById[aid] = { id: aid, name: `Alliance ${aid}`, front: frontOf(aid), towns: [] };
     }
     alliancesById[aid].towns.push({ x, y });
   }
@@ -141,6 +103,15 @@ const parseTowns     = ([, pid, , x, y])        => ({ player_id:+pid, x:+x, y:+y
     path.join(__dirname, 'mapData.js'),
     `// généré le ${new Date().toISOString()}\nconst mapData = ${JSON.stringify(mapData, null, 2)};`
   );
+
+  /* Contrôle : un ID configuré qui n'apparaît nulle part = alliance dissoute/recréée */
+  const { ALLIANCE_FRONTS } = require('./fronts_common.js');
+  const idsPresents = new Set(mapData.alliances.map(a => a.id));
+  Object.entries(ALLIANCE_FRONTS).forEach(([front, ids]) => {
+    ids.filter(id => !idsPresents.has(Number(id))).forEach(id => {
+      console.warn(`⚠️  ID ${id} (front « ${front} ») introuvable sur le serveur — alliance dissoute ? Vérifiez avec : node find_alliance_id.js`);
+    });
+  });
 
   const nbEnnemis = mapData.alliances.filter(a => a.front === 'ennemi').length;
   const nbRose    = mapData.alliances.filter(a => a.front === 'ennemi_rose').length;

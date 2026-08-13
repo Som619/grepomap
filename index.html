@@ -107,6 +107,11 @@ button.add-btn:hover{transform:scale(1.1);box-shadow:0 0 10px var(--glow);}
 
 /* Toggles */
 .toggle-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.toggle-cluster{display:flex;flex-direction:column;gap:3px;}
+.cluster-label{
+  font-size:9px;letter-spacing:1.4px;text-transform:uppercase;
+  color:var(--text-dim);opacity:.65;padding-left:2px;font-weight:600;
+}
 .toggle{
   display:flex;align-items:center;gap:5px;
   cursor:pointer;user-select:none;
@@ -196,6 +201,14 @@ input[type=color]{
   will-change:transform;
 }
 canvas{display:block;width:800px;height:800px;}
+#statusBadge{
+  position:absolute;left:8px;top:8px;z-index:10;
+  padding:4px 9px;border-radius:5px;
+  background:rgba(15,20,32,0.82);border:1px solid var(--border2);
+  color:var(--text-dim);font-size:11px;letter-spacing:.4px;
+  backdrop-filter:blur(4px);pointer-events:none;
+}
+#statusBadge b{color:var(--gold2);font-weight:600;}
 #zoomControls{
   position:absolute;right:8px;bottom:8px;z-index:10;
   display:flex;flex-direction:column;gap:4px;
@@ -373,47 +386,56 @@ canvas{display:block;width:800px;height:800px;}
 
   <div class="sep"></div>
 
-  <div class="toggle-row">
-    <label class="toggle">
-      <input type="checkbox" id="chkAllies">
-      <div class="toggle-dot"></div>
-      <span style="color:#00d4ff">⚔ Alliés</span>
-    </label>
-    <label class="toggle">
-      <input type="checkbox" id="chkRouge">
-      <div class="toggle-dot"></div>
-      <span style="color:#ff3d3d">● Rouge</span>
-    </label>
-    <label class="toggle">
-      <input type="checkbox" id="chkRose">
-      <div class="toggle-dot"></div>
-      <span style="color:#ff4fd8">● Rose</span>
-    </label>
-    <label class="toggle hidden">
-      <input type="checkbox" id="chkContest">
-      <div class="toggle-dot"></div>
-      Contest
-    </label>
-    <label class="toggle">
-      <input type="checkbox" id="chkColor" checked>
-      <div class="toggle-dot"></div>
-      Temples colorés
-    </label>
-    <label class="toggle" id="chkFocusRow" title="N'affiche que les temples de newtemplejoue.xlsx (cibles principales et secondaires)">
-      <input type="checkbox" id="chkFocus" checked>
-      <div class="toggle-dot"></div>
-      Nos temples
-    </label>
-    <label class="toggle" id="chkHighlightRow" title="Entoure nos cibles principales d'un anneau vert, même quand tous les temples sont affichés">
-      <input type="checkbox" id="chkHighlight" checked>
-      <div class="toggle-dot"></div>
-      Surligner nos temples
-    </label>
-    <label class="toggle" id="chkSecondaryRow" title="Entoure nos cibles secondaires (« Poubelle ») d'un anneau jaune">
-      <input type="checkbox" id="chkSecondary" checked>
-      <div class="toggle-dot"></div>
-      Cibles secondaires
-    </label>
+  <div class="toggle-cluster">
+    <span class="cluster-label">Fronts</span>
+    <div class="toggle-row">
+      <label class="toggle">
+        <input type="checkbox" id="chkAllies">
+        <div class="toggle-dot"></div>
+        <span style="color:#00d4ff">⚔ Alliés</span>
+      </label>
+      <label class="toggle">
+        <input type="checkbox" id="chkRouge">
+        <div class="toggle-dot"></div>
+        <span style="color:#ff3d3d">● Rouge</span>
+      </label>
+      <label class="toggle">
+        <input type="checkbox" id="chkRose">
+        <div class="toggle-dot"></div>
+        <span style="color:#ff4fd8">● Rose</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="toggle-cluster">
+    <span class="cluster-label">Temples</span>
+    <div class="toggle-row">
+      <label class="toggle hidden">
+        <input type="checkbox" id="chkContest">
+        <div class="toggle-dot"></div>
+        Contest
+      </label>
+      <label class="toggle">
+        <input type="checkbox" id="chkColor" checked>
+        <div class="toggle-dot"></div>
+        Colorés
+      </label>
+      <label class="toggle" id="chkFocusRow" title="N'affiche que les temples de newtemplejoue.xlsx (cibles principales et secondaires)">
+        <input type="checkbox" id="chkFocus" checked>
+        <div class="toggle-dot"></div>
+        Nos temples seuls
+      </label>
+      <label class="toggle" id="chkHighlightRow" title="Entoure nos cibles principales d'un anneau vert, même quand tous les temples sont affichés">
+        <input type="checkbox" id="chkHighlight" checked>
+        <div class="toggle-dot"></div>
+        <span style="color:#00e676">◎ Surligner</span>
+      </label>
+      <label class="toggle" id="chkSecondaryRow" title="Entoure nos cibles secondaires (« Poubelle ») d'un anneau jaune">
+        <input type="checkbox" id="chkSecondary" checked>
+        <div class="toggle-dot"></div>
+        <span style="color:#ffd600">◎ Secondaires</span>
+      </label>
+    </div>
   </div>
 
   <div class="sep"></div>
@@ -438,6 +460,7 @@ canvas{display:block;width:800px;height:800px;}
       <canvas id="map" width="800" height="800"></canvas>
     </div>
     <div id="mapLoading">Chargement de la carte…</div>
+    <div id="statusBadge"></div>
     <div id="zoomControls">
       <button id="zoomIn" type="button" title="Zoomer">＋</button>
       <button id="zoomOut" type="button" title="Dézoomer">－</button>
@@ -694,6 +717,16 @@ function applyHighlight(){
   }
 }
 
+/* ── Badge d'état (nombre de temples affichés) ── */
+const statusBadge=document.getElementById('statusBadge');
+function updateStatusBadge(){
+  const shown=zoomLayer.querySelectorAll('.templeIcon').length;
+  const total=(mapData.temples||[]).length;
+  const parts=[`<b>${shown}</b>/${total} temples`];
+  if(activeCategoryFilters.size)parts.push(`${activeCategoryFilters.size} catégorie${activeCategoryFilters.size>1?'s':''}`);
+  statusBadge.innerHTML=parts.join(' · ');
+}
+
 /* ── Filtre par catégorie (clic sur la légende de droite) ── */
 const activeCategoryFilters=new Set();
 const filterHint=document.getElementById('filterHint');
@@ -792,6 +825,7 @@ function drawTemples(){
     zoomLayer.append(box);
   });
   applyHighlight();
+  updateStatusBadge();
 }
 
 /* ── Fond mer ── */
