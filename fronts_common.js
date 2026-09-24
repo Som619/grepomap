@@ -14,22 +14,35 @@
 
 const ALLIANCE_FRONTS = {
   ennemi: [            // « Rouge »
-    301,               // Le Harem de Tippi
+    2,                 // TWIX GOLD
+    471,               // TWIX GOLD PRICE
     80,                // antr4x fan club
+    301,               // Le Harem de Tippi
     81,                // CARTRUCHE
   ],
-  ennemi_rose: [       // « Rose »
-    79,                // BTBF
-    263,               // BTVF
-  ],
   allie: [             // « Alliés »
-    121,               // huit-neuf
-    118,               // - UNSC -
-    209,               // Bo Zinnc Supremacyx
     420,               // Finir comme Carlos
-    25,                // Sacré DD
+    121,               // huit-neuf
+    856,               // Bienveillance Max
+    833,               // Bim Bam Boum
+    209,               // Bo Zinnc Supremacyx
+    118,               // - UNSC -
+    173,               // Maman j'ai raté mon BC
   ],
 };
+
+/* Rôle affiché sur la carte (légende + infobulles). Facultatif. */
+const ALLIANCE_ROLES = {
+  420: 'PROD',
+  121: 'OT / Contondant',
+  856: 'BF / Jet',
+  833: 'DEF',
+  209: 'Portail',
+  118: 'Portail 2',
+};
+
+/* Notre alliance (« Z'êtes ici ») : mise en avant sur la carte. */
+const HOME_ALLIANCE = 420;   // Finir comme Carlos
 
 /* index ID → front, construit une seule fois */
 const frontById = new Map();
@@ -42,4 +55,13 @@ function frontOf(id) {
   return frontById.get(Number(id)) || 'neutre';
 }
 
-module.exports = { ALLIANCE_FRONTS, frontOf };
+/** Complète une alliance de mapData : front, rôle éventuel, et marqueur « notre alliance ». */
+function decorateAlliance(a) {
+  a.front = frontOf(a.id);
+  const role = ALLIANCE_ROLES[a.id];
+  if (role) a.role = role; else delete a.role;
+  if (Number(a.id) === HOME_ALLIANCE) a.home = true; else delete a.home;
+  return a;
+}
+
+module.exports = { ALLIANCE_FRONTS, ALLIANCE_ROLES, HOME_ALLIANCE, frontOf, decorateAlliance };

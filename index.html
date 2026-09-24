@@ -345,6 +345,74 @@ canvas{display:block;width:800px;height:800px;}
 .ot-group2{filter:hue-rotate(150deg)saturate(6)brightness(1.1)}   /* Manticores / Armes Blanche / Chars */
 .ot-autres{filter:hue-rotate(320deg)saturate(6)brightness(1.05)}   /* reste (Erinyes, Frondeurs, Centaures, Hydres, non mythiques, Force héroïque, générique) */
 /* ══════════════════════════════════════════════
+   RAFRAÎCHISSEMENT AUTO / TOAST / SÉLECTEURS
+══════════════════════════════════════════════ */
+#refreshBox{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text-dim);white-space:nowrap;}
+#refreshBox b{color:var(--text);font-weight:600;}
+#nextRefresh{opacity:.75;}
+#refreshBtn{
+  background:var(--bg3);border:1px solid var(--border2);color:var(--text);
+  width:26px;height:26px;border-radius:5px;cursor:pointer;font-size:15px;line-height:1;
+  display:flex;align-items:center;justify-content:center;transition:border-color .15s,background .15s;
+}
+#refreshBtn:hover{border-color:var(--accent);background:rgba(74,124,255,.18);}
+#refreshBtn.spin{animation:spin .8s linear infinite;pointer-events:none;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.fresh-dot{width:7px;height:7px;border-radius:50%;background:var(--text-dim);flex-shrink:0;transition:background .3s,box-shadow .3s;}
+.fresh-dot.ok   {background:#00e676;box-shadow:0 0 6px #00e676;}
+.fresh-dot.stale{background:#ffb300;box-shadow:0 0 6px #ffb300;}
+.fresh-dot.old  {background:#ff3d3d;box-shadow:0 0 6px #ff3d3d;}
+#toast{
+  position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);z-index:10000;
+  padding:8px 14px;border-radius:6px;background:rgba(15,20,32,.96);border:1px solid var(--border2);
+  color:var(--text);font-size:13px;opacity:0;pointer-events:none;
+  box-shadow:0 4px 20px rgba(0,0,0,.5);transition:opacity .25s,transform .25s;
+}
+#toast.show{opacity:1;transform:translate(-50%,0);}
+.pick-input{
+  background:var(--bg3);border:1px solid var(--border2);color:var(--text);
+  padding:3px 6px;border-radius:4px;font-family:'Rajdhani',sans-serif;font-size:13px;
+  outline:none;width:150px;transition:border-color .15s;
+}
+.pick-input:focus{border-color:var(--accent);}
+.pick-input.bad{border-color:var(--rouge);}
+.pick-input::placeholder{color:var(--text-dim);}
+.leg-count{font-size:10px;color:var(--text-dim);flex-shrink:0;min-width:18px;text-align:right;}
+.leg-row.is-player .leg-name{font-style:italic;}
+.leg-del{
+  background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:14px;line-height:1;
+  padding:0 3px;border-radius:3px;opacity:0;transition:opacity .15s,color .15s;flex-shrink:0;
+}
+.leg-row:hover .leg-del,.leg-del:focus{opacity:1;}
+.leg-del:hover{color:var(--rouge);}
+/* Légende par sections */
+.leg-sec{margin-bottom:10px;}
+.leg-sec-title{
+  display:flex;align-items:center;gap:6px;
+  font-size:9px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;
+  color:var(--sec-color,var(--text-dim));padding:2px 5px 4px;
+}
+.leg-sec-title::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,var(--sec-color,var(--border2)),transparent);opacity:.35;}
+.leg-sec-count{order:2;font-weight:600;letter-spacing:.3px;color:var(--text-dim);text-transform:none;font-size:10px;}
+.leg-sec-title::after{order:1;}
+.leg-sec[data-sec="allie"]{--sec-color:#00d4ff;}
+.leg-sec[data-sec="ennemi"]{--sec-color:#ff3d3d;}
+.leg-sec[data-sec="perso"]{--sec-color:var(--gold);}
+.leg-row{position:relative;}
+.leg-row .leg-name{display:flex;flex-direction:column;line-height:1.15;min-width:0;}
+.leg-name > span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.leg-role{font-size:10px;color:var(--text-dim);letter-spacing:.3px;font-style:normal;}
+.leg-row.is-home{background:linear-gradient(90deg,rgba(201,168,76,.16),rgba(201,168,76,.03));box-shadow:inset 2px 0 0 var(--gold2);}
+.leg-row.is-home .leg-name > span:first-child{color:var(--gold2);font-weight:600;}
+.leg-row.is-home .leg-name > span:first-child::before{content:'★ ';}
+.leg-row.hovered{background:rgba(74,124,255,.14);}
+.tip-role{display:inline-block;margin-left:4px;padding:0 5px;border-radius:3px;font-size:10px;letter-spacing:.3px;background:rgba(255,255,255,.08);color:var(--text);}
+.tip-front{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;vertical-align:middle;}
+.legend-empty{font-size:12px;color:var(--text-dim);padding:2px 5px 8px;line-height:1.4;}
+.tip-sub{color:var(--text-dim);font-size:12px;}
+.tip-hint{color:var(--text-dim);font-size:11px;opacity:.7;margin-top:2px;}
+
+/* ══════════════════════════════════════════════
    RESPONSIVE — placé en fin de feuille de style pour
    primer correctement sur les règles de mise en page ci-dessus
 ══════════════════════════════════════════════ */
@@ -357,7 +425,11 @@ canvas{display:block;width:800px;height:800px;}
   #header h1{font-size:15px;}
   .ctrl-group{padding:4px 7px;}
 }
+@media (max-width:900px){
+  #refreshBox{margin-left:0;}
+}
 @media (max-width:520px){
+  #nextRefresh{display:none;}
   #header{padding:8px 10px;gap:10px;}
   .sep{display:none;}
   .toggle{font-size:12px;padding:3px 6px;}
@@ -374,13 +446,13 @@ canvas{display:block;width:800px;height:800px;}
 
   <div class="ctrl-group">
     <span class="ctrl-label">Joueur</span>
-    <select id="playerSel"></select>
+    <input id="playerSel" class="pick-input" list="playerList" placeholder="Nom du joueur…" autocomplete="off" spellcheck="false"><datalist id="playerList"></datalist>
     <button class="add-btn" id="addPlayer">＋</button>
   </div>
 
   <div class="ctrl-group">
     <span class="ctrl-label">Alliance</span>
-    <select id="allySel"></select>
+    <input id="allySel" class="pick-input" list="allyList" placeholder="Nom de l’alliance…" autocomplete="off" spellcheck="false"><datalist id="allyList"></datalist>
     <button class="add-btn" id="addAlly">＋</button>
   </div>
 
@@ -397,12 +469,7 @@ canvas{display:block;width:800px;height:800px;}
       <label class="toggle">
         <input type="checkbox" id="chkRouge">
         <div class="toggle-dot"></div>
-        <span style="color:#ff3d3d">● Rouge</span>
-      </label>
-      <label class="toggle">
-        <input type="checkbox" id="chkRose">
-        <div class="toggle-dot"></div>
-        <span style="color:#ff4fd8">● Rose</span>
+        <span style="color:#ff3d3d">● Ennemis</span>
       </label>
     </div>
   </div>
@@ -445,12 +512,24 @@ canvas{display:block;width:800px;height:800px;}
     <input type="range" id="citySize" min="0" max="100" value="0">
     <span id="cityVal">2</span>
   </div>
+
+  <div id="refreshBox" title="Les données sont rechargées automatiquement toutes les 30 minutes">
+    <span class="fresh-dot" id="freshDot"></span>
+    <span>Données <b id="dataAge">—</b></span>
+    <span id="nextRefresh"></span>
+    <button id="refreshBtn" type="button" title="Actualiser maintenant">↻</button>
+  </div>
 </div>
 
 <!-- ══ GAUCHE ══ -->
 <div id="leftPanel">
   <div class="panel-title">Légende</div>
-  <div id="legend"></div>
+  <div id="legendEmpty" class="legend-empty">Coche un front ou ajoute un joueur / une alliance pour afficher ses villes.</div>
+  <div id="legend">
+    <div class="leg-sec hidden" data-sec="allie"><div class="leg-sec-title">Alliés<span class="leg-sec-count"></span></div><div class="leg-sec-body"></div></div>
+    <div class="leg-sec hidden" data-sec="ennemi"><div class="leg-sec-title">Ennemis<span class="leg-sec-count"></span></div><div class="leg-sec-body"></div></div>
+    <div class="leg-sec hidden" data-sec="perso"><div class="leg-sec-title">Sélection perso<span class="leg-sec-count"></span></div><div class="leg-sec-body"></div></div>
+  </div>
 </div>
 
 <!-- ══ CENTRE ══ -->
@@ -482,6 +561,7 @@ canvas{display:block;width:800px;height:800px;}
 </div>
 
 <div id="tooltip"></div>
+<div id="toast" role="status" aria-live="polite"></div>
 </div>
 
 <script src="mapData.js"></script>
@@ -490,22 +570,35 @@ canvas{display:block;width:800px;height:800px;}
 const VIEW=6,CELL=100,SIZE=800,SCALE=SIZE/(VIEW*CELL);
 const BX=2,BY=2,X_MIN=BX*CELL,Y_MIN=BY*CELL,X_MAX=X_MIN+VIEW*CELL,Y_MAX=Y_MIN+VIEW*CELL;
 
-/* ── Groupes (basés sur le champ "front" de mapData, calculé par nom d'alliance
-      côté build — évite les ID fixes qui se périment à chaque changement de serveur) ── */
-const GROUPS={
-  allies:{
-    ids: mapData.alliances.filter(a=>a.front==='allie').map(a=>a.id),
-    color:'#00d4ff',label:'Alliés'
-  },
-  rouge:{
-    ids: mapData.alliances.filter(a=>a.front==='ennemi').map(a=>a.id),
-    color:'#ff3d3d',label:'Rouge'
-  },
-  rose:{
-    ids: mapData.alliances.filter(a=>a.front==='ennemi_rose').map(a=>a.id),
-    color:'#ff4fd8',label:'Rose'
-  }
+/* Données courantes : initialisées par <script src="mapData.js">, puis remplacées à chaque
+   rafraîchissement (toutes les 30 min) sans recharger la page ni perdre l'affichage. */
+let DATA=mapData;
+const REFRESH_MS=30*60*1000;       // intervalle de rafraîchissement automatique
+const RETRY_MS  = 5*60*1000;       // nouvel essai après un échec réseau
+const STORE_KEY ='grepomap.fr184.state.v2';
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* ── Fronts (champ "front" de mapData, calculé côté build par ID d'alliance — voir fronts_common.js) ──
+   Chaque alliance d'un front reçoit sa propre teinte (famille de couleurs du front),
+   notre alliance (« home ») est toujours en or. */
+const HOME_COLOR='#ffd54f';
+const FRONT_PALETTES={
+  allie      :['#00d4ff','#00e676','#7c9cff','#64ffda','#b2ff59','#40c4ff','#18ffff','#69f0ae'],
+  ennemi     :['#ff3d3d','#ff9100','#ff1744','#ff6e40','#ff8a80','#f50057','#dd2c00'],
 };
+/* ids d'un front : notre alliance d'abord, puis par nombre de villes décroissant */
+const frontIds=front=>DATA.alliances.filter(a=>a.front===front)
+  .sort((a,b)=>(b.home?1:0)-(a.home?1:0)||b.towns.length-a.towns.length).map(a=>a.id);
+const GROUPS={
+  allies:{front:'allie',       get ids(){return frontIds('allie');},       label:'Alliés'},
+  rouge :{front:'ennemi',      get ids(){return frontIds('ennemi');},      label:'Ennemis'},
+};
+function groupColor(g,id,i){
+  if(allyById.get(+id)?.home)return HOME_COLOR;
+  const pal=FRONT_PALETTES[g.front];
+  return pal[i%pal.length];
+}
+const FRONT_HEX={allie:'#00d4ff',ennemi:'#ff3d3d'};
 
 /* ── Couleurs types temples ── */
 const TYPE_COLORS={
@@ -585,6 +678,9 @@ const visA={},colA={},visP={},colP={};
 const mapWrapper=document.getElementById('mapWrapper');
 const zoomLayer=document.getElementById('zoomLayer');
 const canvas=document.getElementById('map'),ctx=canvas.getContext('2d');
+/* Résolution interne ×2/×3 : les villes restent nettes quand on zoome (la taille affichée ne change pas). */
+const RES=Math.min(3,Math.max(2,Math.round((window.devicePixelRatio||1)*2)));
+canvas.width=SIZE*RES;canvas.height=SIZE*RES;
 const playerSel=document.getElementById('playerSel');
 const allySel=document.getElementById('allySel');
 const legend=document.getElementById('legend');
@@ -593,7 +689,6 @@ const searchInput=document.getElementById('templeSearch');
 const tooltip=document.getElementById('tooltip');
 const chkAllies=document.getElementById('chkAllies');
 const chkRouge=document.getElementById('chkRouge');
-const chkRose=document.getElementById('chkRose');
 const chkContest=document.getElementById('chkContest');
 const chkColor=document.getElementById('chkColor');
 const chkFocus=document.getElementById('chkFocus');
@@ -609,13 +704,36 @@ citySize.oninput=()=>{
   cityVal.textContent=cityRadius.toFixed(0);
   draw();
 };
+citySize.onchange=()=>saveState();
 cityVal.textContent=minR;
 
-/* ── Listes ── */
-mapData.players.slice().sort((a,b)=>a.name.localeCompare(b.name,'fr'))
-  .forEach(p=>playerSel.add(new Option(p.name,p.id)));
-mapData.alliances.slice().sort((a,b)=>a.name.localeCompare(b.name,'fr'))
-  .forEach(a=>allySel.add(new Option(a.name,a.id)));
+/* ── Index & listes de recherche (reconstruits à chaque rafraîchissement) ── */
+const playerList=document.getElementById('playerList');
+const allyList=document.getElementById('allyList');
+let playerByName=new Map(),allyByName=new Map(),allyById=new Map(),playerById=new Map(),townOwner=new Map();
+function indexData(){
+  playerById=new Map(DATA.players.map(p=>[p.id,p]));
+  allyById  =new Map(DATA.alliances.map(a=>[a.id,a]));
+  townOwner =new Map();
+  DATA.players.forEach(p=>p.towns.forEach(t=>townOwner.set(`${t.x}|${t.y}|${t.slot}`,p)));
+  const byName=(a,b)=>a.name.localeCompare(b.name,'fr');
+  const players=DATA.players.filter(p=>p.towns.length).sort(byName);
+  const allys  =DATA.alliances.filter(a=>a.id&&a.towns.length).sort(byName);
+  playerByName=new Map(players.map(p=>[p.name.toLowerCase(),p]));
+  allyByName  =new Map(allys.map(a=>[a.name.toLowerCase(),a]));
+  const opt=(name,n)=>{const o=new Option(name);o.label=`${n} ville${n>1?'s':''}`;return o;};
+  playerList.replaceChildren(...players.map(p=>opt(p.name,p.towns.length)));
+  allyList.replaceChildren(...allys.map(a=>opt(a.name,a.towns.length)));
+}
+indexData();
+/* Recherche tolérante : nom exact, sinon premier nom qui commence par / contient le texte saisi */
+function pick(input,byName){
+  const v=input.value.trim().toLowerCase();
+  let o=v&&byName.get(v);
+  if(!o&&v){const all=[...byName.values()];o=all.find(x=>x.name.toLowerCase().startsWith(v))||all.find(x=>x.name.toLowerCase().includes(v));}
+  input.classList.toggle('bad',!!v&&!o);
+  return o||null;
+}
 
 /* ── Légende types temples ── */
 Object.entries(CATEGORY_COLORS).forEach(([cat,{css,hex}])=>{
@@ -644,50 +762,116 @@ Object.entries(SPECIAL_TYPE_COLORS).forEach(([type,{css,hex}])=>{
 });
 
 /* ── Légende dynamique ── */
-function addRow(id,label,color,vis,col){
-  if(vis[id])return;
-  vis[id]=true;col[id]=color;
-  const row=document.createElement('div');row.className='leg-row';row.dataset.aid=id;
-  row.innerHTML=`<input type="checkbox" checked>
-                 <input type="color" value="${color}">
-                 <span class="leg-name" title="${label}">${label}</span>`;
+const legendEmpty=document.getElementById('legendEmpty');
+const kindOf=vis=>vis===visP?'p':'a';
+function townCount(kind,id){
+  const o=kind==='p'?playerById.get(+id):allyById.get(+id);
+  return o?o.towns.length:0;
+}
+function sectionOf(kind,id){
+  if(kind==='p')return 'perso';
+  const f=allyById.get(+id)?.front;
+  return f==='allie'||f==='ennemi'?f:'perso';
+}
+const secBody=sec=>legend.querySelector(`.leg-sec[data-sec="${sec}"] .leg-sec-body`);
+const fmtN=n=>n.toLocaleString('fr-FR');
+function updateLegendEmpty(){
+  let any=false;
+  legend.querySelectorAll('.leg-sec').forEach(sec=>{
+    const rows=[...sec.querySelectorAll('.leg-row')];
+    sec.classList.toggle('hidden',!rows.length);
+    if(!rows.length)return;
+    any=true;
+    const total=rows.reduce((n,r)=>n+(+r.querySelector('.leg-count').textContent.replace(/\D/g,'')||0),0);
+    sec.querySelector('.leg-sec-count').textContent=`${fmtN(total)} villes`;
+  });
+  legendEmpty.classList.toggle('hidden',any);
+}
+/* Contenu du nom : nom + rôle éventuel ; classe « home » pour notre alliance */
+function fillRowName(row,kind,label,o){
+  const nameEl=row.querySelector('.leg-name');
+  const role=kind==='a'&&o?.role;
+  nameEl.innerHTML=`<span>${esc(label)}</span>`+(role?`<span class="leg-role">${esc(role)}</span>`:'');
+  nameEl.title=(kind==='p'?'Joueur : ':'Alliance : ')+label+(role?` — ${role}`:'')+(o?.home?' (notre alliance)':'');
+  row.classList.toggle('is-home',kind==='a'&&!!o?.home);
+}
+/* Survol d'une ligne : ses villes ressortent, les autres s'estompent */
+let hoverKey=null;
+function setHoverKey(k){if(hoverKey===k)return;hoverKey=k;draw(true);}
+function addRow(id,label,color,vis,col,checked=true){
+  if(id in vis)return;                       // déjà présent (même décoché) → pas de doublon
+  const kind=kindOf(vis);
+  vis[id]=checked;col[id]=color;
+  const row=document.createElement('div');
+  row.className='leg-row'+(kind==='p'?' is-player':'');
+  row.dataset.aid=id;row.dataset.kind=kind;
+  row.innerHTML=`<input type="checkbox"${checked?' checked':''}>
+                 <input type="color" value="${esc(color)}">
+                 <span class="leg-name"></span>
+                 <span class="leg-count" title="Nombre de villes"></span>
+                 <button class="leg-del" type="button" title="Retirer de la carte">×</button>`;
+  fillRowName(row,kind,label,kind==='p'?playerById.get(+id):allyById.get(+id));
+  row.querySelector('.leg-count').textContent=fmtN(townCount(kind,id));
+  row.addEventListener('mouseenter',()=>{row.classList.add('hovered');setHoverKey(kind+id);});
+  row.addEventListener('mouseleave',()=>{row.classList.remove('hovered');setHoverKey(null);});
   const [cb,cp]=row.querySelectorAll('input');
-  cb.onchange=()=>{vis[id]=cb.checked;draw();};
+  cb.onchange=()=>{vis[id]=cb.checked;draw();saveState();};
   cp.oninput =()=>{col[id]=cp.value;draw();};
-  legend.append(row);
+  cp.onchange=()=>saveState();
+  row.querySelector('.leg-del').onclick=()=>{hoverKey=null;removeRow(id,vis);draw();saveState();};
+  secBody(sectionOf(kind,id)).append(row);
+  updateLegendEmpty();
 }
 function removeRow(id,vis){
-  const row=legend.querySelector(`.leg-row[data-aid="${id}"]`);
-  if(row)legend.removeChild(row);
+  const row=legend.querySelector(`.leg-row[data-aid="${id}"][data-kind="${kindOf(vis)}"]`);
+  if(row)row.remove();
   delete vis[id];
+  updateLegendEmpty();
+}
+/* Après un rafraîchissement : met à jour noms (renommages) et nombres de villes */
+function refreshLegendRows(){
+  legend.querySelectorAll('.leg-row').forEach(row=>{
+    const kind=row.dataset.kind,id=+row.dataset.aid;
+    const o=kind==='p'?playerById.get(id):allyById.get(id);
+    if(o)fillRowName(row,kind,o.name,o);
+    row.querySelector('.leg-count').textContent=fmtN(o?o.towns.length:0);
+    const body=secBody(sectionOf(kind,id));          // une alliance peut changer de front
+    if(row.parentElement!==body)body.append(row);
+  });
+  updateLegendEmpty();
 }
 
 /* ── Boutons + ── */
 document.getElementById('addPlayer').onclick=()=>{
-  const p=mapData.players.find(x=>x.id==playerSel.value);
-  if(p){addRow(p.id,p.name,palette[palIdx++%palette.length],visP,colP);draw();}
+  const p=pick(playerSel,playerByName);
+  if(p){addRow(p.id,p.name,palette[palIdx++%palette.length],visP,colP);playerSel.value='';draw();saveState();}
 };
 document.getElementById('addAlly').onclick=()=>{
-  const a=mapData.alliances.find(x=>x.id==allySel.value);
-  if(a){addRow(a.id,a.name,palette[palIdx++%palette.length],visA,colA);draw();}
+  const a=pick(allySel,allyByName);
+  if(a){addRow(a.id,a.name,palette[palIdx++%palette.length],visA,colA);allySel.value='';draw();saveState();}
 };
+/* Entrée = ajouter ; la bordure rouge disparaît dès qu'on retape */
+[[playerSel,'addPlayer'],[allySel,'addAlly']].forEach(([inp,btn])=>{
+  inp.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();document.getElementById(btn).click();}});
+  inp.addEventListener('input',()=>inp.classList.remove('bad'));
+});
 
 /* ── Groupes ── */
 function toggleGroup(box,g){
-  g.ids.forEach(id=>{
+  g.ids.forEach((id,i)=>{
     if(box.checked){
-      const name=mapData.alliances.find(a=>a.id==id)?.name||`Alliance ${id}`;
-      addRow(id,name,g.color,visA,colA);
+      const name=allyById.get(+id)?.name||`Alliance ${id}`;
+      addRow(id,name,groupColor(g,id,i),visA,colA);
     }else{
       removeRow(id,visA);
     }
   });
   draw();
+  saveState();
 }
 chkAllies.onchange=()=>toggleGroup(chkAllies,GROUPS.allies);
 chkRouge.onchange =()=>toggleGroup(chkRouge, GROUPS.rouge);
-chkRose.onchange  =()=>toggleGroup(chkRose,  GROUPS.rose);
-[chkContest,chkColor,chkFocus,chkHighlight,chkSecondary].forEach(el=>el.onchange=draw);
+[chkContest,chkColor,chkFocus,chkHighlight,chkSecondary].forEach(el=>el.onchange=()=>{draw();saveState();});
 
 /* ── Recherche ── */
 const clearSearchBtn=document.getElementById('clearSearch');
@@ -721,7 +905,7 @@ function applyHighlight(){
 const statusBadge=document.getElementById('statusBadge');
 function updateStatusBadge(){
   const shown=zoomLayer.querySelectorAll('.templeIcon').length;
-  const total=(mapData.temples||[]).length;
+  const total=(DATA.temples||[]).length;
   const parts=[`<b>${shown}</b>/${total} temples`];
   if(activeCategoryFilters.size)parts.push(`${activeCategoryFilters.size} catégorie${activeCategoryFilters.size>1?'s':''}`);
   statusBadge.innerHTML=parts.join(' · ');
@@ -735,6 +919,7 @@ document.getElementById('clearFilters').onclick=()=>{
   document.querySelectorAll('.tpl-type-row.active').forEach(r=>r.classList.remove('active'));
   filterHint.classList.add('hidden');
   draw();
+  saveState();
 };
 function toggleCategoryFilter(row,css){
   if(activeCategoryFilters.has(css)){
@@ -746,6 +931,7 @@ function toggleCategoryFilter(row,css){
   }
   filterHint.classList.toggle('hidden',activeCategoryFilters.size===0);
   draw();
+  saveState();
 }
 
 /* ── Tooltip ── */
@@ -763,24 +949,46 @@ function showTip(t,x,y){
   const dot=col?`<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${col.hex};margin-right:5px;vertical-align:middle;"></span>`:'';
   tooltip.innerHTML=`<div class="tip-name">${t.name||''}</div><div class="tip-bonus">${dot}${t.bonus||''}</div>`;
   tooltip.style.display='block';
+  tooltip.dataset.temple='1';
   requestAnimationFrame(()=>tooltip.classList.add('show'));
   positionTooltip(x,y);
 }
-const hideTip=()=>{tooltip.classList.remove('show');tooltip.style.display='none';};
+const hideTip=()=>{tooltip.classList.remove('show');tooltip.style.display='none';delete tooltip.dataset.temple;};
 
 /* ── Points villes ── */
 const OFF=[[0,0],[1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,1],[1,-1],[-1,-1],
            [2,0],[-2,0],[0,2],[0,-2],[2,1],[2,-1],[-2,1],[-2,-1],[1,2],[-1,2],[1,-2]];
 const toPx=(c,o)=>(c-o)*SCALE;
-function dot(t){
-  const d=OFF[t.slot%20]||[0,0];
-  const x=toPx(t.x+d[0],X_MIN),y=toPx(t.y+d[1],Y_MIN);
-  const col=ctx.fillStyle;
-  ctx.save();
-  ctx.shadowColor=col;ctx.shadowBlur=Math.max(3,cityRadius*1.4);
-  ctx.beginPath();ctx.arc(x,y,cityRadius,0,Math.PI*2);ctx.fill();
-  ctx.restore();
-  ctx.lineWidth=.6;ctx.strokeStyle='rgba(0,0,0,0.55)';ctx.stroke();
+let hitPts=[];   // villes dessinées, pour l'infobulle au survol
+/* Une ville = un petit sprite (point + halo) calculé une seule fois par couleur/taille,
+   puis simplement recopié : ~10× plus rapide qu'un shadowBlur par ville. */
+const dotCache=new Map();
+function dotSprite(color,r){
+  const key=`${color}|${r.toFixed(2)}`;
+  let c=dotCache.get(key);
+  if(c)return c;
+  if(dotCache.size>400)dotCache.clear();
+  const blur=Math.max(3,r*1.4),pad=Math.ceil(r+blur+3),sz=pad*2;
+  c=document.createElement('canvas');
+  c.width=c.height=sz*RES;
+  const g=c.getContext('2d');
+  g.scale(RES,RES);
+  g.shadowColor=color;g.shadowBlur=blur*RES;g.fillStyle=color;
+  g.beginPath();g.arc(pad,pad,r,0,Math.PI*2);g.fill();
+  g.shadowColor='transparent';g.lineWidth=.6;g.strokeStyle='rgba(0,0,0,0.55)';g.stroke();
+  c.pad=pad;c.sz=sz;
+  dotCache.set(key,c);
+  return c;
+}
+function drawTowns(towns,color,owner){
+  const sp=dotSprite(color,cityRadius);
+  for(const t of towns){
+    if(t.x<X_MIN||t.x>=X_MAX||t.y<Y_MIN||t.y>=Y_MAX)continue;
+    const d=OFF[t.slot%20]||[0,0];
+    const x=toPx(t.x+d[0],X_MIN),y=toPx(t.y+d[1],Y_MIN);
+    hitPts.push({x,y,t,owner});
+    ctx.drawImage(sp,x-sp.pad,y-sp.pad,sp.sz,sp.sz);
+  }
 }
 
 /* ── Temples ── */
@@ -791,7 +999,7 @@ function drawTemples(){
   const onlyOurs=chkFocus.checked;                // filtre : n'affiche que les temples de newtemplejoue.xlsx (principaux + secondaires)
   const highlightSecondary=chkSecondary.checked;  // anneau jaune : cibles secondaires ("Poubelle")
 
-  (mapData.temples||[]).forEach(t=>{
+  (DATA.temples||[]).forEach(t=>{
     if(t.x<X_MIN||t.x>=X_MAX||t.y<Y_MIN||t.y>=Y_MAX)return;
     const isFocus=t.focus===true||String(t.focus).toLowerCase()==='true';
     if(onlyOurs&&!isFocus)return;
@@ -869,7 +1077,10 @@ function drawOcean(){
   ctx.fillStyle=vg;
   ctx.fillRect(0,0,SIZE,SIZE);
 }
-function draw(){
+function draw(skipTemples=false){
+  if(skipTemples instanceof Event)skipTemples=false;
+  ctx.setTransform(RES,0,0,RES,0,0);
+  hitPts=[];
   if(water.complete&&water.naturalWidth){
     ctx.fillStyle=ctx.createPattern(water,'repeat');
     ctx.fillRect(0,0,SIZE,SIZE);
@@ -877,16 +1088,20 @@ function draw(){
     drawOcean();
   }
 
-  mapData.alliances.forEach(a=>{
-    if(!visA[a.id])return;
-    ctx.fillStyle=colA[a.id];
-    a.towns.forEach(t=>{if(t.x>=X_MIN&&t.x<X_MAX&&t.y>=Y_MIN&&t.y<Y_MAX)dot(t);});
-  });
-  mapData.players.forEach(p=>{
-    if(!visP[p.id])return;
-    ctx.fillStyle=colP[p.id];
-    p.towns.forEach(t=>{if(t.x>=X_MIN&&t.x<X_MAX&&t.y>=Y_MIN&&t.y<Y_MAX)dot(t);});
-  });
+  /* Ordre : alliances puis joueurs ; la ligne survolée dans la légende est dessinée en dernier,
+     les autres sont estompées */
+  const layers=[];
+  DATA.alliances.forEach(a=>{if(visA[a.id])layers.push(['a'+a.id,a.towns,colA[a.id]]);});
+  DATA.players.forEach(p=>{if(visP[p.id])layers.push(['p'+p.id,p.towns,colP[p.id]]);});
+  if(hoverKey){
+    ctx.globalAlpha=.16;
+    layers.forEach(([k,towns,col])=>{if(k!==hoverKey)drawTowns(towns,col,k);});
+    ctx.globalAlpha=1;
+    const h=layers.find(([k])=>k===hoverKey);
+    if(h)drawTowns(h[1],h[2],h[0]);
+  }else{
+    layers.forEach(([k,towns,col])=>drawTowns(towns,col,k));
+  }
 
   /* Grille */
   ctx.strokeStyle='rgba(190,215,255,0.12)';ctx.lineWidth=1;
@@ -909,8 +1124,211 @@ function draw(){
   ctx.beginPath();ctx.arc(SIZE/2,SIZE/2,SIZE*0.31,0,Math.PI*2);ctx.stroke();
   ctx.setLineDash([]);
 
-  drawTemples();
+  if(!skipTemples)drawTemples();
 }
+
+/* ══════════════════════════════════════════════
+   INFOBULLE DES VILLES (survol) + COPIE BBCODE (clic)
+══════════════════════════════════════════════ */
+function cityAt(clientX,clientY){
+  const r=canvas.getBoundingClientRect();
+  if(!r.width)return null;
+  const k=SIZE/r.width;                                 // px écran → px carte
+  const mx=(clientX-r.left)*k,my=(clientY-r.top)*k;
+  const maxD=Math.max(cityRadius+2,6*k);                // tolérance ~6 px écran
+  let best=null,bestD=maxD*maxD;
+  for(const p of hitPts){
+    const dx=p.x-mx,dy=p.y-my,d=dx*dx+dy*dy;
+    if(d<bestD){bestD=d;best=p;}
+  }
+  return best;
+}
+function cityTipHtml(t){
+  const p=townOwner.get(`${t.x}|${t.y}|${t.slot}`);
+  const a=p&&p.alliance_id?allyById.get(p.alliance_id):null;
+  const sea=`M${Math.floor(t.x/100)}${Math.floor(t.y/100)}`;
+  const fx=a&&FRONT_HEX[a.front];
+  return `<div class="tip-name">${esc(p?p.name:'Ville')}</div>`+
+         `<div class="tip-sub">${fx?`<span class="tip-front" style="background:${fx}"></span>`:''}${a?esc(a.name):'Sans alliance'}`+
+         `${a?.role?`<span class="tip-role">${esc(a.role)}</span>`:''}${a?.home?' <span style="color:var(--gold2)">★</span>':''}</div>`+
+         `<div class="tip-bonus">${sea} · ${t.x}|${t.y}${p?` · ${p.towns.length} ville${p.towns.length>1?'s':''}`:''}</div>`+
+         (p?`<div class="tip-hint">Clic : copier [player]</div>`:'');
+}
+let hoverRaf=0,hoverCity=null,downAt=null;
+mapWrapper.addEventListener('mousemove',e=>{
+  if(dragging||e.target.closest('.templeIcon')||e.target.closest('#zoomControls'))return;
+  const {clientX,clientY}=e;
+  cancelAnimationFrame(hoverRaf);
+  hoverRaf=requestAnimationFrame(()=>{
+    const c=cityAt(clientX,clientY);
+    hoverCity=c;
+    if(!c){if(!tooltip.dataset.temple)hideTip();return;}
+    tooltip.innerHTML=cityTipHtml(c.t);
+    tooltip.style.display='block';
+    requestAnimationFrame(()=>tooltip.classList.add('show'));
+    positionTooltip(clientX,clientY);
+  });
+});
+mapWrapper.addEventListener('mouseleave',()=>{hoverCity=null;hideTip();});
+mapWrapper.addEventListener('mousedown',e=>{downAt={x:e.clientX,y:e.clientY};});
+let clickTimer=0;
+mapWrapper.addEventListener('click',e=>{
+  if(!downAt||Math.hypot(e.clientX-downAt.x,e.clientY-downAt.y)>4)return;   // c'était un glisser
+  if(e.target.closest('.templeIcon,#zoomControls'))return;
+  const c=cityAt(e.clientX,e.clientY);
+  const p=c&&townOwner.get(`${c.t.x}|${c.t.y}|${c.t.slot}`);
+  if(!p)return;
+  clearTimeout(clickTimer);
+  clickTimer=setTimeout(()=>{                  // attend : un double-clic sert à zoomer, pas à copier
+    const code=`[player]${p.name}[/player]`;
+    (navigator.clipboard?.writeText(code)||Promise.reject())
+      .then(()=>toast(`Copié : ${code}`),()=>toast(code));
+  },260);
+});
+mapWrapper.addEventListener('dblclick',()=>clearTimeout(clickTimer));
+
+/* ══════════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════════ */
+const toastEl=document.getElementById('toast');
+let toastTimer=0;
+function toast(msg){
+  toastEl.textContent=msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>toastEl.classList.remove('show'),3200);
+}
+
+/* ══════════════════════════════════════════════
+   MÉMORISATION DE L'AFFICHAGE (localStorage)
+   Alliances / joueurs affichés, couleurs, cases cochées, taille des villes, filtres —
+   tout est retrouvé à la réouverture de la page.
+══════════════════════════════════════════════ */
+const STATE_TOGGLES=[chkAllies,chkRouge,chkContest,chkColor,chkFocus,chkHighlight,chkSecondary];
+let restoring=false;
+function saveState(){
+  if(restoring)return;
+  try{
+    const rows=[...legend.querySelectorAll('.leg-row')].map(r=>{
+      const k=r.dataset.kind,id=+r.dataset.aid,vis=k==='p'?visP:visA,col=k==='p'?colP:colA;
+      return {k,id,c:col[id],v:!!vis[id],n:r.querySelector('.leg-name > span').textContent};
+    });
+    const toggles=Object.fromEntries(STATE_TOGGLES.map(el=>[el.id,el.checked]));
+    localStorage.setItem(STORE_KEY,JSON.stringify({rows,toggles,city:citySize.value,cats:[...activeCategoryFilters],palIdx}));
+  }catch(e){/* stockage indisponible (navigation privée…) : on continue sans */}
+}
+function restoreState(){
+  let st=null;
+  try{st=JSON.parse(localStorage.getItem(STORE_KEY)||'null');}catch(e){}
+  if(!st)return;
+  restoring=true;
+  try{
+    STATE_TOGGLES.forEach(el=>{if(st.toggles&&el.id in st.toggles)el.checked=!!st.toggles[el.id];});
+    if(st.city!=null){citySize.value=st.city;citySize.oninput();}
+    (st.rows||[]).forEach(r=>{
+      const isP=r.k==='p',o=isP?playerById.get(r.id):allyById.get(r.id);
+      if(!o&&isP)return;                                   // joueur disparu
+      addRow(r.id,o?o.name:r.n,r.c||palette[0],isP?visP:visA,isP?colP:colA,r.v!==false);
+    });
+    (st.cats||[]).forEach(css=>{
+      const row=templeLegend.querySelector(`.tpl-type-row[data-css="${CSS.escape(css)}"]`);
+      if(row){activeCategoryFilters.add(css);row.classList.add('active');}
+    });
+    filterHint.classList.toggle('hidden',activeCategoryFilters.size===0);
+    if(Number.isFinite(st.palIdx))palIdx=st.palIdx;
+  }finally{restoring=false;}
+}
+
+/* ══════════════════════════════════════════════
+   RAFRAÎCHISSEMENT AUTOMATIQUE (toutes les 30 min)
+   Recharge mapData.js en arrière-plan et redessine en conservant l'affichage courant.
+   Le minuteur se base sur l'heure réelle : un onglet en arrière-plan ou un PC sorti
+   de veille se met à jour dès qu'il redevient actif.
+══════════════════════════════════════════════ */
+const refreshBtn=document.getElementById('refreshBtn');
+const dataAgeEl=document.getElementById('dataAge');
+const nextRefreshEl=document.getElementById('nextRefresh');
+const freshDot=document.getElementById('freshDot');
+let nextRefreshAt=Date.now()+REFRESH_MS,refreshing=false,dataLen=0;
+
+const parseDataFile=txt=>{
+  const d=JSON.parse(txt.slice(txt.indexOf('{'),txt.lastIndexOf('}')+1));
+  if(!d.generatedAt){const m=txt.match(/g[ée]n[ée]r[ée] le (\S+)/);if(m)d.generatedAt=m[1];}
+  return d;
+};
+function fmtAge(ms){
+  const m=Math.floor(ms/60000);
+  if(m<1)return 'à l\'instant';
+  if(m<60)return `il y a ${m} min`;
+  const h=Math.floor(m/60);
+  if(h<48)return `il y a ${h} h ${String(m%60).padStart(2,'0')}`;
+  return `il y a ${Math.floor(h/24)} j`;
+}
+const hhmm=d=>d.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+function updateFreshness(){
+  const gen=DATA.generatedAt?new Date(DATA.generatedAt):null;
+  freshDot.className='fresh-dot';
+  if(gen&&!isNaN(gen)){
+    const age=Date.now()-gen;
+    dataAgeEl.textContent=fmtAge(age);
+    dataAgeEl.title=`Générées le ${gen.toLocaleString('fr-FR')}`;
+    freshDot.classList.add(age<90*60000?'ok':age<6*3600000?'stale':'old');
+  }else{
+    dataAgeEl.textContent='—';
+  }
+  nextRefreshEl.textContent=`· ↻ ${hhmm(new Date(nextRefreshAt))}`;
+}
+function applyData(next){
+  DATA=next;
+  indexData();
+  /* fronts cochés : ajoute les nouvelles alliances éventuelles du front */
+  [[chkAllies,GROUPS.allies],[chkRouge,GROUPS.rouge]].forEach(([box,g])=>{
+    if(box.checked)g.ids.forEach((id,i)=>addRow(id,allyById.get(id)?.name||`Alliance ${id}`,groupColor(g,id,i),visA,colA));
+  });
+  refreshLegendRows();
+  draw();
+  saveState();
+}
+async function refreshData(manual=false){
+  if(refreshing)return;
+  refreshing=true;
+  refreshBtn.classList.add('spin');
+  try{
+    const res=await fetch(`mapData.js?t=${Date.now()}`,{cache:'no-store'});
+    if(!res.ok)throw new Error(`HTTP ${res.status}`);
+    const txt=await res.text();
+    const next=parseDataFile(txt);
+    const changed=next.generatedAt?next.generatedAt!==DATA.generatedAt:txt.length!==dataLen;
+    dataLen=txt.length;
+    if(changed){
+      const first=!DATA.generatedAt&&!manual;
+      applyData(next);
+      if(!first)toast(`Carte mise à jour — données de ${next.generatedAt?hhmm(new Date(next.generatedAt)):'maintenant'}`);
+    }else if(manual){
+      toast('Carte déjà à jour');
+    }
+    nextRefreshAt=Date.now()+REFRESH_MS;
+  }catch(err){
+    if(location.protocol==='file:'){          // fetch impossible en local : rechargement complet (l'affichage est mémorisé)
+      saveState();location.reload();return;
+    }
+    console.warn('Rafraîchissement impossible :',err);
+    toast('Échec de la mise à jour — nouvel essai dans 5 min');
+    nextRefreshAt=Date.now()+RETRY_MS;
+  }finally{
+    refreshing=false;
+    refreshBtn.classList.remove('spin');
+    updateFreshness();
+  }
+}
+function tick(){
+  if(Date.now()>=nextRefreshAt)refreshData();
+  else updateFreshness();
+}
+refreshBtn.onclick=()=>refreshData(true);
+setInterval(tick,30000);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden)tick();});
+window.addEventListener('online',()=>refreshData());
 
 /* ══════════════════════════════════════════════
    ZOOM / PAN / RESPONSIVE
@@ -1015,7 +1433,12 @@ mapWrapper.addEventListener('dblclick',e=>{
 
 recomputeFitScale();
 
+restoreState();
+updateLegendEmpty();
 draw();
+updateFreshness();
+/* Ancien format sans date : une lecture (depuis le cache) suffit à connaître l'âge des données */
+if(!DATA.generatedAt&&location.protocol!=='file:')refreshData();
 </script>
 </body>
 </html>

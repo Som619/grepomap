@@ -33,7 +33,7 @@ const FILES = {
 /* ───────────────────────── fronts d'alliances ─────────────────────────
    Appariement par ID (et non par nom) : un renommage d'alliance n'a aucun
    impact. Voir fronts_common.js pour la configuration. */
-const { frontOf } = require('./fronts_common.js');
+const { frontOf, decorateAlliance } = require('./fronts_common.js');
 /* ───────────────────────────────────────────────────────────────────── */
 
 /* ---------- helpers ---------- */
@@ -96,15 +96,36 @@ const parseTowns     = ([, pid,, x, y, slot])   => ({ player_id:+pid, x:+x, y:+y
     aById[p.alliance_id].towns.push({ x:t.x, y:t.y, slot:t.slot });
   });
 
+  Object.values(aById).forEach(decorateAlliance);   // front + rôle + « notre alliance »
+
   const mapData = {
     alliances: Object.values(aById),
     players  : players,
     temples  : staticTemples        // <── temples injectés
   };
 
+  /* Écriture compacte (≈ 3× plus léger que la version indentée → chargement plus rapide).
+     generatedAt = date de la dernière modification RÉELLE des données : si rien n'a changé
+     depuis le dernier passage, le fichier n'est pas réécrit (évite un commit inutile toutes
+     les 30 min en tâche planifiée). « node fr180.js --force » réécrit quoi qu'il arrive. */
+  const outFile = path.join(__dirname, 'mapData.js');
+  const body    = JSON.stringify(mapData);
+  let previous  = null;
+  try {
+    const txt = fs.readFileSync(outFile, 'utf8');
+    const old = JSON.parse(txt.slice(txt.indexOf('{'), txt.lastIndexOf('}') + 1));
+    delete old.generatedAt;
+    previous = JSON.stringify(old);
+  } catch { /* premier passage ou ancien format illisible → on écrit */ }
+
+  if (previous === body && !process.argv.includes('--force')) {
+    console.log('ℹ️  Aucune évolution des données : mapData.js inchangé.');
+    return;
+  }
+  const generatedAt = new Date().toISOString();
   fs.writeFileSync(
-    path.join(__dirname, 'mapData.js'),
-    `// généré le ${new Date().toISOString()}\nconst mapData = ${JSON.stringify(mapData, null, 2)};`
+    outFile,
+    `// généré le ${generatedAt}\nconst mapData = ${JSON.stringify({ generatedAt, ...mapData })};\n`
   );
 
   /* Contrôle : un ID configuré qui n'apparaît nulle part = alliance dissoute/recréée */
@@ -117,7 +138,6 @@ const parseTowns     = ([, pid,, x, y, slot])   => ({ player_id:+pid, x:+x, y:+y
   });
 
   const nbEnnemis = mapData.alliances.filter(a => a.front === 'ennemi').length;
-  const nbRose    = mapData.alliances.filter(a => a.front === 'ennemi_rose').length;
   const nbAllies  = mapData.alliances.filter(a => a.front === 'allie').length;
-  console.log(`✅ mapData.js : ${mapData.temples.length} temples, ${mapData.alliances.length} alliances (${nbEnnemis} rouges, ${nbRose} roses, ${nbAllies} alliées), ${mapData.players.length} joueurs.`);
+  console.log(`✅ mapData.js : ${mapData.temples.length} temples, ${mapData.alliances.length} alliances (${nbEnnemis} ennemies, ${nbAllies} alliées), ${mapData.players.length} joueurs.`);
 })().catch(err => { console.error(err); process.exit(1); });
