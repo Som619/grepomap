@@ -575,17 +575,14 @@ const BX=2,BY=2,X_MIN=BX*CELL,Y_MIN=BY*CELL,X_MAX=X_MIN+VIEW*CELL,Y_MAX=Y_MIN+VI
 let DATA=mapData;
 const REFRESH_MS=30*60*1000;       // intervalle de rafraîchissement automatique
 const RETRY_MS  = 5*60*1000;       // nouvel essai après un échec réseau
-const STORE_KEY ='grepomap.fr184.state.v2';
+const STORE_KEY ='grepomap.fr184.state.v3';
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 /* ── Fronts (champ "front" de mapData, calculé côté build par ID d'alliance — voir fronts_common.js) ──
-   Chaque alliance d'un front reçoit sa propre teinte (famille de couleurs du front),
-   notre alliance (« home ») est toujours en or. */
-const HOME_COLOR='#ffd54f';
-const FRONT_PALETTES={
-  allie      :['#00d4ff','#00e676','#7c9cff','#64ffda','#b2ff59','#40c4ff','#18ffff','#69f0ae'],
-  ennemi     :['#ff3d3d','#ff9100','#ff1744','#ff6e40','#ff8a80','#f50057','#dd2c00'],
-};
+   Une couleur unique par front pour la lisibilité : tous les alliés en cyan, tous les ennemis en rouge.
+   Notre alliance garde la couleur des alliés ; elle est signalée par ★ dans la légende et l'infobulle.
+   Survoler une alliance dans la légende fait ressortir ses villes seules. */
+const FRONT_HEX={allie:'#00d4ff',ennemi:'#ff3d3d'};
 /* ids d'un front : notre alliance d'abord, puis par nombre de villes décroissant */
 const frontIds=front=>DATA.alliances.filter(a=>a.front===front)
   .sort((a,b)=>(b.home?1:0)-(a.home?1:0)||b.towns.length-a.towns.length).map(a=>a.id);
@@ -593,12 +590,7 @@ const GROUPS={
   allies:{front:'allie',       get ids(){return frontIds('allie');},       label:'Alliés'},
   rouge :{front:'ennemi',      get ids(){return frontIds('ennemi');},      label:'Ennemis'},
 };
-function groupColor(g,id,i){
-  if(allyById.get(+id)?.home)return HOME_COLOR;
-  const pal=FRONT_PALETTES[g.front];
-  return pal[i%pal.length];
-}
-const FRONT_HEX={allie:'#00d4ff',ennemi:'#ff3d3d'};
+const groupColor=g=>FRONT_HEX[g.front];
 
 /* ── Couleurs types temples ── */
 const TYPE_COLORS={
@@ -669,8 +661,8 @@ const TYPE_MAP={
   'Portail':'Portail',
 };
 
-const palette=['#00ffff','#ff9900','#00ff88','#ff44ff','#ffee00','#00bfff',
-               '#ff6688','#88ff00','#ff6600','#20e5cc'];
+/* Sélection perso : teintes volontairement éloignées du cyan (alliés) et du rouge (ennemis) */
+const palette=['#ffd54f','#b388ff','#b2ff59','#ff80ff','#ffffff','#ffee58','#a1887f','#80cbc4'];
 let palIdx=0,cityRadius=2,minR=2,maxR=8;
 const visA={},colA={},visP={},colP={};
 
