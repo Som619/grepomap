@@ -25,15 +25,15 @@ env:
 
 jobs:
   update:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04   # version figée : ubuntu-latest passe à Ubuntu 26 le 19/10/2026
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
         with:
           ref: ${{ env.TARGET_BRANCH }}
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
-          node-version: 20
+          node-version: 24
 
       - name: Générer mapData.js
         run: node fr180.js   # générateur fr184 (inclut les emplacements « slot » des villes)
