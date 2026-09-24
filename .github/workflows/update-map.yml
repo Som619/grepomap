@@ -1,0 +1,51 @@
+# Régénère mapData.js à partir des données publiques Grepolis (fr184) toutes les 30 minutes
+# et le pousse sur la branche publiée, uniquement si les données ont changé.
+#
+# ⚠️ GitHub n'exécute les tâches planifiées (« schedule ») QUE depuis la branche par défaut
+#    du dépôt. Ce fichier doit donc être présent sur la branche par défaut (actuellement
+#    « master ») — ou bien passer « Grepomap_fr180 » en branche par défaut dans
+#    Settings → General → Default branch.
+# ⚠️ Settings → Actions → General → Workflow permissions : « Read and write permissions ».
+name: Mise à jour carte fr184
+
+on:
+  schedule:
+    - cron: '*/30 * * * *'   # toutes les 30 min (UTC ; GitHub peut décaler de quelques minutes)
+  workflow_dispatch:          # bouton « Run workflow » pour forcer une mise à jour
+
+permissions:
+  contents: write
+
+concurrency:
+  group: update-map
+  cancel-in-progress: false
+
+env:
+  TARGET_BRANCH: Grepomap_fr180   # branche qui contient la carte et mapData.js
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ env.TARGET_BRANCH }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Générer mapData.js
+        run: node fr180.js   # générateur fr184 (inclut les emplacements « slot » des villes)
+
+      - name: Publier si changement
+        run: |
+          if git diff --quiet -- mapData.js; then
+            echo "Aucun changement."
+            exit 0
+          fi
+          git config user.name  "grepomap-bot"
+          git config user.email "grepomap-bot@users.noreply.github.com"
+          git add -f mapData.js
+          git commit -m "Auto : mise à jour mapData.js"
+          git push origin HEAD:${TARGET_BRANCH}
