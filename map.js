@@ -28,6 +28,7 @@ const FILES = {
   towns     : 'towns.txt.gz',
 };
 const { staticTemples } = require('./temples_static.js');
+const { grandTemples }  = require('./grands_temples.js');   // les 8 grands temples (Olympus)
 
 /* ───────────────────────── fronts d'alliances ───────────────────────── */
 /* Appariement par ID (et non par nom) : un renommage d'alliance n'a aucun
@@ -98,7 +99,7 @@ const parseTowns     = ([, pid, , x, y])        => ({ player_id:+pid, x:+x, y:+y
   const mapData = {
     alliances: Object.values(alliancesById),
     players  : players,
-    temples  : staticTemples
+    temples  : [...staticTemples, ...grandTemples()]
   };
 
   /* Écriture compacte (≈ 3× plus léger que la version indentée → chargement plus rapide).

@@ -340,6 +340,21 @@ canvas{display:block;width:800px;height:800px;}
 .white {filter:brightness(3)saturate(0)}
 .orange{filter:hue-rotate(-20deg)saturate(6)brightness(1.1)}
 .cyan  {filter:hue-rotate(175deg)saturate(5)}
+/* Grands temples (Olympus) : grand format, halo doré, nom de la divinité */
+.grand{filter:drop-shadow(0 0 2px #ffd54f) drop-shadow(0 0 5px rgba(255,213,79,.7));}
+.templeIcon.grandTemple{border-radius:50%;z-index:3;
+  box-shadow:0 0 0 2px rgba(255,213,79,.95),0 0 16px 2px rgba(255,213,79,.45);
+  background:radial-gradient(circle,rgba(255,213,79,.18),transparent 70%);}
+.gt-svg{position:absolute;inset:7px;width:34px;height:34px;fill:#ffd54f;stroke:rgba(60,40,0,.85);stroke-width:.45;
+  filter:drop-shadow(0 0 3px rgba(255,213,79,.75));}
+.tpl-type-row .gt-svg{position:static;width:22px;height:22px;flex-shrink:0;}
+.gt-label{
+  position:absolute;left:50%;top:100%;transform:translate(-50%,3px);
+  padding:0 5px;border-radius:3px;white-space:nowrap;pointer-events:none;
+  font:600 10px/1.5 'Rajdhani',sans-serif;letter-spacing:.4px;color:#ffe082;
+  background:rgba(10,13,20,.8);border:1px solid rgba(255,213,79,.45);
+}
+.tip-god{color:#ffe082;font-size:12px;font-weight:600;}
 /* Sous-catégories "Offensif Terrestre" regroupées */
 .ot-group1{filter:hue-rotate(10deg) saturate(6)brightness(1.1)}   /* Cavaliers / Contondant / Griffons */
 .ot-group2{filter:hue-rotate(150deg)saturate(6)brightness(1.1)}   /* Manticores / Armes Blanche / Chars */
@@ -592,6 +607,9 @@ const GROUPS={
 };
 const groupColor=g=>FRONT_HEX[g.front];
 
+/* Icône des grands temples : fronton + 4 colonnes + socle (dessin maison, en or) */
+const GT_SVG='<svg class="gt-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.4 2.4 8.2h19.2z"/><rect x="3" y="9" width="18" height="1.7"/><rect x="4.4" y="11.3" width="2.1" height="7.2"/><rect x="8.6" y="11.3" width="2.1" height="7.2"/><rect x="13.3" y="11.3" width="2.1" height="7.2"/><rect x="17.5" y="11.3" width="2.1" height="7.2"/><rect x="2.4" y="19" width="19.2" height="2.4"/></svg>';
+
 /* ── Couleurs types temples ── */
 const TYPE_COLORS={
   'OFF T':   {css:'yellow',hex:'#f5c842'},
@@ -607,6 +625,7 @@ const TYPE_LABELS={
   'Portail':'Portail Olympus','DEF':'Défense',
 };
 const CATEGORY_LABELS={
+  'grand':'Grands temples (Olympus)',
   'off nav':'Offensif Naval','portail':'Portail Olympus',
   'def':'Défense','cout':'Coûts (terr/nav)','duree':'Délais de recrutement (terr/nav)',
   'ressources':'Production de ressources','special':'Spécial (mariage, fureur, etc.)',
@@ -618,6 +637,7 @@ const CATEGORY_LABELS={
 /* Couleurs par catégorie (t.category, calculée par build_temples.js pour TOUS les temples —
    soit à partir de newtemplejoue.xlsx quand connue, soit devinée depuis le texte du bonus) */
 const CATEGORY_COLORS={
+  'grand':      {css:'grand',  hex:'#ffd54f'}, // les 8 grands temples (grands_temples.js)
   'off nav':    {css:'blue',   hex:'#4488ff'},
   'portail':    {css:'white',  hex:'#dddddd'},
   'def':        {css:'red',    hex:'#ff5555'},
@@ -729,11 +749,12 @@ function pick(input,byName){
 
 /* ── Légende types temples ── */
 Object.entries(CATEGORY_COLORS).forEach(([cat,{css,hex}])=>{
+  if(cat==='grand'&&!(DATA.temples||[]).some(t=>t.grand))return;   // pas encore de grands temples
   const row=document.createElement('div');
   row.className='tpl-type-row';
   row.dataset.css=css;
   row.innerHTML=`<div class="tpl-color-dot" style="background:${hex}"></div>
-                 <div class="tplSprite small ${css}"></div>
+                 ${cat==='grand'?GT_SVG:`<div class="tplSprite small ${css}"></div>`}
                  <span>${CATEGORY_LABELS[cat]||cat}</span>`;
   row.onclick=()=>toggleCategoryFilter(row,css);
   templeLegend.append(row);
@@ -939,7 +960,9 @@ function positionTooltip(x,y){
 function showTip(t,x,y){
   const col=colorForTemple(t);
   const dot=col?`<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${col.hex};margin-right:5px;vertical-align:middle;"></span>`:'';
-  tooltip.innerHTML=`<div class="tip-name">${t.name||''}</div><div class="tip-bonus">${dot}${t.bonus||''}</div>`;
+  tooltip.innerHTML=t.grand
+    ?`<div class="tip-name">${esc(t.name)}</div><div class="tip-god">Grand temple · ${esc(t.god)}</div><div class="tip-bonus">${esc(t.bonus)}</div>`
+    :`<div class="tip-name">${esc(t.name)}</div><div class="tip-bonus">${dot}${esc(t.bonus)}</div>`;
   tooltip.style.display='block';
   tooltip.dataset.temple='1';
   requestAnimationFrame(()=>tooltip.classList.add('show'));
@@ -994,7 +1017,8 @@ function drawTemples(){
   (DATA.temples||[]).forEach(t=>{
     if(t.x<X_MIN||t.x>=X_MAX||t.y<Y_MIN||t.y>=Y_MAX)return;
     const isFocus=t.focus===true||String(t.focus).toLowerCase()==='true';
-    if(onlyOurs&&!isFocus)return;
+    const isGrand=!!t.grand;
+    if(onlyOurs&&!isFocus&&!isGrand)return;          // les grands temples restent toujours visibles
     const col=colorForTemple(t);
     if(activeCategoryFilters.size&&(!col||!activeCategoryFilters.has(col.css)))return;
     const size=String(t.size||'small').toLowerCase();
@@ -1005,14 +1029,15 @@ function drawTemples(){
 
     const box=document.createElement('div');
     box.className=`templeIcon ${status}`.trim();
-    if(size==='big')box.classList.add('big');
+    if(size==='big'||isGrand)box.classList.add('big');
+    if(isGrand)box.classList.add('grandTemple');
     if(chkHighlight.checked&&isFocus&&!isSecondary)box.classList.add('owned');
     if(highlightSecondary&&isSecondary)box.classList.add('secondaryTarget');
     box.style.left=`${toPx(t.x,X_MIN)}px`;
     box.style.top =`${toPx(t.y,Y_MIN)}px`;
     box.dataset.name    =(t.name||'').toLowerCase();
     box.dataset.tmpltype=(t.type||'').toLowerCase();
-    box.dataset.bonus   =(t.bonus||'').toLowerCase();
+    box.dataset.bonus   =`${t.bonus||''} ${t.god||''} ${isGrand?'grand temple':''}`.toLowerCase();
 
     box.onmouseenter=e=>showTip(t,e.clientX,e.clientY);
     box.onmousemove =e=>positionTooltip(e.clientX,e.clientY);
@@ -1021,7 +1046,8 @@ function drawTemples(){
     const sp=document.createElement('div');
     sp.className=`sprite ${spriteSize}`;
     if(showColor&&col)sp.classList.add(col.css);
-    box.append(sp);
+    if(isGrand)box.insertAdjacentHTML('beforeend',GT_SVG);else box.append(sp);
+    if(isGrand){const lb=document.createElement('span');lb.className='gt-label';lb.textContent=t.god||'';box.append(lb);}
     zoomLayer.append(box);
   });
   applyHighlight();

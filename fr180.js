@@ -21,6 +21,7 @@ const path  = require('node:path');
 
 /* ---- temples définis manuellement ---- */
 const { staticTemples } = require('./temples_static.js');   // créez / complétez ce fichier
+const { grandTemples }  = require('./grands_temples.js');   // les 8 grands temples (Olympus)
 
 const WORLD = 'fr184';
 const BASE  = `http://${WORLD}.grepolis.com/data`;
@@ -101,7 +102,7 @@ const parseTowns     = ([, pid,, x, y, slot])   => ({ player_id:+pid, x:+x, y:+y
   const mapData = {
     alliances: Object.values(aById),
     players  : players,
-    temples  : staticTemples        // <── temples injectés
+    temples  : [...staticTemples, ...grandTemples()]        // <── temples injectés
   };
 
   /* Écriture compacte (≈ 3× plus léger que la version indentée → chargement plus rapide).
