@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Carte – fr187</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Rajdhani:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -46,9 +47,9 @@ body::before{
 ══════════════════════════════════════════════ */
 #app{
   display:grid;
-  grid-template-columns:220px 1fr 270px;
-  grid-template-rows:auto 1fr;
-  min-height:100vh;
+  grid-template-columns:310px minmax(0,1fr) 250px;
+  grid-template-rows:auto minmax(0,1fr);
+  height:100vh;height:100dvh;
   position:relative;z-index:1;
 }
 
@@ -57,7 +58,7 @@ body::before{
 ══════════════════════════════════════════════ */
 #header{
   grid-column:1/-1;
-  padding:12px 20px;
+  padding:8px 18px;
   background:linear-gradient(180deg, rgba(15,20,32,0.98) 0%, rgba(10,13,20,0.90) 100%);
   border-bottom:1px solid var(--border2);
   display:flex;align-items:center;gap:16px;flex-wrap:wrap;
@@ -147,9 +148,9 @@ input[type=range]::-webkit-slider-thumb{
 ══════════════════════════════════════════════ */
 #leftPanel{
   grid-column:1;grid-row:2;
-  padding:14px 10px;
+  padding:14px 12px;
   border-right:1px solid var(--border);
-  overflow-y:auto;max-height:calc(100vh - 58px);
+  overflow-y:auto;min-height:0;
   background:rgba(10,13,20,0.5);
   scrollbar-width:thin;scrollbar-color:var(--border2) transparent;
 }
@@ -182,11 +183,12 @@ input[type=color]{
 ══════════════════════════════════════════════ */
 #center{
   grid-column:2;grid-row:2;
-  display:flex;align-items:flex-start;justify-content:center;padding:18px;
+  display:flex;align-items:center;justify-content:center;padding:14px;
+  min-width:0;min-height:0;container-type:size;
 }
 #mapWrapper{
-  position:relative;
-  width:min(800px,100%);aspect-ratio:1/1;
+  position:relative;flex-shrink:0;
+  width:min(100cqw,100cqh);aspect-ratio:1/1;   /* le plus grand carré qui tient dans la zone centrale */
   border:1px solid var(--border2);border-radius:6px;
   box-shadow:0 0 50px rgba(74,124,255,0.10), 0 0 0 1px rgba(201,168,76,0.10), inset 0 0 60px rgba(0,0,0,0.25);
   overflow:hidden;
@@ -233,9 +235,9 @@ canvas{display:block;width:800px;height:800px;}
 ══════════════════════════════════════════════ */
 #rightPanel{
   grid-column:3;grid-row:2;
-  padding:14px 10px;
+  padding:14px 12px;
   border-left:1px solid var(--border);
-  overflow-y:auto;max-height:calc(100vh - 58px);
+  overflow-y:auto;min-height:0;
   background:rgba(10,13,20,0.5);
   scrollbar-width:thin;scrollbar-color:var(--border2) transparent;
 }
@@ -265,12 +267,58 @@ canvas{display:block;width:800px;height:800px;}
 .filter-hint span:hover{color:var(--gold);}
 #templeLegend{display:flex;flex-direction:column;gap:2px;}
 .tpl-type-row{
-  display:flex;align-items:center;gap:6px;
-  padding:4px 5px;border-radius:4px;font-size:12px;color:var(--text-dim);
-  cursor:pointer;user-select:none;transition:background .15s,color .15s;
+  display:flex;align-items:center;gap:8px;
+  padding:3px 6px;border-radius:5px;font-size:13px;color:var(--text);
+  user-select:none;transition:background .15s,color .15s;
   border:1px solid transparent;
 }
-.tpl-type-row:hover{background:rgba(255,255,255,0.05);color:var(--text);}
+.tpl-type-row:hover{background:rgba(255,255,255,0.05);}
+.tpl-cat.open>.tpl-type-row{background:rgba(74,124,255,.10);border-color:var(--border);}
+.tpl-cat.all-off>.tpl-type-row .tpl-cat-open{opacity:.45;}
+.tpl-cat-check,.tpl-item-check{width:15px;height:15px;flex-shrink:0;accent-color:var(--accent);cursor:pointer;margin:0;}
+.tpl-cat-open{
+  flex:1;min-width:0;display:flex;align-items:center;gap:7px;padding:4px 0;
+  background:none;border:none;color:inherit;font:inherit;text-align:left;cursor:pointer;
+}
+.tpl-cat-open:focus-visible,.tpl-item-btn:focus-visible,.tpl-chip:focus-visible,.mini-btn:focus-visible{outline:1px solid var(--accent);outline-offset:1px;}
+/* Pastilles par type de bonus */
+.tpl-chips{display:flex;flex-wrap:wrap;gap:4px;padding:5px 0 6px;}
+.tpl-chip{
+  padding:2px 8px;border-radius:999px;cursor:pointer;white-space:nowrap;
+  font-family:'Rajdhani',sans-serif;font-size:12px;font-weight:500;line-height:1.5;
+  background:rgba(74,124,255,.18);border:1px solid var(--accent);color:#fff;transition:all .12s;
+}
+.tpl-chip.off{background:none;border-color:var(--border2);color:var(--text-dim);text-decoration:line-through;}
+.tpl-chip.part{background:rgba(74,124,255,.07);border-style:dashed;color:var(--text);}
+.tpl-chip.ghost{background:none;border-color:var(--border2);color:var(--gold2);}
+.tpl-chip:hover{border-color:#fff;color:#fff;}
+/* Boutons globaux, compteur, aide */
+.bulk-row{display:flex;gap:6px;margin-bottom:10px;}
+.mini-btn{
+  flex:1;padding:5px 8px;border-radius:5px;cursor:pointer;
+  background:var(--bg3);border:1px solid var(--border2);color:var(--text);
+  font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:500;transition:border-color .15s,background .15s;
+}
+.mini-btn:hover:not(:disabled){border-color:var(--accent);background:rgba(74,124,255,.18);}
+.mini-btn:disabled{opacity:.4;cursor:default;}
+.link-btn{background:none;border:none;padding:0;color:var(--gold2);font:inherit;text-decoration:underline;cursor:pointer;}
+.link-btn:hover{color:#fff;}
+.panel-count{float:right;font-family:'Rajdhani',sans-serif;font-size:12px;letter-spacing:.3px;color:var(--gold2);text-transform:none;}
+.panel-title.sub{margin-top:18px;}
+.panel-help{font-size:11px;color:var(--text-dim);line-height:1.45;padding:8px 4px 0;opacity:.85;}
+/* Options en pastilles (panneaux latéraux) */
+.opt-row{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 10px;}
+.opt-row .toggle{border:1px solid var(--border);border-radius:999px;padding:3px 10px 3px 7px;font-size:12px;background:rgba(255,255,255,.02);}
+.opt-row .toggle:has(input:checked){border-color:var(--accent);background:rgba(74,124,255,.14);color:#fff;}
+#rightPanel .ctrl-group{margin-bottom:6px;}
+#rightPanel .pick-input{flex:1;min-width:0;width:auto;}
+#rightPanel .slider-wrap{margin:10px 0 2px;}
+#rightPanel .slider-wrap input[type=range]{flex:1;min-width:0;width:auto;}
+#mapHint{
+  position:absolute;left:8px;bottom:8px;z-index:10;pointer-events:none;
+  padding:3px 8px;border-radius:5px;background:rgba(15,20,32,.7);
+  color:var(--text-dim);font-size:11px;letter-spacing:.3px;
+}
 .tpl-type-row.active{background:rgba(74,124,255,0.12);color:var(--text);border-color:var(--border2);}
 .tpl-type-row.active .tpl-color-dot{box-shadow:0 0 6px currentColor;}
 .tpl-color-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;border:1px solid rgba(255,255,255,0.15);}
@@ -279,23 +327,19 @@ canvas{display:block;width:800px;height:800px;}
 .tpl-cat.open .tpl-chev{transform:rotate(90deg);}
 .tpl-cat-name{flex:1;min-width:0;line-height:1.2;}
 .tpl-cat-count{font-size:11px;color:var(--text-dim);flex-shrink:0;font-variant-numeric:tabular-nums;}
-.tpl-filter-btn{
-  width:22px;height:22px;flex-shrink:0;border-radius:4px;cursor:pointer;
-  background:none;border:1px solid transparent;color:var(--text-dim);
-  display:flex;align-items:center;justify-content:center;transition:all .15s;
-}
-.tpl-filter-btn svg{width:12px;height:12px;fill:currentColor;}
-.tpl-filter-btn:hover{color:var(--text);border-color:var(--border2);background:rgba(255,255,255,.06);}
-.tpl-type-row.active .tpl-filter-btn{color:#fff;background:var(--accent);border-color:var(--accent);}
-.tpl-list{display:flex;flex-direction:column;gap:1px;margin:2px 0 6px 9px;padding-left:6px;border-left:1px solid var(--border2);}
+.tpl-list{display:flex;flex-direction:column;gap:1px;margin:2px 0 8px 13px;padding-left:8px;border-left:1px solid var(--border2);}
 .tpl-item{
-  display:flex;align-items:baseline;gap:6px;width:100%;text-align:left;
-  padding:4px 6px;border-radius:4px;cursor:pointer;
-  background:none;border:1px solid transparent;color:var(--text);
-  font-family:'Rajdhani',sans-serif;font-size:13px;line-height:1.25;transition:background .12s;
+  display:flex;align-items:flex-start;gap:7px;
+  padding:1px 6px 1px 0;border-radius:4px;border:1px solid transparent;transition:background .12s;
+}
+.tpl-item .tpl-item-check{margin-top:6px;}
+.tpl-item-btn{
+  flex:1;min-width:0;display:flex;align-items:baseline;gap:6px;text-align:left;
+  padding:4px 0;cursor:pointer;background:none;border:none;color:var(--text);
+  font-family:'Rajdhani',sans-serif;font-size:14px;line-height:1.25;
 }
 .tpl-item:hover{background:rgba(255,255,255,.06);}
-.tpl-item:focus-visible,.tpl-type-row:focus-visible{outline:1px solid var(--accent);outline-offset:-1px;}
+.tpl-item.off .tpl-item-btn{opacity:.45;}
 .tpl-item.selected{background:rgba(201,168,76,.14);border-color:rgba(201,168,76,.45);}
 .tpl-item.selected .tpl-item-name{color:var(--gold2);font-weight:600;}
 .tpl-mark{width:8px;height:8px;flex-shrink:0;border-radius:50%;align-self:center;font-size:10px;line-height:8px;text-align:center;}
@@ -339,12 +383,13 @@ canvas{display:block;width:800px;height:800px;}
 ══════════════════════════════════════════════ */
 .templeIcon{
   position:absolute;left:0;top:0;width:24px;height:24px;
-  transform:translate(-12px,-12px);pointer-events:auto;
+  /* --ik : grossit les icônes quand la carte est affichée en petit (téléphone), pour qu'elles restent lisibles */
+  transform:translate(-12px,-12px) scale(var(--ik,1));pointer-events:auto;
   animation:templeFadeIn .25s ease-out;
   z-index:1;
 }
-@keyframes templeFadeIn{from{opacity:0;transform:translate(-12px,-12px) scale(.6);}to{opacity:1;transform:translate(-12px,-12px) scale(1);}}
-.templeIcon.big{width:48px;height:48px;transform:translate(-24px,-24px);animation:none;}
+@keyframes templeFadeIn{from{opacity:0;transform:translate(-12px,-12px) scale(calc(var(--ik,1)*.6));}to{opacity:1;transform:translate(-12px,-12px) scale(var(--ik,1));}}
+.templeIcon.big{width:48px;height:48px;transform:translate(-24px,-24px) scale(var(--ik,1));animation:none;}
 .templeIcon::before{
   content:"";position:absolute;inset:0;border-radius:50%;
   transform:translate(-2px,-1px) scale(1.35);opacity:.25;z-index:0;background:transparent;
@@ -511,14 +556,22 @@ canvas{display:block;width:800px;height:800px;}
    RESPONSIVE — placé en fin de feuille de style pour
    primer correctement sur les règles de mise en page ci-dessus
 ══════════════════════════════════════════════ */
+@media (max-width:1100px){
+  #app{grid-template-columns:280px minmax(0,1fr) 220px;}
+}
 @media (max-width:900px){
-  #app{grid-template-columns:1fr;grid-template-rows:auto auto auto auto;}
+  /* Téléphone / fenêtre étroite : carte, puis temples, puis villes, en une colonne qui défile */
+  #app{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto auto;height:auto;min-height:100vh;}
   #header{grid-column:1;order:1;}
-  #center{grid-column:1;grid-row:auto;order:2;padding:12px;}
-  #leftPanel{grid-column:1;grid-row:auto;order:3;max-height:260px;border-right:none;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
-  #rightPanel{grid-column:1;grid-row:auto;order:4;max-height:440px;border-left:none;border-top:1px solid var(--border);}
+  #center{grid-column:1;grid-row:auto;order:2;padding:10px;container-type:normal;display:block;}
+  #mapWrapper{width:100%;max-width:640px;margin:0 auto;}
+  #leftPanel{grid-column:1;grid-row:auto;order:3;border-right:none;border-top:1px solid var(--border);overflow:visible;}
+  #rightPanel{grid-column:1;grid-row:auto;order:4;border-left:none;border-top:1px solid var(--border);overflow:visible;}
   #header h1{font-size:15px;}
-  .ctrl-group{padding:4px 7px;}
+  #mapHint{display:none;}
+  .tpl-item-btn{padding:7px 0;}
+  .tpl-cat-open{padding:8px 0;}
+  .tpl-cat-check,.tpl-item-check{width:18px;height:18px;}
 }
 @media (max-width:900px){
   #refreshBox{margin-left:0;}
@@ -551,80 +604,6 @@ canvas{display:block;width:800px;height:800px;}
 <div id="header">
   <h1>GREPOLIS <span>· FR187</span></h1>
 
-  <div class="ctrl-group">
-    <span class="ctrl-label">Joueur</span>
-    <input id="playerSel" class="pick-input" list="playerList" placeholder="Nom du joueur…" autocomplete="off" spellcheck="false"><datalist id="playerList"></datalist>
-    <button class="add-btn" id="addPlayer">＋</button>
-  </div>
-
-  <div class="ctrl-group">
-    <span class="ctrl-label">Alliance</span>
-    <input id="allySel" class="pick-input" list="allyList" placeholder="Nom de l’alliance…" autocomplete="off" spellcheck="false"><datalist id="allyList"></datalist>
-    <button class="add-btn" id="addAlly">＋</button>
-  </div>
-
-  <div class="sep"></div>
-
-  <div class="toggle-cluster">
-    <span class="cluster-label">Fronts</span>
-    <div class="toggle-row">
-      <label class="toggle">
-        <input type="checkbox" id="chkAllies">
-        <div class="toggle-dot"></div>
-        <span style="color:#00d4ff">⚔ Alliés</span>
-      </label>
-      <label class="toggle">
-        <input type="checkbox" id="chkRouge">
-        <div class="toggle-dot"></div>
-        <span style="color:#ff3d3d">● Ennemis</span>
-      </label>
-    </div>
-  </div>
-
-  <div class="toggle-cluster">
-    <span class="cluster-label">Temples</span>
-    <div class="toggle-row">
-      <label class="toggle hidden">
-        <input type="checkbox" id="chkContest">
-        <div class="toggle-dot"></div>
-        Contest
-      </label>
-      <label class="toggle">
-        <input type="checkbox" id="chkColor" checked>
-        <div class="toggle-dot"></div>
-        Colorés
-      </label>
-      <label class="toggle" id="chkFocusRow" title="N'affiche que les temples de newtemplejoue.xlsx (cibles principales et secondaires)">
-        <input type="checkbox" id="chkFocus" checked>
-        <div class="toggle-dot"></div>
-        Nos temples seuls
-      </label>
-      <label class="toggle" id="chkEnvisagedRow" title="N'affiche que les temples envisagés (templeenvisage.xlsx). Les grands temples restent visibles.">
-        <input type="checkbox" id="chkEnvisaged">
-        <div class="toggle-dot"></div>
-        <span style="color:#b388ff">◇ Envisagés</span>
-      </label>
-      <label class="toggle" id="chkHighlightRow" title="Entoure nos cibles principales d'un anneau vert, même quand tous les temples sont affichés">
-        <input type="checkbox" id="chkHighlight" checked>
-        <div class="toggle-dot"></div>
-        <span style="color:#00e676">◎ Surligner</span>
-      </label>
-      <label class="toggle" id="chkSecondaryRow" title="Entoure nos cibles secondaires (« Poubelle ») d'un anneau jaune">
-        <input type="checkbox" id="chkSecondary" checked>
-        <div class="toggle-dot"></div>
-        <span style="color:#ffd600">◎ Secondaires</span>
-      </label>
-    </div>
-  </div>
-
-  <div class="sep"></div>
-
-  <div class="slider-wrap">
-    <span style="color:var(--text-dim);font-size:12px;">Villes</span>
-    <input type="range" id="citySize" min="0" max="100" value="0">
-    <span id="cityVal">2</span>
-  </div>
-
   <div id="refreshBox" title="Les données sont rechargées automatiquement toutes les 30 minutes">
     <span class="fresh-dot" id="freshDot"></span>
     <span>Données <b id="dataAge">—</b></span>
@@ -634,14 +613,63 @@ canvas{display:block;width:800px;height:800px;}
   </div>
 </div>
 
-<!-- ══ GAUCHE ══ -->
+<!-- ══ GAUCHE : TEMPLES ══ -->
 <div id="leftPanel">
-  <div class="panel-title">Légende</div>
-  <div id="legendEmpty" class="legend-empty">Coche un front ou ajoute un joueur / une alliance pour afficher ses villes.</div>
-  <div id="legend">
-    <div class="leg-sec hidden" data-sec="allie"><div class="leg-sec-title">Alliés<span class="leg-sec-count"></span></div><div class="leg-sec-body"></div></div>
-    <div class="leg-sec hidden" data-sec="ennemi"><div class="leg-sec-title">Ennemis<span class="leg-sec-count"></span></div><div class="leg-sec-body"></div></div>
-    <div class="leg-sec hidden" data-sec="perso"><div class="leg-sec-title">Sélection perso<span class="leg-sec-count"></span></div><div class="leg-sec-body"></div></div>
+  <div class="panel-title">Temples <span id="tplSummary" class="panel-count"></span></div>
+
+  <div class="search-wrap">
+    <input id="templeSearch" placeholder="Chercher : nom, bonus, mer…  ( / )">
+    <button id="clearSearch" class="clear-btn hidden" title="Effacer la recherche" type="button">×</button>
+  </div>
+  <div id="searchCount" class="search-count hidden">
+    <span id="searchCountText"></span>
+    <button id="onlyResults" type="button" class="link-btn" title="Masque sur la carte tous les temples qui ne correspondent pas à la recherche">n'afficher qu'eux</button>
+  </div>
+
+  <div class="bulk-row">
+    <button id="showAllTpl" type="button" class="mini-btn" title="Coche tous les temples">Tout afficher</button>
+    <button id="hideAllTpl" type="button" class="mini-btn" title="Décoche tous les temples : coche ensuite seulement ceux que tu veux voir">Tout masquer</button>
+  </div>
+
+  <div id="templeLegend"></div>
+  <div class="panel-help">☑ affiche ou masque sur la carte.<br>Clic sur un nom : la carte se centre dessus.</div>
+
+  <div class="panel-title sub">Options d'affichage</div>
+  <div class="cluster-label">Filtrer</div>
+  <div class="opt-row">
+    <label class="toggle hidden">
+      <input type="checkbox" id="chkContest">
+      <div class="toggle-dot"></div>
+      Contest
+    </label>
+    <label class="toggle" id="chkFocusRow" title="N'affiche que les temples de newtemplejoue.xlsx (cibles principales et secondaires)">
+      <input type="checkbox" id="chkFocus" checked>
+      <div class="toggle-dot"></div>
+      Nos cibles seules
+    </label>
+    <label class="toggle" id="chkEnvisagedRow" title="N'affiche que les temples envisagés (templeenvisage.xlsx). Les grands temples restent visibles.">
+      <input type="checkbox" id="chkEnvisaged">
+      <div class="toggle-dot"></div>
+      <span style="color:#b388ff">◇ Envisagés seuls</span>
+    </label>
+  </div>
+  <div class="cluster-label">Apparence</div>
+  <div class="opt-row">
+    <label class="toggle" title="Colore chaque temple selon sa catégorie">
+      <input type="checkbox" id="chkColor" checked>
+      <div class="toggle-dot"></div>
+      Couleurs
+    </label>
+    <label class="toggle" id="chkHighlightRow" title="Entoure nos cibles principales d'un anneau vert, même quand tous les temples sont affichés">
+      <input type="checkbox" id="chkHighlight" checked>
+      <div class="toggle-dot"></div>
+      <span style="color:#00e676">◎ Cibles</span>
+    </label>
+    <label class="toggle" id="chkSecondaryRow" title="Entoure nos cibles secondaires (« Poubelle ») d'un anneau jaune">
+      <input type="checkbox" id="chkSecondary" checked>
+      <div class="toggle-dot"></div>
+      <span style="color:#ffd600">◎ Secondaires</span>
+    </label>
   </div>
 </div>
 
@@ -653,6 +681,7 @@ canvas{display:block;width:800px;height:800px;}
     </div>
     <div id="mapLoading">Chargement de la carte…</div>
     <div id="statusBadge"></div>
+    <div id="mapHint">Molette : zoom · Glisser : déplacer · Double-clic : zoom rapide</div>
     <div id="zoomControls">
       <button id="zoomIn" type="button" title="Zoomer">＋</button>
       <button id="zoomOut" type="button" title="Dézoomer">－</button>
@@ -661,17 +690,47 @@ canvas{display:block;width:800px;height:800px;}
   </div>
 </div>
 
-<!-- ══ DROITE ══ -->
+<!-- ══ DROITE : VILLES ══ -->
 <div id="rightPanel">
-  <div class="panel-title">Temples</div>
-  <div class="search-wrap">
-    <input id="templeSearch" placeholder="Nom, type, bonus…">
-    <button id="clearSearch" class="clear-btn hidden" title="Effacer la recherche" type="button">×</button>
+  <div class="panel-title">Villes</div>
+
+  <div class="cluster-label">Fronts</div>
+  <div class="opt-row">
+    <label class="toggle">
+      <input type="checkbox" id="chkAllies">
+      <div class="toggle-dot"></div>
+      <span style="color:#00d4ff">⚔ Alliés</span>
+    </label>
+    <label class="toggle">
+      <input type="checkbox" id="chkRouge">
+      <div class="toggle-dot"></div>
+      <span style="color:#ff3d3d">● Ennemis</span>
+    </label>
   </div>
-  <div id="searchCount" class="search-count hidden"></div>
-  <div id="filterHint" class="filter-hint hidden">Filtre actif — <span id="clearFilters">tout afficher</span></div>
-  <div class="legend-empty">Clique une catégorie pour voir ses temples, puis un temple pour le trouver sur la carte.</div>
-  <div id="templeLegend"></div>
+
+  <div class="cluster-label">Ajouter sur la carte</div>
+  <div class="ctrl-group">
+    <input id="playerSel" class="pick-input" list="playerList" placeholder="Un joueur…" aria-label="Joueur à ajouter" autocomplete="off" spellcheck="false"><datalist id="playerList"></datalist>
+    <button class="add-btn" id="addPlayer" title="Ajouter ce joueur">＋</button>
+  </div>
+  <div class="ctrl-group">
+    <input id="allySel" class="pick-input" list="allyList" placeholder="Une alliance…" aria-label="Alliance à ajouter" autocomplete="off" spellcheck="false"><datalist id="allyList"></datalist>
+    <button class="add-btn" id="addAlly" title="Ajouter cette alliance">＋</button>
+  </div>
+
+  <div class="slider-wrap">
+    <span class="cluster-label">Taille des villes</span>
+    <input type="range" id="citySize" min="0" max="100" value="0">
+    <span id="cityVal">2</span>
+  </div>
+
+  <div class="panel-title sub">Légende</div>
+  <div id="legendEmpty" class="legend-empty">Coche un front ou ajoute un joueur / une alliance pour afficher ses villes.</div>
+  <div id="legend">
+    <div class="leg-sec hidden" data-sec="allie"><div class="leg-sec-title">Alliés<span class="leg-sec-count"></span></div><div class="leg-sec-body"></div></div>
+    <div class="leg-sec hidden" data-sec="ennemi"><div class="leg-sec-title">Ennemis<span class="leg-sec-count"></span></div><div class="leg-sec-body"></div></div>
+    <div class="leg-sec hidden" data-sec="perso"><div class="leg-sec-title">Sélection perso<span class="leg-sec-count"></span></div><div class="leg-sec-body"></div></div>
+  </div>
 </div>
 
 <div id="tooltip"></div>
@@ -949,36 +1008,43 @@ function pick(input,byName){
 
 /* ── Légende types temples ── */
 /* Chaque catégorie est une ligne dépliable :
-     - clic sur la ligne      → ouvre / ferme la liste de ses temples
-     - clic sur l'entonnoir   → n'affiche que cette catégorie sur la carte
-     - clic sur un temple     → le sélectionne et centre la carte dessus */
-const FILTER_SVG='<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1.5 2.5h13L9.6 8.4v4.4l-3.2 1.6v-6z"/></svg>';
+     - case à cocher de la ligne → affiche / masque toute la catégorie sur la carte
+     - clic sur le nom           → ouvre / ferme la liste de ses temples
+     - dans la liste : une case par temple, des pastilles par type de bonus (ex. « 8% bibi »),
+       et un clic sur le nom d'un temple centre la carte dessus */
 const openCats=new Set();        // catégories dépliées (data-css)
+const hiddenKeys=new Set();      // temples décochés = masqués sur la carte (clé x|y)
+const catTemples=new Map();      // data-css → temples de la catégorie (recalculé à chaque rendu)
 let selectedKey=null;            // temple sélectionné (clé x|y)
 const tKey=t=>`${t.x}|${t.y}`;
 const isTrue=v=>v===true||String(v).toLowerCase()==='true';
+const typeLabel=t=>String((t.grand?t.god:t.type)||'autre');
+/* Affiche (vis=true) ou masque une liste de temples, puis met tout à jour */
+function setVisible(list,vis){
+  list.forEach(t=>vis?hiddenKeys.delete(tKey(t)):hiddenKeys.add(tKey(t)));
+  drawTemples();renderTempleLists();saveState();
+}
 function addCategoryRow(css,label,col,iconHtml){
   const wrap=document.createElement('div');
   wrap.className='tpl-cat';
   wrap.dataset.css=css;
-  wrap.innerHTML=`<div class="tpl-type-row" data-css="${css}" role="button" tabindex="0" aria-expanded="false">
-                    <span class="tpl-chev">▸</span>
-                    ${iconHtml}
-                    <span class="tpl-cat-name">${label}</span>
-                    <span class="tpl-cat-count"></span>
-                    <button class="tpl-filter-btn" type="button" title="N'afficher que cette catégorie sur la carte" aria-label="Filtrer la carte sur ${esc(label)}">${FILTER_SVG}</button>
+  wrap.innerHTML=`<div class="tpl-type-row" data-css="${css}">
+                    <input type="checkbox" class="tpl-cat-check" title="Afficher / masquer toute la catégorie sur la carte" aria-label="Afficher ${esc(label)} sur la carte">
+                    <button type="button" class="tpl-cat-open" aria-expanded="false" title="Voir les temples de cette catégorie">
+                      <span class="tpl-chev">▸</span>
+                      ${iconHtml}
+                      <span class="tpl-cat-name">${label}</span>
+                      <span class="tpl-cat-count"></span>
+                    </button>
                   </div>
                   <div class="tpl-list hidden"></div>`;
-  const row=wrap.querySelector('.tpl-type-row');
-  applyTint(row.querySelector('.tplSprite'),col);
-  const toggleOpen=()=>{
+  applyTint(wrap.querySelector('.tplSprite'),col);
+  wrap.querySelector('.tpl-cat-open').onclick=()=>{
     if(searchInput.value.trim())return;          // pendant une recherche, les listes suivent les résultats
     openCats.has(css)?openCats.delete(css):openCats.add(css);
     renderTempleLists();saveState();
   };
-  row.onclick=toggleOpen;
-  row.onkeydown=e=>{if(e.target===row&&(e.key==='Enter'||e.key===' ')){e.preventDefault();toggleOpen();}};
-  row.querySelector('.tpl-filter-btn').onclick=e=>{e.stopPropagation();toggleCategoryFilter(row,css);};
+  wrap.querySelector('.tpl-cat-check').onchange=e=>setVisible(catTemples.get(css)||[],e.target.checked);
   templeLegend.append(wrap);
 }
 Object.entries(CATEGORY_COLORS).forEach(([cat,col])=>{
@@ -998,55 +1064,100 @@ function templeMatches(t,term){
   return `${t.name||''} ${t.type||''} ${t.bonus||''} ${t.god||''} m${t.sea??''} ${t.grand?'grand temple':''} ${t.envisaged===true?'envisagé':''}`
     .toLowerCase().includes(term);
 }
+/* Pastilles en tête de liste : Tout / Aucun, puis une par type de bonus de la catégorie */
+function typeChips(all){
+  const box=document.createElement('div');
+  box.className='tpl-chips';
+  const chip=(text,cls,title,fn)=>{
+    const b=document.createElement('button');
+    b.type='button';b.className='tpl-chip '+cls;b.textContent=text;b.title=title;b.onclick=fn;
+    return b;
+  };
+  box.append(chip('Tout','ghost','Afficher toute la catégorie',()=>setVisible(all,true)),
+             chip('Aucun','ghost','Masquer toute la catégorie',()=>setVisible(all,false)));
+  const byType=new Map();
+  all.forEach(t=>{const k=typeLabel(t);if(!byType.has(k))byType.set(k,[]);byType.get(k).push(t);});
+  if(byType.size>1){
+    [...byType].sort((a,b)=>a[0].localeCompare(b[0],'fr',{numeric:true})).forEach(([k,ts])=>{
+      const n=ts.filter(t=>!hiddenKeys.has(tKey(t))).length;
+      box.append(chip(`${k} · ${ts.length}`,n===ts.length?'on':n?'part':'off',
+        `${n===ts.length?'Masquer':'Afficher'} les ${ts.length} temple${ts.length>1?'s':''} « ${k} »`,
+        ()=>setVisible(ts,n!==ts.length)));
+    });
+  }
+  return box;
+}
 function templeItem(t){
-  const sel=tKey(t)===selectedKey;
-  const b=document.createElement('button');
-  b.type='button';
-  b.className='tpl-item'+(sel?' selected':'');
-  b.title=t.bonus||'';
+  const sel=tKey(t)===selectedKey,hid=hiddenKeys.has(tKey(t));
+  const row=document.createElement('div');
+  row.className='tpl-item'+(sel?' selected':'')+(hid?' off':'');
   const mark=isTrue(t.secondary)?'<span class="tpl-mark sec" title="Cible secondaire"></span>'
             :isTrue(t.focus)    ?'<span class="tpl-mark own" title="Cible principale"></span>'
             :t.envisaged===true ?'<span class="tpl-mark env" title="Envisagé">◇</span>'
             :'<span class="tpl-mark"></span>';
   const sea=t.sea??`${Math.floor(t.x/100)}${Math.floor(t.y/100)}`;
-  b.innerHTML=`${mark}<span class="tpl-item-main">
+  row.innerHTML=`<input type="checkbox" class="tpl-item-check"${hid?'':' checked'} title="Afficher sur la carte" aria-label="Afficher ${esc(t.name)} sur la carte">
+    <button type="button" class="tpl-item-btn" title="${esc(t.bonus||'')}">${mark}<span class="tpl-item-main">
       <span class="tpl-item-name">${esc(t.name)}</span>
-      <span class="tpl-item-type">${esc(t.grand?t.god:t.type)}</span>
+      <span class="tpl-item-type">${esc(typeLabel(t))}</span>
       ${sel?`<span class="tpl-item-bonus">${esc(t.bonus)}<small>Mer ${esc(sea)} · ${t.x}|${t.y}</small></span>`:''}
-    </span>`;
-  b.onclick=()=>selectTemple(sel?null:t,{center:true});
-  return b;
+    </span></button>`;
+  row.querySelector('.tpl-item-check').onchange=e=>setVisible([t],e.target.checked);
+  row.querySelector('.tpl-item-btn').onclick=()=>selectTemple(sel?null:t,{center:true});
+  return row;
 }
 function renderTempleLists(){
   const term=searchInput.value.trim().toLowerCase();
-  const groups=new Map();
+  catTemples.clear();
   (DATA.temples||[]).forEach(t=>{
     const css=colorForTemple(t)?.css;
     if(!css)return;
-    if(!groups.has(css))groups.set(css,[]);
-    groups.get(css).push(t);
+    if(!catTemples.has(css))catTemples.set(css,[]);
+    catTemples.get(css).push(t);
   });
-  let found=0;
+  let found=0,total=0,visible=0;
   templeLegend.querySelectorAll('.tpl-cat').forEach(wrap=>{
-    const css=wrap.dataset.css,all=groups.get(css)||[];
+    const css=wrap.dataset.css,all=catTemples.get(css)||[];
     const list=term?all.filter(t=>templeMatches(t,term)):all;
-    found+=list.length;
+    const nVis=all.filter(t=>!hiddenKeys.has(tKey(t))).length;
+    found+=list.length;total+=all.length;visible+=nVis;
     const open=term?list.length>0:openCats.has(css);
-    wrap.classList.toggle('hidden',!!term&&!list.length);
+    wrap.classList.toggle('hidden',!all.length||(!!term&&!list.length));
     wrap.classList.toggle('open',open);
-    wrap.querySelector('.tpl-type-row').setAttribute('aria-expanded',open);
-    wrap.querySelector('.tpl-cat-count').textContent=term?`${list.length}/${all.length}`:all.length;
+    wrap.classList.toggle('all-off',nVis===0);
+    const chk=wrap.querySelector('.tpl-cat-check');
+    chk.checked=nVis>0;
+    chk.indeterminate=nVis>0&&nVis<all.length;
+    wrap.querySelector('.tpl-cat-open').setAttribute('aria-expanded',open);
+    wrap.querySelector('.tpl-cat-count').textContent=term?`${list.length} trouvé${list.length>1?'s':''}`
+      :nVis===all.length?all.length:`${nVis}/${all.length}`;
     const listEl=wrap.querySelector('.tpl-list');
     listEl.classList.toggle('hidden',!open);
-    listEl.replaceChildren(...(open?[...list].sort((a,b)=>String(a.name).localeCompare(String(b.name),'fr')).map(templeItem):[]));
+    if(!open){listEl.replaceChildren();return;}
+    const items=[...list].sort((a,b)=>String(a.name).localeCompare(String(b.name),'fr')).map(templeItem);
+    listEl.replaceChildren(...(term?[]:[typeChips(all)]),...items);
   });
+  document.getElementById('tplSummary').textContent=visible===total?`${total}`:`${visible}/${total} cochés`;
+  document.getElementById('showAllTpl').disabled=visible===total;
+  document.getElementById('hideAllTpl').disabled=visible===0;
   if(term){
-    searchCount.textContent=found===0?'Aucun résultat':`${found} temple${found>1?'s':''} trouvé${found>1?'s':''}`;
+    document.getElementById('searchCountText').textContent=found===0?'Aucun résultat':`${found} temple${found>1?'s':''} trouvé${found>1?'s':''}`;
+    document.getElementById('onlyResults').classList.toggle('hidden',found===0);
     searchCount.classList.remove('hidden');
   }else{
     searchCount.classList.add('hidden');
   }
 }
+/* Boutons globaux : tout afficher / tout masquer / ne garder que les résultats de la recherche */
+document.getElementById('showAllTpl').onclick=()=>{hiddenKeys.clear();setVisible([],true);};
+document.getElementById('hideAllTpl').onclick=()=>setVisible(DATA.temples||[],false);
+document.getElementById('onlyResults').onclick=()=>{
+  const term=searchInput.value.trim().toLowerCase();
+  if(!term)return;
+  const all=DATA.temples||[];
+  all.forEach(t=>hiddenKeys.add(tKey(t)));
+  setVisible(all.filter(t=>templeMatches(t,term)),true);
+};
 /* Sélection d'un temple (depuis la liste ou la carte). Un temple sélectionné est toujours
    dessiné, même si un filtre le masquerait. */
 function selectTemple(t,{center=false,scroll=false}={}){
@@ -1217,31 +1328,9 @@ function updateStatusBadge(){
   const total=(DATA.temples||[]).length;
   const parts=[`<b>${shown}</b>/${total} temples`];
   if(chkEnvisaged.checked&&hasEnvisaged())parts.push('envisagés');
-  if(activeCategoryFilters.size)parts.push(`${activeCategoryFilters.size} catégorie${activeCategoryFilters.size>1?'s':''}`);
+  const masked=total-(DATA.temples||[]).filter(t=>!hiddenKeys.has(tKey(t))).length;
+  if(masked)parts.push(`${masked} décoché${masked>1?'s':''}`);
   statusBadge.innerHTML=parts.join(' · ');
-}
-
-/* ── Filtre par catégorie (clic sur la légende de droite) ── */
-const activeCategoryFilters=new Set();
-const filterHint=document.getElementById('filterHint');
-document.getElementById('clearFilters').onclick=()=>{
-  activeCategoryFilters.clear();
-  document.querySelectorAll('.tpl-type-row.active').forEach(r=>r.classList.remove('active'));
-  filterHint.classList.add('hidden');
-  draw();
-  saveState();
-};
-function toggleCategoryFilter(row,css){
-  if(activeCategoryFilters.has(css)){
-    activeCategoryFilters.delete(css);
-    row.classList.remove('active');
-  }else{
-    activeCategoryFilters.add(css);
-    row.classList.add('active');
-  }
-  filterHint.classList.toggle('hidden',activeCategoryFilters.size===0);
-  draw();
-  saveState();
 }
 
 /* ── Tooltip ── */
@@ -1322,7 +1411,7 @@ function drawTemples(){
     const isSel=tKey(t)===selectedKey;              // le temple sélectionné passe outre les filtres
     if(!isSel&&(onlyOurs||onlyEnv)&&!isGrand&&!((onlyOurs&&isFocus)||(onlyEnv&&isEnvisaged)))return;
     const col=colorForTemple(t);
-    if(!isSel&&activeCategoryFilters.size&&(!col||!activeCategoryFilters.has(col.css)))return;
+    if(!isSel&&hiddenKeys.has(tKey(t)))return;      // décoché dans le panneau Temples
     const size=String(t.size||'small').toLowerCase();
     const isSecondary=t.secondary===true||String(t.secondary).toLowerCase()==='true';
 
@@ -1544,7 +1633,7 @@ function saveState(){
       return {k,id,c:col[id],v:!!vis[id],n:r.querySelector('.leg-name > span').textContent};
     });
     const toggles=Object.fromEntries(STATE_TOGGLES.map(el=>[el.id,el.checked]));
-    localStorage.setItem(STORE_KEY,JSON.stringify({rows,toggles,city:citySize.value,cats:[...activeCategoryFilters],open:[...openCats],palIdx}));
+    localStorage.setItem(STORE_KEY,JSON.stringify({rows,toggles,city:citySize.value,hid:[...hiddenKeys],open:[...openCats],palIdx}));
   }catch(e){/* stockage indisponible (navigation privée…) : on continue sans */}
 }
 function restoreState(){
@@ -1560,11 +1649,12 @@ function restoreState(){
       if(!o&&isP)return;                                   // joueur disparu
       addRow(r.id,o?o.name:r.n,r.c||palette[0],isP?visP:visA,isP?colP:colA,r.v!==false);
     });
-    (st.cats||[]).forEach(css=>{
-      const row=templeLegend.querySelector(`.tpl-type-row[data-css="${CSS.escape(css)}"]`);
-      if(row){activeCategoryFilters.add(css);row.classList.add('active');}
-    });
-    filterHint.classList.toggle('hidden',activeCategoryFilters.size===0);
+    if(Array.isArray(st.hid)){
+      const known=new Set((DATA.temples||[]).map(tKey));
+      st.hid.forEach(k=>{if(known.has(k))hiddenKeys.add(k);});
+    }else if(st.cats?.length){               // ancien format : filtre par catégories entières
+      (DATA.temples||[]).forEach(t=>{if(!st.cats.includes(colorForTemple(t)?.css))hiddenKeys.add(tKey(t));});
+    }
     (st.open||[]).forEach(css=>openCats.add(css));
     if(Number.isFinite(st.palIdx))palIdx=st.palIdx;
   }finally{restoring=false;}
@@ -1696,6 +1786,7 @@ function clampPan(){
 function recomputeFitScale(){
   if(!mapWrapper.clientWidth)return;
   fitScale=mapWrapper.clientWidth/800;
+  zoomLayer.style.setProperty('--ik',Math.max(1,0.8/fitScale).toFixed(3));
   clampPan();
   applyTransform();
 }
@@ -1713,6 +1804,7 @@ function setZoom(newZoom,screenX,screenY){
   applyTransform();
 }
 window.addEventListener('resize',recomputeFitScale);
+if(window.ResizeObserver)new ResizeObserver(()=>recomputeFitScale()).observe(mapWrapper);   // la carte suit la place disponible
 
 /* Molette : zoom centré sur le curseur */
 mapWrapper.addEventListener('wheel',e=>{
