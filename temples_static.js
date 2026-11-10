@@ -1,5 +1,5 @@
 // généré automatiquement par build_temples.js
-// source : newtemple.xlsx
+// source : newtemple.xlsx + templeenvisage.xlsx
 const staticTemples = [
   {
     id: 1,
@@ -15,7 +15,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 2,
@@ -31,7 +32,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 3,
@@ -47,7 +49,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 4,
@@ -63,7 +66,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 5,
@@ -79,7 +83,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 6,
@@ -95,7 +100,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 7,
@@ -111,7 +117,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 8,
@@ -127,7 +134,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 9,
@@ -143,7 +151,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 10,
@@ -159,7 +168,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 11,
@@ -175,7 +185,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 12,
@@ -191,7 +202,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 13,
@@ -207,7 +219,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 14,
@@ -223,7 +236,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 15,
@@ -239,7 +253,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 16,
@@ -255,7 +270,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 17,
@@ -271,7 +287,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 18,
@@ -287,7 +304,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 19,
@@ -303,7 +321,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 20,
@@ -319,7 +338,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 21,
@@ -335,7 +355,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 22,
@@ -351,7 +372,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 23,
@@ -367,7 +389,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 24,
@@ -383,7 +406,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 25,
@@ -399,7 +423,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 26,
@@ -415,7 +440,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 27,
@@ -431,7 +457,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 28,
@@ -447,7 +474,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 29,
@@ -463,7 +491,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 30,
@@ -479,7 +508,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 31,
@@ -495,7 +525,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 32,
@@ -511,7 +542,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 33,
@@ -527,7 +559,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 34,
@@ -543,7 +576,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 35,
@@ -559,7 +593,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 36,
@@ -575,7 +610,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 37,
@@ -591,7 +627,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 38,
@@ -607,7 +644,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 39,
@@ -623,7 +661,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 40,
@@ -639,7 +678,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 41,
@@ -655,7 +695,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 42,
@@ -671,7 +712,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 43,
@@ -687,7 +729,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 44,
@@ -703,7 +746,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 45,
@@ -719,7 +763,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 46,
@@ -735,7 +780,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 47,
@@ -751,7 +797,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 48,
@@ -767,7 +814,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 49,
@@ -783,7 +831,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 50,
@@ -799,7 +848,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 51,
@@ -815,7 +865,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 52,
@@ -831,7 +882,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 53,
@@ -847,7 +899,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 54,
@@ -863,7 +916,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 55,
@@ -879,7 +933,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 56,
@@ -895,7 +950,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 57,
@@ -911,7 +967,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 58,
@@ -927,7 +984,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 59,
@@ -943,7 +1001,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 60,
@@ -959,7 +1018,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 61,
@@ -975,7 +1035,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 62,
@@ -991,7 +1052,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 63,
@@ -1007,7 +1069,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 64,
@@ -1023,7 +1086,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 65,
@@ -1039,7 +1103,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 66,
@@ -1055,7 +1120,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 67,
@@ -1071,7 +1137,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 68,
@@ -1087,7 +1154,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 69,
@@ -1103,7 +1171,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 70,
@@ -1119,7 +1188,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 71,
@@ -1135,7 +1205,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 72,
@@ -1151,7 +1222,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 73,
@@ -1167,7 +1239,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 74,
@@ -1183,7 +1256,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 75,
@@ -1199,7 +1273,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 76,
@@ -1215,7 +1290,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 77,
@@ -1231,7 +1307,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 78,
@@ -1247,7 +1324,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 79,
@@ -1263,7 +1341,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 80,
@@ -1279,7 +1358,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 81,
@@ -1295,7 +1375,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 82,
@@ -1311,7 +1392,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 83,
@@ -1327,7 +1409,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 84,
@@ -1343,7 +1426,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 85,
@@ -1359,7 +1443,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 86,
@@ -1375,7 +1460,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 87,
@@ -1391,7 +1477,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 88,
@@ -1407,7 +1494,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 89,
@@ -1423,7 +1511,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 90,
@@ -1439,7 +1528,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 91,
@@ -1455,7 +1545,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 92,
@@ -1471,7 +1562,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 93,
@@ -1487,7 +1579,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 94,
@@ -1503,7 +1596,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 95,
@@ -1519,7 +1613,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 96,
@@ -1535,7 +1630,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 97,
@@ -1551,7 +1647,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 98,
@@ -1567,7 +1664,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 99,
@@ -1583,7 +1681,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 100,
@@ -1599,7 +1698,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 101,
@@ -1615,7 +1715,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 102,
@@ -1631,7 +1732,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 103,
@@ -1647,7 +1749,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 104,
@@ -1663,7 +1766,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 105,
@@ -1679,7 +1783,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 106,
@@ -1695,7 +1800,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 107,
@@ -1711,7 +1817,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 108,
@@ -1727,7 +1834,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 109,
@@ -1743,7 +1851,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 110,
@@ -1759,7 +1868,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 111,
@@ -1775,7 +1885,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 112,
@@ -1791,7 +1902,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 113,
@@ -1807,7 +1919,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 114,
@@ -1823,7 +1936,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 115,
@@ -1839,7 +1953,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 116,
@@ -1855,7 +1970,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 117,
@@ -1871,7 +1987,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 118,
@@ -1887,7 +2004,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 119,
@@ -1903,7 +2021,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 120,
@@ -1919,7 +2038,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 121,
@@ -1935,7 +2055,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 122,
@@ -1951,7 +2072,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 123,
@@ -1967,7 +2089,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 124,
@@ -1983,7 +2106,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 125,
@@ -1999,7 +2123,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 126,
@@ -2015,7 +2140,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 127,
@@ -2031,7 +2157,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 128,
@@ -2047,7 +2174,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 129,
@@ -2063,7 +2191,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 130,
@@ -2079,7 +2208,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 131,
@@ -2095,7 +2225,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 132,
@@ -2111,7 +2242,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 133,
@@ -2127,7 +2259,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 134,
@@ -2143,7 +2276,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 135,
@@ -2159,7 +2293,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 136,
@@ -2175,7 +2310,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 137,
@@ -2191,7 +2327,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 138,
@@ -2207,7 +2344,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 139,
@@ -2223,7 +2361,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 140,
@@ -2239,7 +2378,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 141,
@@ -2255,7 +2395,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 142,
@@ -2271,7 +2412,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 143,
@@ -2287,7 +2429,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 144,
@@ -2303,7 +2446,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 145,
@@ -2319,7 +2463,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 146,
@@ -2335,7 +2480,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   },
   {
     id: 147,
@@ -2351,7 +2497,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 148,
@@ -2367,7 +2514,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 149,
@@ -2383,7 +2531,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: true
   },
   {
     id: 150,
@@ -2399,7 +2548,8 @@ const staticTemples = [
     owner: 0,
     contest: 'none',
     focus: false,
-    secondary: false
+    secondary: false,
+    envisaged: false
   }
 ];
 

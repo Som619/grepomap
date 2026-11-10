@@ -354,6 +354,7 @@ canvas{display:block;width:800px;height:800px;}
   font:600 10px/1.5 'Rajdhani',sans-serif;letter-spacing:.4px;color:#ffe082;
   background:rgba(10,13,20,.8);border:1px solid rgba(255,213,79,.45);
 }
+.tip-env{color:#b388ff;font-size:11px;font-weight:600;letter-spacing:.3px;}
 .tip-god{color:#ffe082;font-size:12px;font-weight:600;}
 /* Sous-catégories "Offensif Terrestre" regroupées */
 .ot-group1{filter:hue-rotate(10deg) saturate(6)brightness(1.1)}   /* Cavaliers / Contondant / Griffons */
@@ -506,6 +507,11 @@ canvas{display:block;width:800px;height:800px;}
         <input type="checkbox" id="chkFocus" checked>
         <div class="toggle-dot"></div>
         Nos temples seuls
+      </label>
+      <label class="toggle" id="chkEnvisagedRow" title="N'affiche que les temples envisagés (templeenvisage.xlsx). Les grands temples restent visibles.">
+        <input type="checkbox" id="chkEnvisaged">
+        <div class="toggle-dot"></div>
+        <span style="color:#b388ff">◇ Envisagés</span>
       </label>
       <label class="toggle" id="chkHighlightRow" title="Entoure nos cibles principales d'un anneau vert, même quand tous les temples sont affichés">
         <input type="checkbox" id="chkHighlight" checked>
@@ -704,6 +710,7 @@ const chkRouge=document.getElementById('chkRouge');
 const chkContest=document.getElementById('chkContest');
 const chkColor=document.getElementById('chkColor');
 const chkFocus=document.getElementById('chkFocus');
+const chkEnvisaged=document.getElementById('chkEnvisaged');
 const chkHighlight=document.getElementById('chkHighlight');
 const chkSecondary=document.getElementById('chkSecondary');
 const citySize=document.getElementById('citySize');
@@ -884,7 +891,7 @@ function toggleGroup(box,g){
 }
 chkAllies.onchange=()=>toggleGroup(chkAllies,GROUPS.allies);
 chkRouge.onchange =()=>toggleGroup(chkRouge, GROUPS.rouge);
-[chkContest,chkColor,chkFocus,chkHighlight,chkSecondary].forEach(el=>el.onchange=()=>{draw();saveState();});
+[chkContest,chkColor,chkFocus,chkEnvisaged,chkHighlight,chkSecondary].forEach(el=>el.onchange=()=>{draw();saveState();});
 
 /* ── Recherche ── */
 const clearSearchBtn=document.getElementById('clearSearch');
@@ -920,6 +927,7 @@ function updateStatusBadge(){
   const shown=zoomLayer.querySelectorAll('.templeIcon').length;
   const total=(DATA.temples||[]).length;
   const parts=[`<b>${shown}</b>/${total} temples`];
+  if(chkEnvisaged.checked&&hasEnvisaged())parts.push('envisagés');
   if(activeCategoryFilters.size)parts.push(`${activeCategoryFilters.size} catégorie${activeCategoryFilters.size>1?'s':''}`);
   statusBadge.innerHTML=parts.join(' · ');
 }
@@ -962,7 +970,7 @@ function showTip(t,x,y){
   const dot=col?`<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${col.hex};margin-right:5px;vertical-align:middle;"></span>`:'';
   tooltip.innerHTML=t.grand
     ?`<div class="tip-name">${esc(t.name)}</div><div class="tip-god">Grand temple · ${esc(t.god)}</div><div class="tip-bonus">${esc(t.bonus)}</div>`
-    :`<div class="tip-name">${esc(t.name)}</div><div class="tip-bonus">${dot}${esc(t.bonus)}</div>`;
+    :`<div class="tip-name">${esc(t.name)}${t.envisaged?' <span class="tip-env">◇ envisagé</span>':''}</div><div class="tip-bonus">${dot}${esc(t.bonus)}</div>`;
   tooltip.style.display='block';
   tooltip.dataset.temple='1';
   requestAnimationFrame(()=>tooltip.classList.add('show'));
@@ -1011,6 +1019,7 @@ function drawTemples(){
   zoomLayer.querySelectorAll('.templeIcon').forEach(e=>e.remove());
   const showContest=chkContest.checked;
   const showColor  =chkColor.checked;
+  const onlyEnv =chkEnvisaged.checked&&hasEnvisaged(); // « Envisagés » : temples de templeenvisage.xlsx
   const onlyOurs=chkFocus.checked&&hasTargets();  // « Nos temples seuls » ignoré tant qu'aucune cible n'est renseignée (sinon carte vide)
   const highlightSecondary=chkSecondary.checked;  // anneau jaune : cibles secondaires ("Poubelle")
 
@@ -1018,7 +1027,10 @@ function drawTemples(){
     if(t.x<X_MIN||t.x>=X_MAX||t.y<Y_MIN||t.y>=Y_MAX)return;
     const isFocus=t.focus===true||String(t.focus).toLowerCase()==='true';
     const isGrand=!!t.grand;
-    if(onlyOurs&&!isFocus&&!isGrand)return;          // les grands temples restent toujours visibles
+    const isEnvisaged=t.envisaged===true;
+    /* Filtres « Nos temples seuls » / « Envisagés » : si les deux sont actifs, on montre
+       l'union des deux listes ; les grands temples restent toujours visibles */
+    if((onlyOurs||onlyEnv)&&!isGrand&&!((onlyOurs&&isFocus)||(onlyEnv&&isEnvisaged)))return;
     const col=colorForTemple(t);
     if(activeCategoryFilters.size&&(!col||!activeCategoryFilters.has(col.css)))return;
     const size=String(t.size||'small').toLowerCase();
@@ -1037,7 +1049,7 @@ function drawTemples(){
     box.style.top =`${toPx(t.y,Y_MIN)}px`;
     box.dataset.name    =(t.name||'').toLowerCase();
     box.dataset.tmpltype=(t.type||'').toLowerCase();
-    box.dataset.bonus   =`${t.bonus||''} ${t.god||''} ${isGrand?'grand temple':''}`.toLowerCase();
+    box.dataset.bonus   =`${t.bonus||''} ${t.god||''} ${isGrand?'grand temple':''} ${isEnvisaged?'envisagé':''}`.toLowerCase();
 
     box.onmouseenter=e=>showTip(t,e.clientX,e.clientY);
     box.onmousemove =e=>positionTooltip(e.clientX,e.clientY);
@@ -1222,7 +1234,7 @@ function toast(msg){
    Alliances / joueurs affichés, couleurs, cases cochées, taille des villes, filtres —
    tout est retrouvé à la réouverture de la page.
 ══════════════════════════════════════════════ */
-const STATE_TOGGLES=[chkAllies,chkRouge,chkContest,chkColor,chkFocus,chkHighlight,chkSecondary];
+const STATE_TOGGLES=[chkAllies,chkRouge,chkContest,chkColor,chkFocus,chkEnvisaged,chkHighlight,chkSecondary];
 let restoring=false;
 function saveState(){
   if(restoring)return;
@@ -1458,7 +1470,13 @@ recomputeFitScale();
 function hasTargets(){
   return (DATA.temples||[]).some(t=>t.focus===true||String(t.focus).toLowerCase()==='true');
 }
+function hasEnvisaged(){return (DATA.temples||[]).some(t=>t.envisaged===true);}
 function updateTargetControls(){
+  const envOk=hasEnvisaged(),envRow=document.getElementById('chkEnvisagedRow');
+  if(!envRow.dataset.title)envRow.dataset.title=envRow.title;
+  chkEnvisaged.disabled=!envOk;
+  envRow.style.opacity=envOk?'':'.4';envRow.style.cursor=envOk?'':'not-allowed';
+  envRow.title=envOk?envRow.dataset.title:"Aucun temple envisagé dans les données — ajoutez templeenvisage.xlsx puis lancez node build_temples.js.";
   const ok=hasTargets();
   const msg="Aucun temple ciblé dans les données — renseignez la colonne Owner de newtemple.xlsx (ou newtemplejoue.xlsx) pour activer ce filtre.";
   [['chkFocusRow','chkFocus'],['chkHighlightRow','chkHighlight'],['chkSecondaryRow','chkSecondary']].forEach(([rowId,boxId])=>{

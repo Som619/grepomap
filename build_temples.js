@@ -19,6 +19,10 @@
 // 'off_autres' (tout le reste).
 // Quand Owner est vide, la catégorie est déduite du texte du bonus — c'est une
 // estimation automatique (champ `guessed: true`), pas une donnée vérifiée.
+//
+// Source optionnelle : templeenvisage.xlsx (temples ENVISAGÉS, colonne ID).
+//   Indépendant du ciblage : ajoute seulement `envisaged: true` aux temples listés,
+//   pour le filtre « Envisagés » de la carte. Ne modifie ni focus ni secondary.
 const fs   = require('fs');
 const XLSX = require('xlsx');
 
@@ -119,6 +123,17 @@ function bucketFromOwner(owner, bonus) {
     });
   }
 
+  /* ---- 2 bis) temples envisagés (facultatif) --------------------------- */
+  const ENVISAGE_FILE = 'templeenvisage.xlsx';
+  const envisages = new Set();
+  let envisageTrouve = false;
+  if (fs.existsSync(ENVISAGE_FILE)) {
+    envisageTrouve = true;
+    readSheet(ENVISAGE_FILE, ['Feuille 1']).forEach(r => {
+      if (r.ID !== '' && r.ID != null) envisages.add(+r.ID);
+    });
+  }
+
   /* ---- 3) fusion → objets "temple" ------------------------------------ */
   const temples = rowsAll
     .filter(r => r.ID !== '' && r.ID != null)
@@ -149,6 +164,7 @@ function bucketFromOwner(owner, bonus) {
         contest  : 'none',
         focus    : estCible,         // cible principale OU secondaire
         secondary: estSecondaire,    // cible secondaire ("Poubelle")
+        envisaged: envisages.has(+r.ID), // listé dans templeenvisage.xlsx
       };
     });
 
@@ -158,12 +174,15 @@ function bucketFromOwner(owner, bonus) {
   const nbDevine     = temples.filter(t => t.guessed).length;
   const nbPrincipale = temples.filter(t => t.focus && !t.secondary).length;
   const nbSecondaire = temples.filter(t => t.secondary).length;
+  const nbEnvisages  = temples.filter(t => t.envisaged).length;
+  const idsInconnus  = [...envisages].filter(id => !temples.some(t => t.id === id));
 
   /* ---- 4) écriture ---------------------------------------------------- */
   fs.writeFileSync(
     'temples_static.js',
     '// généré automatiquement par build_temples.js\n' +
-    '// source : newtemple.xlsx' + (joueTrouve ? ' + newtemplejoue.xlsx' : '') + '\n' +
+    '// source : newtemple.xlsx' + (joueTrouve ? ' + newtemplejoue.xlsx' : '') +
+      (envisageTrouve ? ' + templeenvisage.xlsx' : '') + '\n' +
     'const staticTemples = ' + toJsLiteral(temples, 0) + ';\n\n' +
     'module.exports = { staticTemples };'
   );
@@ -176,4 +195,7 @@ function bucketFromOwner(owner, bonus) {
   console.log(`   - ${nbVerifie} avec catégorie vérifiée (colonne Owner renseignée)`);
   console.log(`   - ${nbDevine} avec catégorie déduite du texte du bonus`);
   console.log(`   - ${nbPrincipale} cibles principales, ${nbSecondaire} cibles secondaires ("Poubelle")`);
+  console.log(envisageTrouve ? `   - ${nbEnvisages} temples envisagés (${ENVISAGE_FILE})`
+                             : `   ℹ️  ${ENVISAGE_FILE} absent — aucun temple envisagé.`);
+  if (idsInconnus.length) console.warn(`   ⚠️  ID envisagés absents de newtemple.xlsx : ${idsInconnus.join(', ')}`);
 })();
