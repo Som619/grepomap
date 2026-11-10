@@ -1325,7 +1325,9 @@ async function refreshData(manual=false){
   refreshing=true;
   refreshBtn.classList.add('spin');
   try{
-    const res=await fetch(`mapData.js?t=${Date.now()}`,{cache:'no-store'});
+    /* « no-cache » = le navigateur redemande au serveur si le fichier a changé (ETag) :
+       réponse 304 quasi gratuite s'il est identique, nouveau fichier sinon. */
+    const res=await fetch('mapData.js',{cache:'no-cache'});
     if(!res.ok)throw new Error(`HTTP ${res.status}`);
     const txt=await res.text();
     const next=parseDataFile(txt);
@@ -1495,8 +1497,10 @@ updateTargetControls();
 updateLegendEmpty();
 draw();
 updateFreshness();
-/* Ancien format sans date : une lecture (depuis le cache) suffit à connaître l'âge des données */
-if(!DATA.generatedAt&&location.protocol!=='file:')refreshData();
+/* Vérification immédiate au chargement : le navigateur peut avoir servi un mapData.js
+   périmé depuis son cache (GitHub Pages le garde ~10 min). Si le serveur a plus récent,
+   la carte se met à jour aussitôt, filtres compris. */
+if(location.protocol!=='file:')refreshData();
 </script>
 </body>
 </html>
