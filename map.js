@@ -2,7 +2,7 @@
 /**
  * build_grepolis_mapdata.js
  * -------------------------
- * Génère mapData.js pour le monde fr184.
+ * Génère mapData.js pour le monde fr187.
  * Contenu exporté :
  *   const mapData = {
  *     alliances: [ { id, name, front, towns:[{x,y},…] }, … ],
@@ -20,7 +20,7 @@ const zlib  = require('node:zlib');
 const rl    = require('node:readline');
 const path  = require('node:path');
 
-const WORLD = 'fr184';
+const WORLD = 'fr187';
 const BASE  = `http://${WORLD}.grepolis.com/data`;
 const FILES = {
   players   : 'players.txt.gz',

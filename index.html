@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<title>Carte – fr184</title>
+<title>Carte – fr187</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Rajdhani:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 /* ══════════════════════════════════════════════
@@ -457,7 +457,7 @@ canvas{display:block;width:800px;height:800px;}
 
 <!-- ══ HEADER ══ -->
 <div id="header">
-  <h1>GREPOLIS <span>· FR184</span></h1>
+  <h1>GREPOLIS <span>· FR187</span></h1>
 
   <div class="ctrl-group">
     <span class="ctrl-label">Joueur</span>
@@ -590,7 +590,7 @@ const BX=2,BY=2,X_MIN=BX*CELL,Y_MIN=BY*CELL,X_MAX=X_MIN+VIEW*CELL,Y_MAX=Y_MIN+VI
 let DATA=mapData;
 const REFRESH_MS=30*60*1000;       // intervalle de rafraîchissement automatique
 const RETRY_MS  = 5*60*1000;       // nouvel essai après un échec réseau
-const STORE_KEY ='grepomap.fr184.state.v3';
+const STORE_KEY ='grepomap.fr187.state.v1';   // propre au monde : rien de fr184 n'est restauré
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 /* ── Fronts (champ "front" de mapData, calculé côté build par ID d'alliance — voir fronts_common.js) ──
@@ -1011,7 +1011,7 @@ function drawTemples(){
   zoomLayer.querySelectorAll('.templeIcon').forEach(e=>e.remove());
   const showContest=chkContest.checked;
   const showColor  =chkColor.checked;
-  const onlyOurs=chkFocus.checked;                // filtre : n'affiche que les temples de newtemplejoue.xlsx (principaux + secondaires)
+  const onlyOurs=chkFocus.checked&&hasTargets();  // « Nos temples seuls » ignoré tant qu'aucune cible n'est renseignée (sinon carte vide)
   const highlightSecondary=chkSecondary.checked;  // anneau jaune : cibles secondaires ("Poubelle")
 
   (DATA.temples||[]).forEach(t=>{
@@ -1304,6 +1304,7 @@ function applyData(next){
     if(box.checked)g.ids.forEach((id,i)=>addRow(id,allyById.get(id)?.name||`Alliance ${id}`,groupColor(g,id,i),visA,colA));
   });
   refreshLegendRows();
+  updateTargetControls();
   draw();
   saveState();
 }
@@ -1451,7 +1452,28 @@ mapWrapper.addEventListener('dblclick',e=>{
 
 recomputeFitScale();
 
+/* ── Cibles de temples : sur un monde neuf, la colonne Owner n'est pas encore remplie.
+      Les filtres liés aux cibles sont alors grisés (avec explication au survol) au lieu
+      de vider la carte ; ils se réactivent seuls dès qu'une cible apparaît dans les données. ── */
+function hasTargets(){
+  return (DATA.temples||[]).some(t=>t.focus===true||String(t.focus).toLowerCase()==='true');
+}
+function updateTargetControls(){
+  const ok=hasTargets();
+  const msg="Aucun temple ciblé dans les données — renseignez la colonne Owner de newtemple.xlsx (ou newtemplejoue.xlsx) pour activer ce filtre.";
+  [['chkFocusRow','chkFocus'],['chkHighlightRow','chkHighlight'],['chkSecondaryRow','chkSecondary']].forEach(([rowId,boxId])=>{
+    const row=document.getElementById(rowId),box=document.getElementById(boxId);
+    if(!row||!box)return;
+    if(!row.dataset.title)row.dataset.title=row.title||'';
+    box.disabled=!ok;
+    row.style.opacity=ok?'':'.4';
+    row.style.cursor=ok?'':'not-allowed';
+    row.title=ok?row.dataset.title:msg;
+  });
+}
+
 restoreState();
+updateTargetControls();
 updateLegendEmpty();
 draw();
 updateFreshness();

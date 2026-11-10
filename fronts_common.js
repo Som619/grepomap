@@ -1,7 +1,9 @@
 /**
  * fronts_common.js
  * ----------------
- * Définition des fronts d'alliances, appariée par **ID** et non par nom :
+ * Définition des fronts d'alliances (monde fr187), appariée par **ID** et non par nom :
+ * ⚠️ Les IDs sont propres à CHAQUE monde : ceux de fr184 ont été retirés au passage à fr187.
+ *
  * un changement de nom d'alliance n'a donc aucun impact.
  *
  * Les noms indiqués en commentaire ne servent que de repère humain — ils ne
@@ -13,36 +15,19 @@
  */
 
 const ALLIANCE_FRONTS = {
-  ennemi: [            // « Rouge »
-    2,                 // TWIX GOLD
-    471,               // TWIX GOLD PRICE
-    80,                // antr4x fan club
-    301,               // Le Harem de Tippi
-    81,                // CARTRUCHE
+  ennemi: [            // « Ennemis » (rouge)
+    // à compléter : node find_alliance_id.js "nom"
   ],
-  allie: [             // « Alliés »
-    420,               // Finir comme Carlos
-    121,               // huit-neuf
-    856,               // Bienveillance Max
-    833,               // Bim Bam Boum
-    209,               // Bo Zinnc Supremacyx
-    118,               // - UNSC -
-    173,               // Maman j'ai raté mon BC
+  allie: [             // « Alliés » (cyan)
   ],
 };
 
-/* Rôle affiché sur la carte (légende + infobulles). Facultatif. */
+/* Rôle affiché sur la carte (légende + infobulles). Facultatif. Ex. : 123: 'PROD', */
 const ALLIANCE_ROLES = {
-  420: 'PROD',
-  121: 'OT / Contondant',
-  856: 'BF / Jet',
-  833: 'DEF',
-  209: 'Portail',
-  118: 'Portail 2',
 };
 
-/* Notre alliance (« Z'êtes ici ») : mise en avant sur la carte. */
-const HOME_ALLIANCE = 420;   // Finir comme Carlos
+/* Notre alliance (« Z'êtes ici ») : ★ dans la légende et l'infobulle. null = aucune. */
+const HOME_ALLIANCE = null;
 
 /* index ID → front, construit une seule fois */
 const frontById = new Map();

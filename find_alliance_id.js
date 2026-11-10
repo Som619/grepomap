@@ -16,7 +16,7 @@ const zlib  = require('node:zlib');
 const rl    = require('node:readline');
 const { ALLIANCE_FRONTS } = require('./fronts_common.js');
 
-const WORLD = 'fr184';
+const WORLD = 'fr187';
 const BASE  = `http://${WORLD}.grepolis.com/data`;
 
 const canon = s => String(s).normalize('NFD').replace(/\p{M}/gu, '').trim().toLowerCase();

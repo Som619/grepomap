@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 /**
- * build_grepolis_mapdata_fr184.js
+ * build_grepolis_mapdata_fr187.js  (nom de fichier historique : fr180.js)
  * -------------------------------
- * Génère mapData.js pour le monde fr184 (Grepolis) + temples statiques.
+ * Génère mapData.js pour le monde fr187 (Grepolis) + temples statiques.
  * mapData = {
  *   alliances: [ { id, name, front, towns:[{x,y,slot}] } ],
  *   players  : [ { id, name, alliance_id, towns:[{x,y,slot}] } ],
@@ -23,7 +23,7 @@ const path  = require('node:path');
 const { staticTemples } = require('./temples_static.js');   // créez / complétez ce fichier
 const { grandTemples }  = require('./grands_temples.js');   // les 8 grands temples (Olympus)
 
-const WORLD = 'fr184';
+const WORLD = 'fr187';
 const BASE  = `http://${WORLD}.grepolis.com/data`;
 const FILES = {
   players   : 'players.txt.gz',

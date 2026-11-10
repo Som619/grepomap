@@ -1,14 +1,24 @@
-// build_temples.js
-// Source des données : newtemple.xlsx (liste complète des temples du monde, 150 temples)
-//                     + newtemplejoue.xlsx (55 temples déjà catégorisés manuellement)
+// build_temples.js  —  monde fr187
+// ---------------------------------------------------------------------------
+// Source principale : newtemple.xlsx (liste complète des temples du monde).
+//   Colonnes attendues : ID, X, Y, Nom, Mer, Effet, Owner, Effet réduit
 //
-// Chaque temple reçoit une catégorie parmi : 'off nav', 'portail', 'def', 'cout', 'duree',
-// 'ressources', 'special', et pour l'Offensif Terrestre : 'ot_group1' (Cavaliers/Contondant/
-// Griffons), 'ot_group2' (Manticores/Armes Blanche/Chars), 'off_autres' (tout le reste).
-// - Pour les temples présents dans newtemplejoue.xlsx, la catégorie vient de la colonne Owner.
-// - Pour TOUS les autres (non catégorisés à la main), la catégorie est déduite automatiquement
-//   du texte du bonus (colonne Effet) via une reconnaissance de mots-clés — c'est une estimation,
-//   pas une donnée vérifiée à la main comme pour les 55 premiers.
+// Source optionnelle : newtemplejoue.xlsx (temples ciblés, colonnes Owner et
+//   « Effet réduit »). Si le fichier est absent, le script tourne quand même :
+//   aucun temple n'est alors marqué comme cible, mais tous sont catégorisés
+//   et colorés normalement.
+//
+// La colonne Owner décide du ciblage :
+//   - vide              → temple non ciblé
+//   - "Poubelle"        → cible secondaire (anneau jaune)
+//   - toute autre valeur→ cible principale (anneau vert)
+//
+// Catégories possibles : 'off nav', 'portail', 'def', 'cout', 'duree',
+// 'ressources', 'special', et pour l'Offensif Terrestre : 'ot_group1'
+// (Cavaliers/Contondant/Griffons), 'ot_group2' (Manticores/Armes Blanche/Chars),
+// 'off_autres' (tout le reste).
+// Quand Owner est vide, la catégorie est déduite du texte du bonus — c'est une
+// estimation automatique (champ `guessed: true`), pas une donnée vérifiée.
 const fs   = require('fs');
 const XLSX = require('xlsx');
 
@@ -34,21 +44,25 @@ function toJsLiteral(v, indent = 0) {
   }
   return String(v); // number, boolean, null…
 }
-/* ---------------------------------------------------------------------- */
 
-/* ---- déduction automatique de la catégorie à partir du texte du bonus ---
-   Utilisée (a) en repli pour les temples absents de newtemplejoue.xlsx, et
-   (b) pour les temples marqués "Poubelle" (rejetés de la liste de ciblage,
-   mais on veut tout de même leur vraie catégorie de bonus pour la couleur). */
-/* ---- éclate "off terr" en une catégorie par type de troupe associé ---- */
+/* ---- lecture d'un classeur sans dépendre du nom de l'onglet ------------
+   Le nom de feuille change d'un export à l'autre ('Listing PT', 'Feuille 1',
+   'PT joués'…). On prend la feuille demandée si elle existe, sinon la première. */
+function readSheet(file, preferredNames = []) {
+  const wb = XLSX.readFile(file);
+  const name = preferredNames.find(n => wb.Sheets[n]) || wb.SheetNames[0];
+  return XLSX.utils.sheet_to_json(wb.Sheets[name], { defval: '' });
+}
+
+/* ---- éclate "off terr" en sous-catégories regroupées ------------------- */
 function refineOffTerrBucket(bonus) {
   const b = String(bonus || '').toLowerCase();
   // Groupe 1 : Cavaliers / Armes Contondant / Griffons
   if (/cavalier|contondant|griffon/.test(b)) return 'ot_group1';
   // Groupe 2 : Manticores / Armes Blanche / Chars
   if (/manticore|blanche|chars/.test(b))     return 'ot_group2';
-  // Tout le reste de l'Offensif Terrestre (Erinyes, Frondeurs, Centaures, Hydres,
-  // non mythiques, Force héroïque, "toutes les unités" générique…)
+  // Reste de l'Offensif Terrestre (Erinyes, Frondeurs, Centaures, Hydres,
+  // Satyres, Méduses, non mythiques, Force héroïque, générique…)
   return 'off_autres';
 }
 
@@ -60,93 +74,106 @@ function guessBucket(bonus) {
     if (/(bateaux-feux|trieres|sirenes|navales|navale)/.test(b)) return 'off nav';
     return refineOffTerrBucket(b);
   }
-  if (/(duree|durees)/.test(b)) return 'duree';        // réduction des délais de recrutement (terr/nav)
-  if (/(cout|couts)/.test(b))   return 'cout';          // réduction des coûts de recrutement (terr/nav)
-  if (b.includes('production')) return 'ressources';   // production de ressources (bois/pierre/argent)
-  return 'special'; // effets particuliers : mariage, appel de la mer, retour des enfers, fureur d'Ares…
+  if (/(duree|durees)/.test(b)) return 'duree';        // délais de recrutement (terr/nav)
+  if (/(cout|couts)/.test(b))   return 'cout';          // coûts de recrutement (terr/nav)
+  if (b.includes('production')) return 'ressources';   // production de ressources
+  return 'special'; // mariage, appel de la mer, fureur d'Arès, vent favorable…
 }
 
-/* ---- pour les temples "Prod" de newtemplejoue.xlsx, l'Owner ne distingue pas coût/délai/
-      ressource — on précise toujours à partir du texte du bonus ---- */
+/* ---- pour les temples "Prod", l'Owner ne distingue pas coût/délai/ressource :
+      on précise toujours à partir du texte du bonus ---- */
 function refineProdBucket(bonus) {
   const b = guessBucket(bonus);
-  return (b === 'cout' || b === 'duree' || b === 'ressources') ? b : 'cout'; // repli : coût par défaut
+  return (b === 'cout' || b === 'duree' || b === 'ressources') ? b : 'cout';
 }
 
-/* ---- normalise la catégorie "Owner" de newtemplejoue.xlsx vers un bucket ---- */
+/* ---- normalise la valeur "Owner" vers une catégorie -------------------- */
 function bucketFromOwner(owner, bonus) {
   const o = String(owner || '').trim().toLowerCase();
   if (o === 'off nav')   return 'off nav';
-  if (o === 'off terr')  return refineOffTerrBucket(bonus); // une sous-catégorie par type de troupe
+  if (o === 'off terr')  return refineOffTerrBucket(bonus);
   if (o === 'portail' || o === 'portail 2') return 'portail';
   if (o === 'def')       return 'def';
-  if (o === 'prod')      return refineProdBucket(bonus); // 'cout' / 'duree' / 'ressources' selon le texte du bonus
-  if (o === 'poubelle')  return guessBucket(bonus); // rejeté du ciblage, mais on garde sa vraie catégorie de bonus
-  return guessBucket(bonus); // valeur Owner inattendue → filet de sécurité sur le texte du bonus
+  if (o === 'prod')      return refineProdBucket(bonus);
+  if (o === 'poubelle')  return guessBucket(bonus); // secondaire, mais vraie couleur de bonus
+  return guessBucket(bonus); // valeur inattendue → filet de sécurité sur le texte
 }
 
 (() => {
-  /* ---- 1) lecture de la liste complète des temples -------------------- */
-  const wbAll    = XLSX.readFile('newtemple.xlsx');
-  const sheetAll = wbAll.Sheets['Listing PT'];
-  const rowsAll  = XLSX.utils.sheet_to_json(sheetAll, { defval: '' });
+  /* ---- 1) liste complète des temples --------------------------------- */
+  const rowsAll = readSheet('newtemple.xlsx', ['Listing PT', 'Feuille 1']);
 
-  /* ---- 2) lecture des temples déjà catégorisés à la main --------------- */
-  const wbJoue    = XLSX.readFile('newtemplejoue.xlsx');
-  const sheetJoue = wbJoue.Sheets['PT joués'];
-  const rowsJoue  = XLSX.utils.sheet_to_json(sheetJoue, { defval: '' });
-
+  /* ---- 2) temples ciblés (facultatif) --------------------------------- */
+  const JOUE_FILE = 'newtemplejoue.xlsx';
   const joueParId = new Map();
-  rowsJoue.forEach(r => {
-    if (r.ID === '') return;
-    joueParId.set(+r.ID, {
-      owner     : String(r.Owner || '').trim(),            // Def / Off terr / Off nav / Portail / Portail 2 / Prod / Poubelle
-      typeCourt : String(r['Effet réduit'] || '').trim(),  // libellé court : '2% def all', '8% bf', …
+  let joueTrouve = false;
+
+  if (fs.existsSync(JOUE_FILE)) {
+    joueTrouve = true;
+    readSheet(JOUE_FILE, ['PT joués', 'Feuille 1']).forEach(r => {
+      if (r.ID === '' || r.ID == null) return;
+      joueParId.set(+r.ID, {
+        owner     : String(r.Owner || '').trim(),
+        typeCourt : String(r['Effet réduit'] || '').trim(),
+      });
     });
-  });
+  }
 
   /* ---- 3) fusion → objets "temple" ------------------------------------ */
   const temples = rowsAll
-    .filter(r => r.ID !== '')
+    .filter(r => r.ID !== '' && r.ID != null)
     .map(r => {
-      const joue    = joueParId.get(+r.ID);
-      const isSecondaire = !!(joue && joue.owner.toLowerCase() === 'poubelle');
+      const joue = joueParId.get(+r.ID);
+
+      // Owner : priorité au fichier des temples joués, sinon colonne du fichier principal
+      const owner = (joue && joue.owner) || String(r.Owner || '').trim();
+      // Libellé court : idem, avec repli sur le fichier principal (rempli pour tous)
+      const typeCourt = (joue && joue.typeCourt) || String(r['Effet réduit'] || '').trim();
+
+      const estCible      = owner !== '';
+      const estSecondaire = owner.toLowerCase() === 'poubelle';
+
       return {
         id       : +r.ID,
         x        : +r.X,
         y        : +r.Y,
         name     : r.Nom,
+        sea      : r.Mer !== '' && r.Mer != null ? +r.Mer : null,
         bonus    : r.Effet,
-        type     : joue ? joue.typeCourt : '',                  // libellé court si connu
-        category : joue ? bucketFromOwner(joue.owner, r.Effet)   // catégorie normalisée : off nav / off terr / portail / def / prod / special
-                         : guessBucket(r.Effet),                  // estimée pour les temples non catégorisés à la main
-        guessed  : !joue,                                        // true = catégorie devinée automatiquement, pas vérifiée
+        type     : typeCourt,                                    // ex. '2% def all', '8% cont'
+        category : estCible ? bucketFromOwner(owner, r.Effet)
+                            : guessBucket(r.Effet),
+        guessed  : !estCible,        // true = catégorie déduite du bonus, non vérifiée
         size     : 'small',
         owner    : 0,
         contest  : 'none',
-        focus    : !!joue,                                       // true si présent dans newtemplejoue.xlsx (cible principale OU secondaire)
-        secondary: isSecondaire,                                  // true = cible secondaire ("Poubelle") — priorité moindre mais toujours une cible
+        focus    : estCible,         // cible principale OU secondaire
+        secondary: estSecondaire,    // cible secondaire ("Poubelle")
       };
     });
 
   temples.sort((a, b) => a.id - b.id);
 
-  const nbCatManuelle = temples.filter(t => !t.guessed).length;
-  const nbDevines     = temples.filter(t => t.guessed).length;
-  const nbFocus       = temples.filter(t => t.focus && !t.secondary).length;
-  const nbSecondaire  = temples.filter(t => t.secondary).length;
+  const nbVerifie    = temples.filter(t => !t.guessed).length;
+  const nbDevine     = temples.filter(t => t.guessed).length;
+  const nbPrincipale = temples.filter(t => t.focus && !t.secondary).length;
+  const nbSecondaire = temples.filter(t => t.secondary).length;
 
-  /* ---- 4) écriture du fichier JS ------------------------------------- */
+  /* ---- 4) écriture ---------------------------------------------------- */
   fs.writeFileSync(
     'temples_static.js',
     '// généré automatiquement par build_temples.js\n' +
-    '// source : newtemple.xlsx (liste complète) + newtemplejoue.xlsx (catégories vérifiées)\n' +
+    '// source : newtemple.xlsx' + (joueTrouve ? ' + newtemplejoue.xlsx' : '') + '\n' +
     'const staticTemples = ' + toJsLiteral(temples, 0) + ';\n\n' +
     'module.exports = { staticTemples };'
   );
 
   console.log(`✅ temples_static.js généré : ${temples.length} temples au total.`);
-  console.log(`   - ${nbCatManuelle} avec catégorie vérifiée (newtemplejoue.xlsx)`);
-  console.log(`   - ${nbDevines} avec catégorie devinée automatiquement (à partir du texte du bonus)`);
-  console.log(`   - ${nbFocus} cibles principales, ${nbSecondaire} cibles secondaires ("Poubelle")`);
+  if (!joueTrouve) {
+    console.log(`   ℹ️  ${JOUE_FILE} absent — aucun temple marqué comme cible.`);
+    console.log(`      Les 150 temples sont affichés et colorés normalement.`);
+  }
+  console.log(`   - ${nbVerifie} avec catégorie vérifiée (colonne Owner renseignée)`);
+  console.log(`   - ${nbDevine} avec catégorie déduite du texte du bonus`);
+  console.log(`   - ${nbPrincipale} cibles principales, ${nbSecondaire} cibles secondaires ("Poubelle")`);
 })();

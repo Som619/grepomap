@@ -56,16 +56,16 @@ const GOD_BONUSES = {
   ]},
 };
 
-/* ─── Grands temples de fr184 (un par divinité) ──────────────────────────── */
+/* ─── Grands temples de fr187 — à compléter quand ils apparaissent ───────── */
 const GRANDS_TEMPLES = [
-  { god: 'aphrodite', id: 24896, name: 'Artanes',    x: 652, y: 602 },
-  { god: 'ares',      id: 24903, name: 'Tragana',    x: 680, y: 459 },
-  { god: 'artemis',   id: 24902, name: 'Nisara',     x: 602, y: 344 },
-  { god: 'athena',    id: 24898, name: 'Eleutherna', x: 395, y: 655 },
-  { god: 'hades',     id: 24901, name: 'Misenum',    x: 463, y: 316 },
-  { god: 'hera',      id: 24900, name: 'Kastoria',   x: 344, y: 396 },
-  { god: 'poseidon',  id: 24899, name: 'Iolcus',     x: 316, y: 536 },
-  { god: 'zeus',      id: 24897, name: 'Bythinion',  x: 534, y: 680 },
+  { god: 'aphrodite', id: 0, name: '', x: 0, y: 0 },
+  { god: 'ares',      id: 0, name: '', x: 0, y: 0 },
+  { god: 'artemis',   id: 0, name: '', x: 0, y: 0 },
+  { god: 'athena',    id: 0, name: '', x: 0, y: 0 },
+  { god: 'hades',     id: 0, name: '', x: 0, y: 0 },
+  { god: 'hera',      id: 0, name: '', x: 0, y: 0 },
+  { god: 'poseidon',  id: 0, name: '', x: 0, y: 0 },
+  { god: 'zeus',      id: 0, name: '', x: 0, y: 0 },
 ];
 /* ─────────────────────────────────────────────────────────────────────────── */
 

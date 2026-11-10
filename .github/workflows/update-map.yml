@@ -1,4 +1,4 @@
-# Régénère mapData.js à partir des données publiques Grepolis (fr184) toutes les 30 minutes
+# Régénère mapData.js à partir des données publiques Grepolis (fr187) toutes les 30 minutes
 # et le pousse sur la branche publiée, uniquement si les données ont changé.
 #
 # ⚠️ GitHub n'exécute les tâches planifiées (« schedule ») QUE depuis la branche par défaut
@@ -6,7 +6,7 @@
 #    « master ») — ou bien passer « Grepomap_fr180 » en branche par défaut dans
 #    Settings → General → Default branch.
 # ⚠️ Settings → Actions → General → Workflow permissions : « Read and write permissions ».
-name: Mise à jour carte fr184
+name: Mise à jour carte fr187
 
 on:
   schedule:
@@ -36,7 +36,7 @@ jobs:
           node-version: 24
 
       - name: Générer mapData.js
-        run: node fr180.js   # générateur fr184 (inclut les emplacements « slot » des villes)
+        run: node fr180.js   # générateur fr187 (inclut les emplacements « slot » des villes)
 
       - name: Publier si changement
         run: |
