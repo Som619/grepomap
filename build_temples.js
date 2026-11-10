@@ -78,6 +78,7 @@ function guessBucket(bonus) {
     if (/(bateaux-feux|trieres|sirenes|navales|navale)/.test(b)) return 'off nav';
     return refineOffTerrBucket(b);
   }
+  if (b.includes('festival')) return 'special';       // festival caritatif → « Autres » (pas un coût de recrutement)
   if (/(duree|durees)/.test(b)) return 'duree';        // délais de recrutement (terr/nav)
   if (/(cout|couts)/.test(b))   return 'cout';          // coûts de recrutement (terr/nav)
   if (b.includes('production')) return 'ressources';   // production de ressources
@@ -88,6 +89,7 @@ function guessBucket(bonus) {
       on précise toujours à partir du texte du bonus ---- */
 function refineProdBucket(bonus) {
   const b = guessBucket(bonus);
+  if (String(bonus || '').toLowerCase().includes('festival')) return 'special';
   return (b === 'cout' || b === 'duree' || b === 'ressources') ? b : 'cout';
 }
 

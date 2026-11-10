@@ -632,39 +632,70 @@ const TYPE_LABELS={
 };
 const CATEGORY_LABELS={
   'grand':'Grands temples (Olympus)',
-  'off nav':'Offensif Naval','portail':'Portail Olympus',
-  'def':'Défense','cout':'Coûts (terr/nav)','duree':'Délais de recrutement (terr/nav)',
-  'ressources':'Production de ressources','special':'Spécial (mariage, fureur, etc.)',
+  'off nav':'Offensif naval','portail':'Portail Olympus',
+  'def':'Défense','cout':'Coûts de recrutement (terr/nav)','duree':'Délais de recrutement (terr/nav)',
+  'ressources':'Production de ressources','special':'Autres (festival, mariage, fureur…)',
   'ot_group1':'Cavaliers / Contondant / Griffons',
-  'ot_group2':'Manticores / Armes Blanche / Chars',
-  'off_autres':'Off. Terr. — Autres',
+  'ot_group2':'Manticores / Armes blanches / Chars',
+  'off_autres':'Off. terrestre — autres',
 };
 
-/* Couleurs par catégorie (t.category, calculée par build_temples.js pour TOUS les temples —
-   soit à partir de newtemplejoue.xlsx quand connue, soit devinée depuis le texte du bonus) */
+/* Couleurs par catégorie (t.category, calculée par build_temples.js).
+   `hex` = couleur de la légende ; le sprite du temple est teinté avec `tint` (ou `hex`)
+   via un filtre SVG qui garde le relief de l'icône. Teintes espacées sur le cercle
+   chromatique pour rester lisibles sur la mer : rouge, orange, jaune, vert clair, vert,
+   cyan, bleu, violet, magenta, rose vif, plus blanc et noir. */
 const CATEGORY_COLORS={
-  'grand':      {css:'grand',  hex:'#ffd54f'}, // les 8 grands temples (grands_temples.js)
-  'off nav':    {css:'blue',   hex:'#4488ff'},
-  'portail':    {css:'white',  hex:'#dddddd'},
-  'def':        {css:'red',    hex:'#ff5555'},
-  'cout':       {css:'orange', hex:'#ff9900'},
-  'duree':      {css:'cyan',   hex:'#00e5ff'},
-  'ressources': {css:'green',  hex:'#44cc66'},
-  'special':    {css:'violet', hex:'#b388ff'},
-  'ot_group1':  {css:'ot-group1',  hex:'#e2a836'}, // Cavaliers / Contondant / Griffons
-  'ot_group2':  {css:'ot-group2',  hex:'#36e2e2'}, // Manticores / Armes Blanche / Chars
-  'off_autres': {css:'ot-autres',  hex:'#e91e8c'}, // reste de l'Offensif Terrestre
+  'grand':      {css:'grand',     hex:'#ffd54f'},               // grands temples (icône dorée à part)
+  'def':        {css:'c-def',     hex:'#ff1744', gain:1.5},     // rouge franc
+  'cout':       {css:'c-cout',    hex:'#ff8f00'},               // orange
+  'ot_group1':  {css:'c-ot1',     hex:'#ffea00'},               // jaune — Cavaliers / Contondant / Griffons
+  'ot_group2':  {css:'c-ot2',     hex:'#76ff03'},               // vert clair — Manticores / Blanche / Chars
+  'ressources': {css:'c-ress',    hex:'#00c853'},               // vert
+  'duree':      {css:'c-duree',   hex:'#18ffff'},               // cyan
+  'off nav':    {css:'c-offnav',  hex:'#2962ff', gain:2.2},     // bleu profond
+  'special':    {css:'c-autres',  hex:'#7c4dff', gain:2.3},     // violet bleuté — festival, mariage, fureur…
+  'off_autres': {css:'c-offaut',  hex:'#d500f9', gain:2},       // magenta — Off. terrestre autres
+  'portail':    {css:'c-portail', hex:'#ffffff', gain:2.4},     // blanc
 };
-/* Couleurs spécifiques à certains libellés courts (t.type), prioritaires sur la couleur
-   générique de la catégorie — pour distinguer ces temples au sein d'"Offensif Terrestre" */
+/* Couleurs propres à certains libellés courts (t.type), prioritaires sur la catégorie */
 const SPECIAL_TYPE_COLORS={
-  '10% chass'      : {css:'black', hex:'#888888'}, // concentration chasseresse + arme de jet
-  '8% arme de jet' : {css:'black', hex:'#888888'},
+  '3% off all'     : {css:'c-off3',   hex:'#ff4fa3', gain:2},            // rose vif — +3 % attaque globale
+  '10% chass'      : {css:'c-chasse', hex:'#8a8a8a', tint:'#2a2a2a'},    // noir — chasseresse + arme de jet
+  '8% arme de jet' : {css:'c-chasse', hex:'#8a8a8a', tint:'#2a2a2a'},
 };
 const SPECIAL_TYPE_LABELS={
+  '3% off all'     : 'Offensif global +3 %',
   '10% chass'      : 'Chasseresse / Arme de jet',
   '8% arme de jet' : 'Chasseresse / Arme de jet',
 };
+
+/* Teinte d'un sprite : filtre SVG (luminance de l'icône × couleur) + fin contour sombre.
+   Un filtre par couleur, créé à la demande. */
+const tintDefs=(()=>{
+  const svg=document.createElementNS('http://www.w3.org/2000/svg','svg');
+  svg.setAttribute('width','0');svg.setAttribute('height','0');
+  svg.style.cssText='position:absolute;width:0;height:0;overflow:hidden';
+  const defs=document.createElementNS(svg.namespaceURI,'defs');
+  svg.append(defs);document.body.prepend(svg);
+  return defs;
+})();
+function tintFilterId(hex,gain=1.8){
+  const id='tint-'+hex.replace('#','')+'-'+String(gain).replace('.','_');
+  if(!document.getElementById(id)){
+    const n=parseInt(hex.slice(1),16),c=[(n>>16)&255,(n>>8)&255,n&255].map(v=>v/255*gain);
+    const row=k=>`${(.2126*c[k]).toFixed(4)} ${(.7152*c[k]).toFixed(4)} ${(.0722*c[k]).toFixed(4)} 0 0`;
+    const f=document.createElementNS('http://www.w3.org/2000/svg','filter');
+    f.id=id;f.setAttribute('color-interpolation-filters','sRGB');
+    f.innerHTML=`<feColorMatrix type="matrix" values="${row(0)} ${row(1)} ${row(2)} 0 0 0 1 0"/>`;
+    tintDefs.append(f);
+  }
+  return id;
+}
+function applyTint(el,col){
+  if(!el||!col)return;
+  el.style.filter=`url(#${tintFilterId(col.tint||col.hex,col.gain||1.8)}) drop-shadow(0 0 1px rgba(0,0,0,.85))`;
+}
 function colorForTemple(t){
   if (SPECIAL_TYPE_COLORS[t.type]) return SPECIAL_TYPE_COLORS[t.type];
   return CATEGORY_COLORS[String(t.category||'').trim().toLowerCase()] || null;
@@ -755,7 +786,8 @@ function pick(input,byName){
 }
 
 /* ── Légende types temples ── */
-Object.entries(CATEGORY_COLORS).forEach(([cat,{css,hex}])=>{
+Object.entries(CATEGORY_COLORS).forEach(([cat,col])=>{
+  const {css,hex}=col;
   if(cat==='grand'&&!(DATA.temples||[]).some(t=>t.grand))return;   // pas encore de grands temples
   const row=document.createElement('div');
   row.className='tpl-type-row';
@@ -763,11 +795,13 @@ Object.entries(CATEGORY_COLORS).forEach(([cat,{css,hex}])=>{
   row.innerHTML=`<div class="tpl-color-dot" style="background:${hex}"></div>
                  ${cat==='grand'?GT_SVG:`<div class="tplSprite small ${css}"></div>`}
                  <span>${CATEGORY_LABELS[cat]||cat}</span>`;
+  if(cat!=='grand')applyTint(row.querySelector('.tplSprite'),col);
   row.onclick=()=>toggleCategoryFilter(row,css);
   templeLegend.append(row);
 });
 const seenSpecialLabels=new Set();
-Object.entries(SPECIAL_TYPE_COLORS).forEach(([type,{css,hex}])=>{
+Object.entries(SPECIAL_TYPE_COLORS).forEach(([type,col])=>{
+  const {css,hex}=col;
   const label=SPECIAL_TYPE_LABELS[type]||type;
   if(seenSpecialLabels.has(label))return;
   seenSpecialLabels.add(label);
@@ -777,6 +811,7 @@ Object.entries(SPECIAL_TYPE_COLORS).forEach(([type,{css,hex}])=>{
   row.innerHTML=`<div class="tpl-color-dot" style="background:${hex}"></div>
                  <div class="tplSprite small ${css}"></div>
                  <span>${label}</span>`;
+  applyTint(row.querySelector('.tplSprite'),col);
   row.onclick=()=>toggleCategoryFilter(row,css);
   templeLegend.append(row);
 });
@@ -1057,7 +1092,7 @@ function drawTemples(){
 
     const sp=document.createElement('div');
     sp.className=`sprite ${spriteSize}`;
-    if(showColor&&col)sp.classList.add(col.css);
+    if(showColor&&col)applyTint(sp,col);
     if(isGrand)box.insertAdjacentHTML('beforeend',GT_SVG);else box.append(sp);
     if(isGrand){const lb=document.createElement('span');lb.className='gt-label';lb.textContent=t.god||'';box.append(lb);}
     zoomLayer.append(box);
