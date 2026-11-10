@@ -190,6 +190,16 @@ function bucketFromOwner(owner, bonus) {
   );
 
   console.log(`✅ temples_static.js généré : ${temples.length} temples au total.`);
+
+  /* Version chiffrée, la seule publiée sur GitHub (voir chiffrement.js) */
+  const { FILES: ENC, getPassword, writeEncrypted } = require('./chiffrement.js');
+  const password = getPassword();
+  if (password) {
+    writeEncrypted(ENC.temples, JSON.stringify(temples), password);
+    console.log('🔒 temples_static.enc.json chiffré — c\'est ce fichier qu\'il faut pousser sur GitHub.');
+  } else {
+    console.warn('⚠️  Aucun mot de passe (.map_password ou MAP_PASSWORD) : temples_static.enc.json NON mis à jour.');
+  }
   if (!joueTrouve) {
     console.log(`   ℹ️  ${JOUE_FILE} absent — aucun temple marqué comme cible.`);
     console.log(`      Les 150 temples sont affichés et colorés normalement.`);

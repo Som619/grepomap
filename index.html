@@ -46,7 +46,7 @@ body::before{
 ══════════════════════════════════════════════ */
 #app{
   display:grid;
-  grid-template-columns:220px 1fr 220px;
+  grid-template-columns:220px 1fr 270px;
   grid-template-rows:auto 1fr;
   min-height:100vh;
   position:relative;z-index:1;
@@ -274,6 +274,46 @@ canvas{display:block;width:800px;height:800px;}
 .tpl-type-row.active{background:rgba(74,124,255,0.12);color:var(--text);border-color:var(--border2);}
 .tpl-type-row.active .tpl-color-dot{box-shadow:0 0 6px currentColor;}
 .tpl-color-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;border:1px solid rgba(255,255,255,0.15);}
+/* Catégorie dépliable : clic sur la ligne = liste des temples, entonnoir = filtre de la carte */
+.tpl-chev{width:10px;flex-shrink:0;font-size:10px;transition:transform .15s;text-align:center;}
+.tpl-cat.open .tpl-chev{transform:rotate(90deg);}
+.tpl-cat-name{flex:1;min-width:0;line-height:1.2;}
+.tpl-cat-count{font-size:11px;color:var(--text-dim);flex-shrink:0;font-variant-numeric:tabular-nums;}
+.tpl-filter-btn{
+  width:22px;height:22px;flex-shrink:0;border-radius:4px;cursor:pointer;
+  background:none;border:1px solid transparent;color:var(--text-dim);
+  display:flex;align-items:center;justify-content:center;transition:all .15s;
+}
+.tpl-filter-btn svg{width:12px;height:12px;fill:currentColor;}
+.tpl-filter-btn:hover{color:var(--text);border-color:var(--border2);background:rgba(255,255,255,.06);}
+.tpl-type-row.active .tpl-filter-btn{color:#fff;background:var(--accent);border-color:var(--accent);}
+.tpl-list{display:flex;flex-direction:column;gap:1px;margin:2px 0 6px 9px;padding-left:6px;border-left:1px solid var(--border2);}
+.tpl-item{
+  display:flex;align-items:baseline;gap:6px;width:100%;text-align:left;
+  padding:4px 6px;border-radius:4px;cursor:pointer;
+  background:none;border:1px solid transparent;color:var(--text);
+  font-family:'Rajdhani',sans-serif;font-size:13px;line-height:1.25;transition:background .12s;
+}
+.tpl-item:hover{background:rgba(255,255,255,.06);}
+.tpl-item:focus-visible,.tpl-type-row:focus-visible{outline:1px solid var(--accent);outline-offset:-1px;}
+.tpl-item.selected{background:rgba(201,168,76,.14);border-color:rgba(201,168,76,.45);}
+.tpl-item.selected .tpl-item-name{color:var(--gold2);font-weight:600;}
+.tpl-mark{width:8px;height:8px;flex-shrink:0;border-radius:50%;align-self:center;font-size:10px;line-height:8px;text-align:center;}
+.tpl-mark.own{background:#00e676;}
+.tpl-mark.sec{background:#ffd600;}
+.tpl-mark.env{color:#b388ff;border-radius:0;}
+.tpl-item-main{flex:1;min-width:0;display:flex;flex-wrap:wrap;column-gap:6px;align-items:baseline;}
+.tpl-item-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.tpl-item-type{font-size:11px;color:var(--text-dim);white-space:nowrap;flex-shrink:0;max-width:55%;overflow:hidden;text-overflow:ellipsis;}
+.tpl-item-bonus{flex-basis:100%;font-size:12px;color:var(--text);opacity:.85;margin-top:2px;white-space:normal;}
+.tpl-item-bonus small{display:block;color:var(--text-dim);font-size:11px;}
+/* Temple sélectionné sur la carte : anneau blanc + pulsation */
+.templeIcon.selected{z-index:6;}
+.sel-ring{position:absolute;inset:-6px;border:2px solid #fff;border-radius:50%;pointer-events:none;box-shadow:0 0 8px rgba(255,255,255,.8);}
+.sel-ring::after{content:'';position:absolute;inset:-2px;border:2px solid #fff;border-radius:50%;animation:selPulse 1.4s ease-out infinite;}
+@keyframes selPulse{from{transform:scale(1);opacity:.9}to{transform:scale(2.1);opacity:0}}
+#zoomLayer.gliding{transition:transform .4s ease;}
+@media (prefers-reduced-motion:reduce){.sel-ring::after{animation:none;}#zoomLayer.gliding{transition:none;}}
 
 /* ══════════════════════════════════════════════
    TOOLTIP
@@ -429,6 +469,45 @@ canvas{display:block;width:800px;height:800px;}
 .tip-hint{color:var(--text-dim);font-size:11px;opacity:.7;margin-top:2px;}
 
 /* ══════════════════════════════════════════════
+   ÉCRAN DE MOT DE PASSE
+══════════════════════════════════════════════ */
+#app.locked{display:none;}
+#gate{
+  position:fixed;inset:0;z-index:20000;display:flex;align-items:center;justify-content:center;padding:16px;
+}
+#gateForm{
+  width:min(340px,100%);padding:26px 24px 22px;border-radius:10px;
+  background:var(--bg2);border:1px solid var(--border2);
+  box-shadow:0 10px 50px rgba(0,0,0,.6),0 0 0 1px rgba(201,168,76,.10);
+  display:flex;flex-direction:column;gap:12px;
+}
+#gateForm h2{font-family:'Cinzel',serif;font-size:18px;letter-spacing:3px;color:var(--gold2);text-shadow:0 0 20px rgba(201,168,76,.4);}
+#gateForm h2 span{color:var(--text-dim);font-size:12px;font-weight:400;letter-spacing:1px;}
+#gateForm p{font-size:14px;color:var(--text-dim);line-height:1.4;}
+#gatePwd{
+  width:100%;padding:9px 10px;border-radius:5px;outline:none;
+  background:var(--bg3);border:1px solid var(--border2);color:var(--text);
+  font-family:'Rajdhani',sans-serif;font-size:16px;transition:border-color .15s;
+}
+#gatePwd:focus{border-color:var(--accent);}
+#gateForm label{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--text);cursor:pointer;}
+#gateForm label input{accent-color:var(--accent);}
+#gateBtn{
+  padding:9px;border:none;border-radius:5px;cursor:pointer;color:#fff;
+  background:linear-gradient(135deg,var(--accent),#2855cc);
+  font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:600;letter-spacing:1px;
+}
+#gateBtn:disabled{opacity:.6;cursor:wait;}
+#gateMsg{min-height:18px;font-size:13px;color:var(--rouge);}
+#gateMsg.info{color:var(--text-dim);}
+#lockBtn{
+  background:var(--bg3);border:1px solid var(--border2);color:var(--text);
+  height:26px;padding:0 8px;border-radius:5px;cursor:pointer;font-family:'Rajdhani',sans-serif;font-size:12px;
+  transition:border-color .15s,background .15s;
+}
+#lockBtn:hover{border-color:var(--rouge);background:rgba(255,61,61,.15);}
+
+/* ══════════════════════════════════════════════
    RESPONSIVE — placé en fin de feuille de style pour
    primer correctement sur les règles de mise en page ci-dessus
 ══════════════════════════════════════════════ */
@@ -437,7 +516,7 @@ canvas{display:block;width:800px;height:800px;}
   #header{grid-column:1;order:1;}
   #center{grid-column:1;grid-row:auto;order:2;padding:12px;}
   #leftPanel{grid-column:1;grid-row:auto;order:3;max-height:260px;border-right:none;border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
-  #rightPanel{grid-column:1;grid-row:auto;order:4;max-height:320px;border-left:none;border-top:1px solid var(--border);}
+  #rightPanel{grid-column:1;grid-row:auto;order:4;max-height:440px;border-left:none;border-top:1px solid var(--border);}
   #header h1{font-size:15px;}
   .ctrl-group{padding:4px 7px;}
 }
@@ -454,7 +533,19 @@ canvas{display:block;width:800px;height:800px;}
 </style>
 </head>
 <body>
-<div id="app">
+<!-- ══ ÉCRAN DE MOT DE PASSE (les données de la carte sont chiffrées : voir chiffrement.js) ══ -->
+<div id="gate" class="hidden">
+  <form id="gateForm">
+    <h2>GREPOLIS <span>· FR187</span></h2>
+    <p>Carte réservée à l'alliance. Entre le mot de passe pour l'afficher.</p>
+    <input type="password" id="gatePwd" placeholder="Mot de passe" autocomplete="current-password" aria-label="Mot de passe">
+    <label><input type="checkbox" id="gateRemember" checked> Rester connecté sur cet appareil</label>
+    <button type="submit" id="gateBtn">Entrer</button>
+    <div id="gateMsg" role="alert"></div>
+  </form>
+</div>
+
+<div id="app" class="locked">
 
 <!-- ══ HEADER ══ -->
 <div id="header">
@@ -539,6 +630,7 @@ canvas{display:block;width:800px;height:800px;}
     <span>Données <b id="dataAge">—</b></span>
     <span id="nextRefresh"></span>
     <button id="refreshBtn" type="button" title="Actualiser maintenant">↻</button>
+    <button id="lockBtn" type="button" class="hidden" title="Se déconnecter : le mot de passe sera redemandé sur cet appareil">Déconnexion</button>
   </div>
 </div>
 
@@ -578,6 +670,7 @@ canvas{display:block;width:800px;height:800px;}
   </div>
   <div id="searchCount" class="search-count hidden"></div>
   <div id="filterHint" class="filter-hint hidden">Filtre actif — <span id="clearFilters">tout afficher</span></div>
+  <div class="legend-empty">Clique une catégorie pour voir ses temples, puis un temple pour le trouver sur la carte.</div>
   <div id="templeLegend"></div>
 </div>
 
@@ -585,8 +678,77 @@ canvas{display:block;width:800px;height:800px;}
 <div id="toast" role="status" aria-live="polite"></div>
 </div>
 
-<script src="mapData.js"></script>
 <script>
+/* ══════════════════════════════════════════════
+   ACCÈS PAR MOT DE PASSE
+   Le site publié ne contient que mapData.enc.json (AES-256-GCM, clé dérivée du mot de passe
+   par PBKDF2 — voir chiffrement.js). Sans le mot de passe, les données sont illisibles : ce
+   n'est pas un simple écran qu'on peut contourner. « Rester connecté » garde la clé dérivée
+   (jamais le mot de passe) dans ce navigateur.
+   En local (fichier ouvert directement, ou localhost sans fichier chiffré), la page lit
+   mapData.js en clair, sans mot de passe.
+══════════════════════════════════════════════ */
+const Secure=(()=>{
+  const ENC_FILE='mapData.enc.json',KEY_STORE='grepomap.fr187.key.v1';
+  const b64d=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+  const b64e=u=>{let s='';u.forEach(b=>s+=String.fromCharCode(b));return btoa(s);};
+  let key=null;                       // {raw:Uint8Array, salt:string} une fois déverrouillé
+  async function fetchEnc(){
+    const res=await fetch(ENC_FILE,{cache:'no-cache'});
+    if(!res.ok)throw Object.assign(new Error(`HTTP ${res.status}`),{status:res.status});
+    return res.json();
+  }
+  async function derive(password,enc){
+    const base=await crypto.subtle.importKey('raw',new TextEncoder().encode(password.trim().normalize('NFC')),'PBKDF2',false,['deriveBits']);
+    return new Uint8Array(await crypto.subtle.deriveBits({name:'PBKDF2',hash:'SHA-256',salt:b64d(enc.salt),iterations:enc.iter},base,256));
+  }
+  async function decrypt(enc,raw){
+    const k=await crypto.subtle.importKey('raw',raw,'AES-GCM',false,['decrypt']);
+    let buf;
+    try{buf=await crypto.subtle.decrypt({name:'AES-GCM',iv:b64d(enc.iv)},k,b64d(enc.data));}
+    catch(e){throw Object.assign(new Error('Mot de passe incorrect'),{badKey:true});}
+    let stream=new Blob([buf]).stream();
+    if(enc.gzip)stream=stream.pipeThrough(new DecompressionStream('gzip'));
+    return JSON.parse(await new Response(stream).text());
+  }
+  function saved(){
+    for(const st of [sessionStorage,localStorage]){
+      try{const v=JSON.parse(st.getItem(KEY_STORE)||'null');if(v&&v.raw&&v.salt)return v;}catch(e){}
+    }
+    return null;
+  }
+  function forget(){
+    for(const st of [sessionStorage,localStorage]){try{st.removeItem(KEY_STORE);}catch(e){}}
+    key=null;
+  }
+  function remember(persist){
+    try{(persist?localStorage:sessionStorage).setItem(KEY_STORE,JSON.stringify({salt:key.salt,raw:b64e(key.raw)}));}catch(e){}
+  }
+  /* Déverrouille avec la clé mémorisée (password=null) ou un mot de passe saisi */
+  async function unlock(enc,password,persist){
+    let raw;
+    if(password==null){
+      const s=saved();
+      if(!s||s.salt!==enc.salt)throw Object.assign(new Error('Aucune clé mémorisée'),{badKey:true});
+      raw=b64d(s.raw);
+    }else{
+      raw=await derive(password,enc);
+    }
+    const data=await decrypt(enc,raw);
+    key={raw,salt:enc.salt};
+    if(password!=null)remember(persist);
+    return data;
+  }
+  /* Rafraîchissement : même clé ; si le mot de passe a changé côté serveur → badKey */
+  async function reload(){
+    const enc=await fetchEnc();
+    if(!key||enc.salt!==key.salt)throw Object.assign(new Error('Mot de passe changé'),{badKey:true});
+    return decrypt(enc,key.raw);
+  }
+  return {fetchEnc,unlock,reload,forget,get active(){return !!key;}};
+})();
+
+function startApp(mapData){
 /* ── Constantes ── */
 const VIEW=6,CELL=100,SIZE=800,SCALE=SIZE/(VIEW*CELL);
 const BX=2,BY=2,X_MIN=BX*CELL,Y_MIN=BY*CELL,X_MAX=X_MIN+VIEW*CELL,Y_MAX=Y_MIN+VIEW*CELL;
@@ -786,35 +948,131 @@ function pick(input,byName){
 }
 
 /* ── Légende types temples ── */
+/* Chaque catégorie est une ligne dépliable :
+     - clic sur la ligne      → ouvre / ferme la liste de ses temples
+     - clic sur l'entonnoir   → n'affiche que cette catégorie sur la carte
+     - clic sur un temple     → le sélectionne et centre la carte dessus */
+const FILTER_SVG='<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1.5 2.5h13L9.6 8.4v4.4l-3.2 1.6v-6z"/></svg>';
+const openCats=new Set();        // catégories dépliées (data-css)
+let selectedKey=null;            // temple sélectionné (clé x|y)
+const tKey=t=>`${t.x}|${t.y}`;
+const isTrue=v=>v===true||String(v).toLowerCase()==='true';
+function addCategoryRow(css,label,col,iconHtml){
+  const wrap=document.createElement('div');
+  wrap.className='tpl-cat';
+  wrap.dataset.css=css;
+  wrap.innerHTML=`<div class="tpl-type-row" data-css="${css}" role="button" tabindex="0" aria-expanded="false">
+                    <span class="tpl-chev">▸</span>
+                    ${iconHtml}
+                    <span class="tpl-cat-name">${label}</span>
+                    <span class="tpl-cat-count"></span>
+                    <button class="tpl-filter-btn" type="button" title="N'afficher que cette catégorie sur la carte" aria-label="Filtrer la carte sur ${esc(label)}">${FILTER_SVG}</button>
+                  </div>
+                  <div class="tpl-list hidden"></div>`;
+  const row=wrap.querySelector('.tpl-type-row');
+  applyTint(row.querySelector('.tplSprite'),col);
+  const toggleOpen=()=>{
+    if(searchInput.value.trim())return;          // pendant une recherche, les listes suivent les résultats
+    openCats.has(css)?openCats.delete(css):openCats.add(css);
+    renderTempleLists();saveState();
+  };
+  row.onclick=toggleOpen;
+  row.onkeydown=e=>{if(e.target===row&&(e.key==='Enter'||e.key===' ')){e.preventDefault();toggleOpen();}};
+  row.querySelector('.tpl-filter-btn').onclick=e=>{e.stopPropagation();toggleCategoryFilter(row,css);};
+  templeLegend.append(wrap);
+}
 Object.entries(CATEGORY_COLORS).forEach(([cat,col])=>{
-  const {css,hex}=col;
   if(cat==='grand'&&!(DATA.temples||[]).some(t=>t.grand))return;   // pas encore de grands temples
-  const row=document.createElement('div');
-  row.className='tpl-type-row';
-  row.dataset.css=css;
-  row.innerHTML=`<div class="tpl-color-dot" style="background:${hex}"></div>
-                 ${cat==='grand'?GT_SVG:`<div class="tplSprite small ${css}"></div>`}
-                 <span>${CATEGORY_LABELS[cat]||cat}</span>`;
-  if(cat!=='grand')applyTint(row.querySelector('.tplSprite'),col);
-  row.onclick=()=>toggleCategoryFilter(row,css);
-  templeLegend.append(row);
+  addCategoryRow(col.css,CATEGORY_LABELS[cat]||cat,col,cat==='grand'?GT_SVG:`<div class="tplSprite small ${col.css}"></div>`);
 });
 const seenSpecialLabels=new Set();
 Object.entries(SPECIAL_TYPE_COLORS).forEach(([type,col])=>{
-  const {css,hex}=col;
   const label=SPECIAL_TYPE_LABELS[type]||type;
   if(seenSpecialLabels.has(label))return;
   seenSpecialLabels.add(label);
-  const row=document.createElement('div');
-  row.className='tpl-type-row';
-  row.dataset.css=css;
-  row.innerHTML=`<div class="tpl-color-dot" style="background:${hex}"></div>
-                 <div class="tplSprite small ${css}"></div>
-                 <span>${label}</span>`;
-  applyTint(row.querySelector('.tplSprite'),col);
-  row.onclick=()=>toggleCategoryFilter(row,css);
-  templeLegend.append(row);
+  addCategoryRow(col.css,label,col,`<div class="tplSprite small ${col.css}"></div>`);
 });
+
+/* ── Liste des temples par catégorie ── */
+function templeMatches(t,term){
+  return `${t.name||''} ${t.type||''} ${t.bonus||''} ${t.god||''} m${t.sea??''} ${t.grand?'grand temple':''} ${t.envisaged===true?'envisagé':''}`
+    .toLowerCase().includes(term);
+}
+function templeItem(t){
+  const sel=tKey(t)===selectedKey;
+  const b=document.createElement('button');
+  b.type='button';
+  b.className='tpl-item'+(sel?' selected':'');
+  b.title=t.bonus||'';
+  const mark=isTrue(t.secondary)?'<span class="tpl-mark sec" title="Cible secondaire"></span>'
+            :isTrue(t.focus)    ?'<span class="tpl-mark own" title="Cible principale"></span>'
+            :t.envisaged===true ?'<span class="tpl-mark env" title="Envisagé">◇</span>'
+            :'<span class="tpl-mark"></span>';
+  const sea=t.sea??`${Math.floor(t.x/100)}${Math.floor(t.y/100)}`;
+  b.innerHTML=`${mark}<span class="tpl-item-main">
+      <span class="tpl-item-name">${esc(t.name)}</span>
+      <span class="tpl-item-type">${esc(t.grand?t.god:t.type)}</span>
+      ${sel?`<span class="tpl-item-bonus">${esc(t.bonus)}<small>Mer ${esc(sea)} · ${t.x}|${t.y}</small></span>`:''}
+    </span>`;
+  b.onclick=()=>selectTemple(sel?null:t,{center:true});
+  return b;
+}
+function renderTempleLists(){
+  const term=searchInput.value.trim().toLowerCase();
+  const groups=new Map();
+  (DATA.temples||[]).forEach(t=>{
+    const css=colorForTemple(t)?.css;
+    if(!css)return;
+    if(!groups.has(css))groups.set(css,[]);
+    groups.get(css).push(t);
+  });
+  let found=0;
+  templeLegend.querySelectorAll('.tpl-cat').forEach(wrap=>{
+    const css=wrap.dataset.css,all=groups.get(css)||[];
+    const list=term?all.filter(t=>templeMatches(t,term)):all;
+    found+=list.length;
+    const open=term?list.length>0:openCats.has(css);
+    wrap.classList.toggle('hidden',!!term&&!list.length);
+    wrap.classList.toggle('open',open);
+    wrap.querySelector('.tpl-type-row').setAttribute('aria-expanded',open);
+    wrap.querySelector('.tpl-cat-count').textContent=term?`${list.length}/${all.length}`:all.length;
+    const listEl=wrap.querySelector('.tpl-list');
+    listEl.classList.toggle('hidden',!open);
+    listEl.replaceChildren(...(open?[...list].sort((a,b)=>String(a.name).localeCompare(String(b.name),'fr')).map(templeItem):[]));
+  });
+  if(term){
+    searchCount.textContent=found===0?'Aucun résultat':`${found} temple${found>1?'s':''} trouvé${found>1?'s':''}`;
+    searchCount.classList.remove('hidden');
+  }else{
+    searchCount.classList.add('hidden');
+  }
+}
+/* Sélection d'un temple (depuis la liste ou la carte). Un temple sélectionné est toujours
+   dessiné, même si un filtre le masquerait. */
+function selectTemple(t,{center=false,scroll=false}={}){
+  selectedKey=t?tKey(t):null;
+  const css=t&&colorForTemple(t)?.css;
+  if(css)openCats.add(css);
+  drawTemples();
+  renderTempleLists();
+  if(t&&center)centerOn(t);
+  if(t&&scroll)templeLegend.querySelector('.tpl-item.selected')?.scrollIntoView({block:'nearest',behavior:'smooth'});
+  saveState();
+}
+let glideTimer=0;
+function centerOn(t){
+  if(t.x<X_MIN||t.x>=X_MAX||t.y<Y_MIN||t.y>=Y_MAX){toast('Ce temple est hors de la zone affichée');return;}
+  userZoom=Math.max(userZoom,2.05);
+  const s=totalScale();
+  panX=mapWrapper.clientWidth/2-s*toPx(t.x,X_MIN);
+  panY=mapWrapper.clientHeight/2-s*toPx(t.y,Y_MIN);
+  clampPan();
+  zoomLayer.classList.add('gliding');
+  applyTransform();
+  clearTimeout(glideTimer);
+  glideTimer=setTimeout(()=>zoomLayer.classList.remove('gliding'),450);
+  if(matchMedia('(max-width:900px)').matches)mapWrapper.scrollIntoView({block:'center',behavior:'smooth'});
+}
 
 /* ── Légende dynamique ── */
 const legendEmpty=document.getElementById('legendEmpty');
@@ -931,29 +1189,25 @@ chkRouge.onchange =()=>toggleGroup(chkRouge, GROUPS.rouge);
 /* ── Recherche ── */
 const clearSearchBtn=document.getElementById('clearSearch');
 const searchCount=document.getElementById('searchCount');
-searchInput.addEventListener('input',applyHighlight);
-clearSearchBtn.onclick=()=>{searchInput.value='';applyHighlight();searchInput.focus();};
+const onSearch=()=>{applyHighlight();renderTempleLists();};
+searchInput.addEventListener('input',onSearch);
+clearSearchBtn.onclick=()=>{searchInput.value='';onSearch();searchInput.focus();};
 document.addEventListener('keydown',e=>{
-  if(e.key==='/'&&document.activeElement!==searchInput){e.preventDefault();searchInput.focus();}
-  if(e.key==='Escape'&&document.activeElement===searchInput){searchInput.value='';applyHighlight();searchInput.blur();}
+  const typing=/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName||'');
+  if(e.key==='/'&&!typing){e.preventDefault();searchInput.focus();}
+  if(e.key==='Escape'&&document.activeElement===searchInput){searchInput.value='';onSearch();searchInput.blur();}
 });
+/* Entoure sur la carte les temples qui correspondent à la recherche
+   (le décompte et la liste des résultats sont gérés par renderTempleLists) */
 function applyHighlight(){
   const term=searchInput.value.trim().toLowerCase();
   clearSearchBtn.classList.toggle('hidden',!term);
-  let matches=0;
   document.querySelectorAll('.templeIcon').forEach(el=>{
     const hit=term&&(el.dataset.name.includes(term)||
                      el.dataset.tmpltype.includes(term)||
                      el.dataset.bonus.includes(term));
-    if(hit)matches++;
-    el.classList.toggle('match',hit);
+    el.classList.toggle('match',!!hit);
   });
-  if(term){
-    searchCount.textContent=matches===0?'Aucun résultat':`${matches} temple${matches>1?'s':''} trouvé${matches>1?'s':''}`;
-    searchCount.classList.remove('hidden');
-  }else{
-    searchCount.classList.add('hidden');
-  }
 }
 
 /* ── Badge d'état (nombre de temples affichés) ── */
@@ -1065,9 +1319,10 @@ function drawTemples(){
     const isEnvisaged=t.envisaged===true;
     /* Filtres « Nos temples seuls » / « Envisagés » : si les deux sont actifs, on montre
        l'union des deux listes ; les grands temples restent toujours visibles */
-    if((onlyOurs||onlyEnv)&&!isGrand&&!((onlyOurs&&isFocus)||(onlyEnv&&isEnvisaged)))return;
+    const isSel=tKey(t)===selectedKey;              // le temple sélectionné passe outre les filtres
+    if(!isSel&&(onlyOurs||onlyEnv)&&!isGrand&&!((onlyOurs&&isFocus)||(onlyEnv&&isEnvisaged)))return;
     const col=colorForTemple(t);
-    if(activeCategoryFilters.size&&(!col||!activeCategoryFilters.has(col.css)))return;
+    if(!isSel&&activeCategoryFilters.size&&(!col||!activeCategoryFilters.has(col.css)))return;
     const size=String(t.size||'small').toLowerCase();
     const isSecondary=t.secondary===true||String(t.secondary).toLowerCase()==='true';
 
@@ -1089,6 +1344,16 @@ function drawTemples(){
     box.onmouseenter=e=>showTip(t,e.clientX,e.clientY);
     box.onmousemove =e=>positionTooltip(e.clientX,e.clientY);
     box.onmouseleave=hideTip;
+    box.style.cursor='pointer';
+    box.onclick=e=>{
+      if(downAt&&Math.hypot(e.clientX-downAt.x,e.clientY-downAt.y)>4)return;   // c'était un glisser
+      hideTip();
+      selectTemple(isSel?null:t,{scroll:true});
+    };
+    if(isSel){
+      box.classList.add('selected');
+      const ring=document.createElement('span');ring.className='sel-ring';box.append(ring);
+    }
 
     const sp=document.createElement('div');
     sp.className=`sprite ${spriteSize}`;
@@ -1279,7 +1544,7 @@ function saveState(){
       return {k,id,c:col[id],v:!!vis[id],n:r.querySelector('.leg-name > span').textContent};
     });
     const toggles=Object.fromEntries(STATE_TOGGLES.map(el=>[el.id,el.checked]));
-    localStorage.setItem(STORE_KEY,JSON.stringify({rows,toggles,city:citySize.value,cats:[...activeCategoryFilters],palIdx}));
+    localStorage.setItem(STORE_KEY,JSON.stringify({rows,toggles,city:citySize.value,cats:[...activeCategoryFilters],open:[...openCats],palIdx}));
   }catch(e){/* stockage indisponible (navigation privée…) : on continue sans */}
 }
 function restoreState(){
@@ -1300,6 +1565,7 @@ function restoreState(){
       if(row){activeCategoryFilters.add(css);row.classList.add('active');}
     });
     filterHint.classList.toggle('hidden',activeCategoryFilters.size===0);
+    (st.open||[]).forEach(css=>openCats.add(css));
     if(Number.isFinite(st.palIdx))palIdx=st.palIdx;
   }finally{restoring=false;}
 }
@@ -1353,6 +1619,7 @@ function applyData(next){
   refreshLegendRows();
   updateTargetControls();
   draw();
+  renderTempleLists();
   saveState();
 }
 async function refreshData(manual=false){
@@ -1362,12 +1629,18 @@ async function refreshData(manual=false){
   try{
     /* « no-cache » = le navigateur redemande au serveur si le fichier a changé (ETag) :
        réponse 304 quasi gratuite s'il est identique, nouveau fichier sinon. */
-    const res=await fetch('mapData.js',{cache:'no-cache'});
-    if(!res.ok)throw new Error(`HTTP ${res.status}`);
-    const txt=await res.text();
-    const next=parseDataFile(txt);
-    const changed=next.generatedAt?next.generatedAt!==DATA.generatedAt:txt.length!==dataLen;
-    dataLen=txt.length;
+    let next,changed;
+    if(Secure.active){                         // site publié : fichier chiffré, même clé
+      next=await Secure.reload();
+      changed=next.generatedAt!==DATA.generatedAt;
+    }else{                                     // local : mapData.js en clair
+      const res=await fetch('mapData.js',{cache:'no-cache'});
+      if(!res.ok)throw new Error(`HTTP ${res.status}`);
+      const txt=await res.text();
+      next=parseDataFile(txt);
+      changed=next.generatedAt?next.generatedAt!==DATA.generatedAt:txt.length!==dataLen;
+      dataLen=txt.length;
+    }
     if(changed){
       const first=!DATA.generatedAt&&!manual;
       applyData(next);
@@ -1379,6 +1652,9 @@ async function refreshData(manual=false){
   }catch(err){
     if(location.protocol==='file:'){          // fetch impossible en local : rechargement complet (l'affichage est mémorisé)
       saveState();location.reload();return;
+    }
+    if(err.badKey){                           // le mot de passe a été changé : on le redemande
+      Secure.forget();location.reload();return;
     }
     console.warn('Rafraîchissement impossible :',err);
     toast('Échec de la mise à jour — nouvel essai dans 5 min');
@@ -1531,11 +1807,80 @@ restoreState();
 updateTargetControls();
 updateLegendEmpty();
 draw();
+renderTempleLists();
 updateFreshness();
 /* Vérification immédiate au chargement : le navigateur peut avoir servi un mapData.js
    périmé depuis son cache (GitHub Pages le garde ~10 min). Si le serveur a plus récent,
    la carte se met à jour aussitôt, filtres compris. */
-if(location.protocol!=='file:')refreshData();
+if(!Secure.active&&location.protocol!=='file:')refreshData();   // (en mode chiffré, les données viennent d'être téléchargées)
+
+/* Déconnexion : oublie la clé sur cet appareil et revient à l'écran de mot de passe */
+const lockBtn=document.getElementById('lockBtn');
+lockBtn.classList.toggle('hidden',!Secure.active);
+lockBtn.onclick=()=>{Secure.forget();location.reload();};
+}   /* ── fin de startApp ── */
+
+/* ══════════════════════════════════════════════
+   DÉMARRAGE : déverrouillage puis lancement de la carte
+══════════════════════════════════════════════ */
+(async()=>{
+  const gate=document.getElementById('gate'),form=document.getElementById('gateForm');
+  const pwd=document.getElementById('gatePwd'),btn=document.getElementById('gateBtn'),msg=document.getElementById('gateMsg');
+  const launch=data=>{
+    gate.remove();
+    document.getElementById('app').classList.remove('locked');
+    startApp(data);
+  };
+  const say=(text,info=false)=>{msg.textContent=text;msg.classList.toggle('info',info);};
+  const isLocal=location.protocol==='file:'||/^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
+  /* Mode local : mapData.js en clair (fichier non publié) */
+  const loadPlain=()=>{
+    const s=document.createElement('script');
+    s.src='mapData.js';
+    s.onload=()=>launch(mapData);
+    s.onerror=()=>{gate.classList.remove('hidden');form.querySelectorAll('input,label,button').forEach(e=>e.classList.add('hidden'));
+                   say('mapData.js introuvable : lance « node fr180.js » pour générer la carte.');};
+    document.head.append(s);
+  };
+
+  let enc=null;
+  if(location.protocol!=='file:'){
+    try{enc=await Secure.fetchEnc();}
+    catch(e){
+      if(!isLocal){
+        gate.classList.remove('hidden');
+        form.querySelectorAll('input,label,button').forEach(el=>el.classList.add('hidden'));
+        say('Impossible de charger les données de la carte. Recharge la page dans un instant.');
+        return;
+      }
+    }
+  }
+  if(!enc){loadPlain();return;}
+
+  try{launch(await Secure.unlock(enc,null));return;}        // clé mémorisée encore valable
+  catch(e){Secure.forget();}
+
+  gate.classList.remove('hidden');
+  pwd.focus();
+  if(!window.crypto?.subtle||typeof DecompressionStream==='undefined'){
+    btn.disabled=true;
+    say('Ce navigateur est trop ancien (ou la page n\'est pas en https) pour déchiffrer la carte.');
+    return;
+  }
+  form.addEventListener('submit',async e=>{
+    e.preventDefault();
+    if(!pwd.value.trim()){say('Entre le mot de passe.');return;}
+    btn.disabled=true;say('Vérification…',true);
+    try{
+      launch(await Secure.unlock(enc,pwd.value,document.getElementById('gateRemember').checked));
+    }catch(err){
+      btn.disabled=false;
+      say(err.badKey?'Mot de passe incorrect.':'Erreur pendant le déchiffrement — recharge la page.');
+      if(!err.badKey)console.error(err);
+      pwd.select();
+    }
+  });
+})();
 </script>
 </body>
 </html>

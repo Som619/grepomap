@@ -20,7 +20,18 @@ const rl    = require('node:readline');
 const path  = require('node:path');
 
 /* ---- temples définis manuellement ---- */
-const { staticTemples } = require('./temples_static.js');   // créez / complétez ce fichier
+/* Protection par mot de passe : voir chiffrement.js.
+   - sur ton PC      : temples_static.js (en clair, non publié) est utilisé s'il existe ;
+   - sur GitHub      : seul temples_static.enc.json existe, déchiffré avec le secret MAP_PASSWORD. */
+const { FILES: ENC, getPassword, readEncrypted, writeEncrypted } = require('./chiffrement.js');
+const PASSWORD = getPassword();
+const staticTemples = (() => {
+  const clair = path.join(__dirname, 'temples_static.js');
+  if (fs.existsSync(clair)) return require(clair).staticTemples;
+  if (!fs.existsSync(ENC.temples)) throw new Error('temples_static.js introuvable : lancez d\'abord node build_temples.js');
+  if (!PASSWORD) throw new Error('Mot de passe manquant (MAP_PASSWORD ou .map_password) pour lire temples_static.enc.json');
+  return JSON.parse(readEncrypted(ENC.temples, PASSWORD));
+})();
 const { grandTemples }  = require('./grands_temples.js');   // les 8 grands temples (Olympus)
 
 const WORLD = 'fr187';
@@ -113,21 +124,27 @@ const parseTowns     = ([, pid,, x, y, slot])   => ({ player_id:+pid, x:+x, y:+y
   const body    = JSON.stringify(mapData);
   let previous  = null;
   try {
-    const txt = fs.readFileSync(outFile, 'utf8');
+    /* Avec mot de passe, la référence est le fichier chiffré publié (le seul présent sur GitHub) */
+    const txt = PASSWORD ? readEncrypted(ENC.map, PASSWORD) : fs.readFileSync(outFile, 'utf8');
     const old = JSON.parse(txt.slice(txt.indexOf('{'), txt.lastIndexOf('}') + 1));
     delete old.generatedAt;
     previous = JSON.stringify(old);
-  } catch { /* premier passage ou ancien format illisible → on écrit */ }
+  } catch { /* premier passage, mot de passe changé ou ancien format illisible → on écrit */ }
 
   if (previous === body && !process.argv.includes('--force')) {
-    console.log('ℹ️  Aucune évolution des données : mapData.js inchangé.');
+    console.log('ℹ️  Aucune évolution des données : carte inchangée.');
     return;
   }
   const generatedAt = new Date().toISOString();
-  fs.writeFileSync(
-    outFile,
-    `// généré le ${generatedAt}\nconst mapData = ${JSON.stringify({ generatedAt, ...mapData })};\n`
-  );
+  const complet     = JSON.stringify({ generatedAt, ...mapData });
+  /* mapData.js = copie en clair pour ouvrir index.html en local ; il n'est PAS publié (.gitignore) */
+  fs.writeFileSync(outFile, `// généré le ${generatedAt}\nconst mapData = ${complet};\n`);
+  if (PASSWORD) {
+    writeEncrypted(ENC.map, complet, PASSWORD);
+    console.log('🔒 mapData.enc.json chiffré (c\'est ce fichier que lit le site publié).');
+  } else {
+    console.warn('⚠️  Aucun mot de passe (MAP_PASSWORD ou .map_password) : mapData.enc.json NON généré, le site publié ne sera pas mis à jour.');
+  }
 
   /* Contrôle : un ID configuré qui n'apparaît nulle part = alliance dissoute/recréée */
   const { ALLIANCE_FRONTS } = require('./fronts_common.js');

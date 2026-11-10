@@ -35,17 +35,27 @@ jobs:
         with:
           node-version: 24
 
-      - name: Générer mapData.js
-        run: node fr180.js   # générateur fr187 (inclut les emplacements « slot » des villes)
+      # La carte est protégée par mot de passe (voir chiffrement.js) : seul le fichier chiffré
+      # mapData.enc.json est publié. Le mot de passe vient du secret MAP_PASSWORD
+      # (Settings → Secrets and variables → Actions → New repository secret).
+      - name: Générer la carte chiffrée
+        env:
+          MAP_PASSWORD: ${{ secrets.MAP_PASSWORD }}
+        run: |
+          if [ -z "$MAP_PASSWORD" ]; then
+            echo "::error::Secret MAP_PASSWORD manquant : Settings → Secrets and variables → Actions."
+            exit 1
+          fi
+          node fr180.js   # générateur fr187 (inclut les emplacements « slot » des villes)
 
       - name: Publier si changement
         run: |
-          if git diff --quiet -- mapData.js; then
+          git add mapData.enc.json
+          if git diff --cached --quiet; then
             echo "Aucun changement."
             exit 0
           fi
           git config user.name  "grepomap-bot"
           git config user.email "grepomap-bot@users.noreply.github.com"
-          git add -f mapData.js
-          git commit -m "Auto : mise à jour mapData.js"
+          git commit -m "Auto : mise à jour de la carte"
           git push origin HEAD:${TARGET_BRANCH}

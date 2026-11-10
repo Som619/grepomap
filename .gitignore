@@ -1,2 +1,9 @@
-"mapData.js" 
-"temples_static.js" 
+# Données en clair : ne jamais les publier. Le site lit uniquement les versions
+# chiffrées (mapData.enc.json, temples_static.enc.json) — voir chiffrement.js.
+mapData.js
+temples_static.js
+*.xlsx
+.map_password
+
+# Outils locaux
+.claude/
